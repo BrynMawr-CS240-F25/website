@@ -1,0 +1,25 @@
+:term: Fall 2025
+:WEEK01: September 2, 4
+:WEEK02: September 9, 11
+:WEEK03: September 16, 18
+:WEEK04: September 23, 25
+:WEEK05: September 30, Oct 2
+:WEEK06: October 7, 9
+:WEEK07: October 14, 16
+:WEEK08: October 21, 23
+:WEEK09: October 28, 30
+:WEEK10: November 4, 6
+:WEEK11: November 11, 13
+:WEEK12: November 18, 20
+:WEEK13: November 25, 27
+:WEEK14: December 2, 4
+:WEEK15: December 9, 11
+:ASST01_DUE: Friday, September 5th
+:ASST02_DUE: Friday, September 12th
+:ASST03_DUE: Friday, October 23rd 
+:ASST04_DUE: Friday, November 13th 
+:ASST05_DUE: Friday, December 4th
+:ASST06_DUE: Monday, November 15th
+:MIDTERM01_WK6: Thursday, October 9th
+:MIDTERM02: Thursday, December 11th
+

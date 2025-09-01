@@ -1,0 +1,170 @@
+[cols="1,2,4a,2a", options="header"]
+|===
+| Week 
+| Date 
+| Agenda
+| Resources
+
+//-----------------------------
+| 1
+| {WEEK01} anchor:week01[]
+| *Introductions, Hello C* 
+
+* Topics: Programming at the command line, Makefiles, From Java to C, strings, arrays, structs, function stack, basic pointers
+* Read: _Dive Into Systems_ link:https://diveintosystems.org/singlepage/#_appendix_1_chapter_1_for_java_programmers[Chapter 1: From JAVA to C] 
+* link:assts/asst01.html[Assignment 01]: Due {ASST01_DUE}
+* Lab: SSH and Github setup
+
+| 
+* link:assts/ssh-setup.html[SSH Setup]
+* link:http://linuxcommand.org/lc3_learning_the_shell.php[Learning the shell]
+
+//-----------------------------
+| 2 
+| {WEEK02} anchor:week02[]
+|*Binary and Data Representations* 
+
+* Topics: number systems, integer/float/char binary formats, struct layouts, bit ops
+* Read: _Dive Into Systems_ link:https://diveintosystems.org/book/C4-Binary/index.html[Chapter 4.1-4.6] 
+* link:assts/asst02.html[Assignment 02]: Due {ASST02_DUE}
+* Lab: link:https://diveintosystems.org/book/C3-C_debug/index.html[GDB and Valgrind], Check-ins
+| 
+
+//-----------------------------
+|3
+|{WEEK03} anchor:week03[]
+|*Computer Architecture Overview* 
+
+* Topics: von Neumann architecture, logic gates, circuits, how processors work
+* Read: _Dive Into Systems_ link:https://diveintosystems.org/book/C5-Arch/index.html[Chapter 5.1-5.6] 
+* Lab: Desktop Disassembly
+
+| TBD
+
+//-----------------------------
+|4
+|{WEEK04} anchor:week04[]
+|*Hardware I*
+
+* Topics: chips, multiplexors, flip-flops, registers, RAM units, counters
+* Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapters 1,2,3] 
+* Lab: Breadboard Adder
+
+| TBD
+
+//-----------------------------
+|5
+|{WEEK05} anchor:week05[]
+|*Hardware II* 
+
+* Topics: machine language, von Neumann Architecture revisited
+* Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapters 4-5] 
+* Lab: Breadboard Subtractor
+
+| 
+
+//-----------------------------
+|6
+|{WEEK06} anchor:week06[]
+| *Hardware wrap-up, Review*
+
+* Lab: Check-ins and midterm practice 
+* Midterm 01: In-class {MIDTERM01_WK6} (1.5 hrs)
+
+| 
+
+TBD
+
+//-----------------------------
+|7
+|{WEEK07} anchor:week07[]
+|*Break*
+
+* *NO LECTURES, LABS, HOMEWORKS*
+
+| 
+
+//-----------------------------
+|8
+|{WEEK08} anchor:week08[]
+|*More C, C++*
+
+* topics: dynamic memory, 2D arrays, file I/O, STL data structures
+* Read: link:https://diveintosystems.org/book/C2-C_depth/index.html[Chapter 2.1-2.8] 
+* link:assts/asst03.html[Assignment 03: Hardware simulator] Due {ASST03_DUE}
+
+| TBD
+
+//-----------------------------
+|9
+|{WEEK09} anchor:week09[]
+| *Assembler, Virtual Machine I*
+
+* Read: _Elements of Computing Systems_, Chapter 6 and 7
+
+| TBD
+
+//-----------------------------
+|10
+|{WEEK10} anchor:week10[]
+|*Virtual Machine II* 
+
+* Read: _Elements of Computing Systems_, Chapter 8
+
+| TBD
+
+//-----------------------------
+|11
+|{WEEK11} anchor:week11[]
+|*High-level Language* 
+
+* Read: _Elements of Computing Systems_, Chapter 9
+* link:[Project: Virtual Machine]: Due {ASST04_DUE}
+
+| TBD
+
+//-----------------------------
+|12
+|{WEEK12} anchor:week12[]
+|*Compiler* 
+
+* Topics: syntax analysis, code generation
+* Read: _Elements of Computing Systems_, Chapter 10-11
+
+| 
+
+//-----------------------------
+|13
+|{WEEK13} anchor:week13[]
+|*Thanksgiving* 
+
+* Read: _Elements of Computing Systems_, Chapter 10-11
+* **Thanksgiving: No Class Thursday**
+
+| 
+
+//-----------------------------
+|14
+|{WEEK14} anchor:week14[]
+| *Operating System*
+
+* Read: _Elements of Computing Systems_, Chapter 12
+* link:[Project: Compiler]: Due {ASST04_DUE}
+
+| 
+
+
+//-----------------------------
+|15
+|{WEEK15} anchor:week15[]
+|*Review* 
+
+* In-Class: Review
+* Midterm 02, In-class {MIDTERM02} (1.5 hrs)
+* link:[Final Project: Simulated Computer]: Due {ASST05_DUE}
+
+|
+
+|===
+
+

@@ -1,0 +1,16 @@
+:lang: en
+:stylesdir: ../style
+:stylesheet: cs21.css
+:linkcss:
+:icons: font
+:imagesdir: img
+:xrefstyle: short
+:leveloffset: +1
+:toc: left
+:csweb: https://www.cs.brynmawr.edu/~alinen
+:gitrepo: https://github.com/BrynMawr-CS240-F25
+:repo: cs240-f25-classwork
+:semester: f25
+:stem: mathjax
+:CLASS: CS240
+:SEMESTER: F25

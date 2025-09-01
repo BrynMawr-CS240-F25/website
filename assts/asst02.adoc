@@ -1,0 +1,155 @@
+include::header.adoc[]
+include::../dates.adoc[]
+
+:title: Assignment 2: C what you can do
+:Author Initials: ASN
+:Date:    2021-01-29
+:Revision: 0.1
+:ASST: A02
+
+= {title}
+
+**Due {ASST02_DUE}, before midnight**
+
+The goals for this assignment are:
+
+* Work with binary numbers
+* Work with C structs, strings, and arrays
+
+[discrete]
+= Update your repository
+
+We will use the same repository as link:asst01.html[Assignment 1]
+
+Pull to get the assignment basecode.
+
+[source, subs="attributes,quotes"]
+----
+$ cd {repo}
+$ git pull 
+----
+
+Your repository should now contain a new folder named `{ASST}`.
+
+:sectnums:
+= Integers 
+
+Write a program, `integer.c`, that outputs an integer in binary using two's compliment.
+
+[source,subs="quotes"]
+----
+$ **make integer**
+gcc integer.c -o integer
+
+$ **./integer 3** 
+0000 0011
+
+$ **./integer -1**
+1111 1111
+----
+
+Requirements:
+
+* Your program must use command line arguments to enter the value.
+* You can assume all values have size less than 1 byte
+
+= Tiny Bitmaps
+
+A link:https://sneslab.net/wiki/Graphics_Format[1bpp], or 1-bit-per-pixel,
+sprite stores a grid of black and white pixels using a single bit. 0 denotes
+white and 1 denotes black.
+
+image::https://sneslab.net/mw/images/c/c6/saa03_1bpp.png[width=400px]
+
+In the program, `bitmap.c`, implement a program that reads in a single 64-bit
+unsigned integer (e.g. `unsigned long`) and outputs it as an 8x8 1bpp sprite.
+
+[source,subs="quotes"]
+$ **./bitmap < bitmap1.txt**
+Image (unsigned long): ff818181818181ff
+@ @ @ @ @ @ @ @
+@             @
+@             @
+@             @
+@             @
+@             @
+@             @
+@ @ @ @ @ @ @ @
+----
+
+Requirements/Hints:
+
+* Your program should *must* use a bitmask! For example, to generate a 64-bit mask that obtains the left-most bit, do `0x1ul << 63`. The `ul` indicates an `unsigned long` value. `0x1` is the number one in hexadecimal.
+* The bitmap files store the values as hexadecimal values. To read them in, do `unsigned long img; scanf(" %lx", &img);`. Use `%lx` for printf also. You are given basecode that reads in the long integer from stdin.
+
+= Logical operators
+
+Write a program, `logical_ops.c`, that performs logical and, or, not, xor, or nand on two binary numbers.
+
+[source,subs="quotes"]
+----
+$ **make logical_ops**
+gcc logical_ops.c -o logical_ops
+
+$ **./logical_ops 3 & 7**
+$ **./logical_ops 3 | 7**
+$ **./logical_ops 3 ^ 7**
+$ **./logical_ops 3 !& 7**
+$ **./logical_ops !3**
+$ **./logical_ops !3 & !-9**
+$ **./logical_ops 3**
+$ **./logical_ops 3 &**
+Invalid input
+$ **./logical_ops apple**
+Invalid input
+----
+
+Requirements:
+
+* Check for valid input 
+* Convert integers to 8-bit binary numbers
+* You can assume all values have size less than 1 byte
+
+[discrete]
+= Submit your Work
+
+Push you work to Github to submit your work.
+
+[source, subs="attributes"]
+----
+$ cd {ASST}
+$ git add *.c 
+$ git commit -m "{ASST} complete"
+$ git push
+----
+
+[discrete]
+= Grading Rubric
+
+*Assignment rubrics*
+
+Grades are out of 4 points.
+
+* (1 point) integer
+** (0.1 points) style 
+** (0.4 points) correct behavior: asks the user for input and creates the new string
+** (0.5 points) no memory errors
+* (2 point) logical_ops 
+** (0.1 points) style 
+** (0.9 points) correct behavior: asks the user for input and creates the new string
+** (1.0 points) no memory errors
+* (1 points) bitmap
+** (0.1 points) style 
+** (0.4 points) correct behavior
+** (0.5 points) no memory errors
+
+*Code rubrics*
+
+For full credit, your C programs must be feature-complete, robust (e.g. run without memory errors or crashing) and 
+have good style.
+
+* Some credit lost for missing features or bugs, depending on severity of error
+* -12.5% for style errors. See the link:../codingstandard.html[class coding style] here.
+* -50% for memory errors
+* -100% for failure to checkin work to Github
+* -100% for failure to compile on linux using make

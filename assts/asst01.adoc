@@ -1,0 +1,185 @@
+include::header.adoc[]
+include::../dates.adoc[]
+
+:title: Assignment 01: Hello {CLASS}!
+:Author Initials: ASN
+:Date:    2020-08-15
+:Revision: 0.1
+:ASST: A01
+
+= {title}
+
+**Due {ASST01_DUE}, before midnight**
+
+The goals for this assignment are:
+
+* Sign into a lab computer
+* Setup an SSH key for github
+* Clone your classwork repository
+* Using either Vim, Emacs, or Nano, write a simple C program
+* Sign into slack
+
+:sectnums:
+
+= Sign into a lab computer
+
+As a CS students, you should have received a username and password from our IT
+administrator, David Diaz.  Use this account information to log into one of the
+desktops in our lab while they are running Linux.
+
+NOTE: To log into Ubuntu, you should use your CS username and password.
+
+Our lab machines are _dual boot_. This means that they can boot either Windows
+or Ubuntu Linux. For class, you will need to boot them with Ubuntu. 
+
+//NOTE: To log into Windows, you should use your college username and password.
+
+= Sign-up for Github
+
+If you do not have one already, please link:https://github.com[create a github account].
+
+= Setup an SSH Key for github
+
+SSH refers to "Secure Shell Protocol" and it ensures that the information transferred between 
+your local machines and github are secure.
+
+If you have not done this before, follow link:ssh-setup.html[the instructions here].
+
+= Setup your classwork repository
+
+link:https://classroom.github.com/a/j7KZkNhy[Click here to get the repository link]
+
+== Get the download link
+
+From your github account, copy the repository url from Github. It should look 
+similar to the following (note that URLs and repository names may be different!)
+
+image::github-code-url-ssh.png[height=300px] 
+
+WARNING: Make sure you have SSH selected for the URL type
+
+== Clone the repository
+
+From the terminal, use `git clone <download_url>` to download your class repository.
+If everything is setup correctly, you should see output similar to the following.
+
+[source, subs="attributes,quotes"]
+----
+$ **git clone git@github.com:BrynMawr-{CLASS}-{SEMESTER}/{repo}-alinen.git**
+Cloning into '{repo}-alinen'...
+remote: Enumerating objects: 9, done.
+remote: Counting objects: 100% (9/9), done.
+remote: Compressing objects: 100% (8/8), done.
+remote: Total 9 (delta 0), reused 8 (delta 0), pack-reused 0 (from 0)
+Receiving objects: 100% (9/9), 13.83 KiB | 2.30 MiB/s, done.
+----
+
+= Simple C programs
+
+You will need to learn one of the following terminal editors for this course.
+
+* Nano: link:https://www.nano-editor.org/dist/v4/nano.pdf[Documentation]
+* Vim: link:https://openvim.com/[Interactive Tutorial], link:https://www.vim.org/docs.php[Documentation and Tutorials]
+* Emacs: link:http://gnuemacs.org/[Documentation]
+
+Open a terminal and complete the following exercises with one of the above editors.
+
+== hello.c
+
+In the directory `{ASST}`, edit the file, `hello.c`, to print the string "Hello World".
+
+[source]
+----
+$ vi hello.c
+$ gcc hello.c
+$ ./a.out
+Hello World
+----
+ 
+The above directly calls the C compiler to build the executable `a.out`.
+However, it is better to use a Makefile for building. A Makefile allows us 
+to avoid re-writing complex build rules as our executables become more complicated. 
+ 
+Try writing the following Makefile. 
+
+WARNING: Make sure to use _indent_ and not spaces!
+
+[source]
+----
+CC=gcc                                                                          
+SOURCES=$(wildcard *.c)                                                         
+FILES := $(subst .c,,$(SOURCES))                                                
+FLAGS=-g -Wall -Wvla -Werror -Wno-unused-variable -Wno-unused-but-set-variable  
+                                                                                
+all: $(FILES)                                                                   
+                                                                                
+% :: %.c                                                                        
+  $(CC) $(FLAGS) $< -o $@                                                       
+                                                                                
+clean:                                                                          
+  rm -rf $(FILES)                                                               
+----
+
+Now, run the following to build.
+
+[source]
+----
+$ make hello 
+$ ./hello
+Hello World
+----
+
+Notice that we use `make` and not `gcc`. Also notice that the executable is named `hello` and not `a.out` anymore.
+
+== Cool hello.c
+
+Extend the program, `hello.c`, to implement a small demo of your choosing. 
+For example, you might implement a simple game, a puzzle generator, or a fortune generator.
+
+Requirements:
+
+* Your demo should build with `make` without errors
+* Your demo should include a comment at the top that contains sample output from your program
+
+[discrete]
+== Submit your work to Github
+
+Add and check in your program using git and then push your changes to Github. 
+Run the following command inside your `{ASST}` directory.
+
+[source, subs="attributes"]
+----
+$ cd {ASST}
+$ git add *.c
+$ git commit -m "Descriptive message"
+$ git push
+----
+
+Run `git status` to check the result of the previous git command.
+Check the Github website to make sure that your program uploaded correctly. 
+
+= Join the slack group
+
+I will be inviting you all to join the course slack channel. In the
+`#social` channel, say and introduce yourself:
+
+* What is your preferred name and pronouns?
+* Share with us your favorite emojji. :)
+
+We will use Slack for 
+
+* Course announcements
+* Questions and errata for assignments and labs
+
+You can also use Slack to talk directly to me and the TAs, or even to each other.
+
+[discrete]
+= Grading Rubric
+
+*Assignment rubrics*
+
+Grades are out of 4 points.
+
+* Github setup (1 points)
+* Slack setup and introduction (0.5 points)
+* C program and Makefile (2.5 points)

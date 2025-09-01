@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.18">
+<title>Assignment 2: C what you can do</title>
+<link rel="stylesheet" href="../style/cs21.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_assignment_2_c_what_you_can_do">Assignment 2: C what you can do</a></li>
+<li><a href="#_integers">1. Integers</a></li>
+<li><a href="#_tiny_bitmaps">2. Tiny Bitmaps</a></li>
+<li><a href="#_logical_operators">3. Logical operators</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_assignment_2_c_what_you_can_do">Assignment 2: C what you can do</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Due Friday, September 12th, before midnight</strong></p>
+</div>
+<div class="paragraph">
+<p>The goals for this assignment are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Work with binary numbers</p>
+</li>
+<li>
+<p>Work with C structs, strings, and arrays</p>
+</li>
+</ul>
+</div>
+<h2 id="_update_your_repository" class="discrete">Update your repository</h2>
+<div class="paragraph">
+<p>We will use the same repository as <a href="asst01.html">Assignment 1</a></p>
+</div>
+<div class="paragraph">
+<p>Pull to get the assignment basecode.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ cd cs240-f25-classwork
+$ git pull</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Your repository should now contain a new folder named <code>A02</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_integers">1. Integers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Write a program, <code>integer.c</code>, that outputs an integer in binary using two&#8217;s compliment.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make integer</strong>
+gcc integer.c -o integer
+
+$ <strong>./integer 3</strong>
+0000 0011
+
+$ <strong>./integer -1</strong>
+1111 1111</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Requirements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Your program must use command line arguments to enter the value.</p>
+</li>
+<li>
+<p>You can assume all values have size less than 1 byte</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tiny_bitmaps">2. Tiny Bitmaps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A <a href="https://sneslab.net/wiki/Graphics_Format">1bpp</a>, or 1-bit-per-pixel,
+sprite stores a grid of black and white pixels using a single bit. 0 denotes
+white and 1 denotes black.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://sneslab.net/mw/images/c/c6/saa03_1bpp.png" alt="saa03 1bpp" width="400px">
+</div>
+</div>
+<div class="paragraph">
+<p>In the program, <code>bitmap.c</code>, implement a program that reads in a single 64-bit
+unsigned integer (e.g. <code>unsigned long</code>) and outputs it as an 8x8 1bpp sprite.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./bitmap < bitmap1.txt</strong>
+Image (unsigned long): ff818181818181ff
+@ @ @ @ @ @ @ @
+@             @
+@             @
+@             @
+@             @
+@             @
+@             @
+@ @ @ @ @ @ @ @
+----</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Requirements/Hints:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Your program should <strong>must</strong> use a bitmask! For example, to generate a 64-bit mask that obtains the left-most bit, do <code>0x1ul &lt;&lt; 63</code>. The <code>ul</code> indicates an <code>unsigned long</code> value. <code>0x1</code> is the number one in hexadecimal.</p>
+</li>
+<li>
+<p>The bitmap files store the values as hexadecimal values. To read them in, do <code>unsigned long img; scanf(" %lx", &amp;img);</code>. Use <code>%lx</code> for printf also. You are given basecode that reads in the long integer from stdin.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_logical_operators">3. Logical operators</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Write a program, <code>logical_ops.c</code>, that performs logical and, or, not, xor, or nand on two binary numbers.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make logical_ops</strong>
+gcc logical_ops.c -o logical_ops
+
+$ <strong>./logical_ops 3 & 7</strong>
+$ <strong>./logical_ops 3 | 7</strong>
+$ <strong>./logical_ops 3 ^ 7</strong>
+$ <strong>./logical_ops 3 !& 7</strong>
+$ <strong>./logical_ops !3</strong>
+$ <strong>./logical_ops !3 & !-9</strong>
+$ <strong>./logical_ops 3</strong>
+$ <strong>./logical_ops 3 &</strong>
+Invalid input
+$ <strong>./logical_ops apple</strong>
+Invalid input</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Requirements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check for valid input</p>
+</li>
+<li>
+<p>Convert integers to 8-bit binary numbers</p>
+</li>
+<li>
+<p>You can assume all values have size less than 1 byte</p>
+</li>
+</ul>
+</div>
+<h2 id="_submit_your_work" class="discrete">Submit your Work</h2>
+<div class="paragraph">
+<p>Push you work to Github to submit your work.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ cd A02
+$ git add *.c
+$ git commit -m "A02 complete"
+$ git push</code></pre>
+</div>
+</div>
+<h2 id="_grading_rubric" class="discrete">Grading Rubric</h2>
+<div class="paragraph">
+<p><strong>Assignment rubrics</strong></p>
+</div>
+<div class="paragraph">
+<p>Grades are out of 4 points.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>(1 point) integer</p>
+<div class="ulist">
+<ul>
+<li>
+<p>(0.1 points) style</p>
+</li>
+<li>
+<p>(0.4 points) correct behavior: asks the user for input and creates the new string</p>
+</li>
+<li>
+<p>(0.5 points) no memory errors</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>(2 point) logical_ops</p>
+<div class="ulist">
+<ul>
+<li>
+<p>(0.1 points) style</p>
+</li>
+<li>
+<p>(0.9 points) correct behavior: asks the user for input and creates the new string</p>
+</li>
+<li>
+<p>(1.0 points) no memory errors</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>(1 points) bitmap</p>
+<div class="ulist">
+<ul>
+<li>
+<p>(0.1 points) style</p>
+</li>
+<li>
+<p>(0.4 points) correct behavior</p>
+</li>
+<li>
+<p>(0.5 points) no memory errors</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Code rubrics</strong></p>
+</div>
+<div class="paragraph">
+<p>For full credit, your C programs must be feature-complete, robust (e.g. run without memory errors or crashing) and
+have good style.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Some credit lost for missing features or bugs, depending on severity of error</p>
+</li>
+<li>
+<p>-12.5% for style errors. See the <a href="../codingstandard.html">class coding style</a> here.</p>
+</li>
+<li>
+<p>-50% for memory errors</p>
+</li>
+<li>
+<p>-100% for failure to checkin work to Github</p>
+</li>
+<li>
+<p>-100% for failure to compile on linux using make</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2025-09-01 15:15:05 -0400
+</div>
+</div>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  messageStyle: "none",
+  tex2jax: {
+    inlineMath: [["\\(", "\\)"]],
+    displayMath: [["\\[", "\\]"]],
+    ignoreClass: "nostem|nolatexmath"
+  },
+  asciimath2jax: {
+    delimiters: [["\\$", "\\$"]],
+    ignoreClass: "nostem|noasciimath"
+  },
+  TeX: { equationNumbers: { autoNumber: "none" } }
+})
+MathJax.Hub.Register.StartupHook("AsciiMath Jax Ready", function () {
+  MathJax.InputJax.AsciiMath.postfilterHooks.Add(function (data, node) {
+    if ((node = data.script.parentNode) && (node = node.parentNode) && node.classList.contains("stemblock")) {
+      data.math.root.display = "block"
+    }
+    return data
+  })
+})
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+</body>
+</html>
