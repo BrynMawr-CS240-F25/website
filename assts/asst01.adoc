@@ -47,7 +47,7 @@ If you have not done this before, follow link:ssh-setup.html[the instructions he
 
 = Setup your classwork repository
 
-link:https://classroom.github.com/a/j7KZkNhy[Click here to get the repository link]
+link:https://classroom.github.com/a/1bLVrg2w[Click here to get the repository link]
 
 == Get the download link
 
