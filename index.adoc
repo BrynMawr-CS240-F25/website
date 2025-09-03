@@ -42,7 +42,7 @@ machine in C.
 |===
 | Activity | Location | Time
 
-| Lecture | Park 337 | Tuesday and Thursday 11:40 AM - 1:00 PM 
+| Lecture | Park 336 | Tuesday and Thursday 11:40 AM - 1:00 PM 
 | Lab | Park 231 | Thursdays 2:40 PM - 4:00 PM 
 | Office Hours - Prof. Aline Normoyle | Park 200B | TBD
 | Office Hours - Rebecca Lassman | TBD | TBD
