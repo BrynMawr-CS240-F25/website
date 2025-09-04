@@ -18,6 +18,11 @@
 | 
 * link:assts/ssh-setup.html[SSH Setup]
 * link:http://linuxcommand.org/lc3_learning_the_shell.php[Learning the shell]
+* link:lectures/Lecture-Week01-Sept2-Intro.pdf[Lecture - Sept 2]
+* link:lectures/Lecture-Week01-Sept4-C.pdf[Lecture - Sept 4]
+* link:class-examples/02-sept4/jokes.c[jokes.c]
+* link:class-examples/02-sept4/scan.c[scan.c]
+* link:class-examples/02-sept4/type.c[type.c]
 
 //-----------------------------
 | 2 
