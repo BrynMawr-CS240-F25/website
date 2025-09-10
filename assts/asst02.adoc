@@ -32,42 +32,108 @@ $ git pull
 Your repository should now contain a new folder named `{ASST}`.
 
 :sectnums:
-= Integers 
+= Compute 
 
-Write a program, `integer.c`, that outputs an integer in binary using two's compliment.
+Write a program, `compute.c`, that simulates bitwise addition and subtraction between 4 bit numbers.
+This program should implement a function `add` with the following function signature.
+
+[source]
+----
+#define TYPE_SIZE 4
+int add(int a[TYPE_SIZE], int b[TYPE_SIZE], int c[TYPE_SIZE], int carryin)
+----
+
+The function `add` computes `c = a + b`. The carryin stores an additional bit 
+to be added to the least significant bits of a and b. The function returns  
+the carry out bit. 
 
 [source,subs="quotes"]
 ----
-$ **make integer**
-gcc integer.c -o integer
-
-$ **./integer 3** 
-0000 0011
-
-$ **./integer -1**
-1111 1111
+$ **make compute**
+gcc -g -Wno-unused-variable -Wno-unused-but-set-variable   -Wl,-rpath=. compute.c -o compute
+$ **./compute 2 - -2**
+a: 2 = 0010
+b: -2 = 1110
+result: 0100
+Value as an unsigned integer (carryout = 0): 4
+Value as a signed integer (carryout = 0): 4
+$ **./compute 2 + -2**
+a: 2 = 0010
+b: -2 = 1110
+result: 0000
+Value as an unsigned integer (carryout = 1): 0
+Value as a signed integer (carryout = 1): 0
+$ **./compute 2 + 2**
+a: 2 = 0010
+b: 2 = 0010
+result: 0100
+Value as an unsigned integer (carryout = 0): 4
+Value as a signed integer (carryout = 0): 4
+$ **./compute 2 + 9**
+a: 2 = 0010
+b: 9 = 1001
+result: 1011
+Value as an unsigned integer (carryout = 0): 11
+Value as a signed integer (carryout = 0): -5
+$ **./compute 2**
+usage: ./compute <num1> <op> <num2>
+$ **./compute 2 apl 9**
+Invalid operator
+$ **./compute 2 9**
+usage: ./compute <num1> <op> <num2>
 ----
 
 Requirements:
 
-* Your program must use command line arguments to enter the value.
-* You can assume all values can be represented with 1 byte.
-* Match the output formatting
-
-= Chips
-
-
+* Your program must use command line arguments with form <num1> <op> <num2>
+* Your program should support both + and - operations
+* Your program should produce similar output: 
+** Show the binary representations of the inputs
+** Should the output in binary and as unsigned and signed integers
 
 = Subtext
 
-Write a program, `decode.c`, that reads a binary file containing a sequence of characters. 
-The first 4 bytes of the file store the number N of characters in the file. The remaining N 
-bytes of the file correspond to a character as follows:
+Write a program, `decode.c`, that reads a binary file containing a sequence of characters 
+as a series of bytes as follows.
+
+For each byte:
 
 * The highest order bit of each bytes combines into a secret message, terminated with `\0`. 
 * The lower order 7 bits correspond to standard ASCII characters. 
 
-For example, suppose the file is as follows (visualized using hexedit).
+For example, if we visualize the contents of the file, `simple-secret.txt` using hexedit, 
+we see the following.
+
+[source]
+----
+00000000   41 42 C3 44  45 46 47 C8  49 4A 4B 4C  4D 4E 4F 50  0A    AB.DEFG.IJKLMNOP.
+----
+
+The leftmost column should the offset of the row from the beginning of the file. The middle 
+columns show the file contents as hexadecimal numbers. And the rightmost file shows the contents of 
+the file in ASCII. From this output, we can see that the highest order bit of each character 
+in the file is `0010 0001 0000 0000 0`. The final character, 0A, is the newline character `\n`.
+`0010 0001`, or `0x21`, corresponds to the character `!` and `0x0` corresponds to the terminating 
+character `\0`. Thus, the secret text is `!\0`. To regain 
+the main text, we must reset the highest order bit of each byte to 0. This gives us the following 
+hexadecimal values `41 42 83 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50` which correspond to the ASCII 
+values "ABCDEFGHIJKLMNOP" 
+
+[source, subs="quotes"]
+----
+$ **make decode**
+gcc -g -Wno-unused-variable -Wno-unused-but-set-variable   -Wl,-rpath=. decode.c -o decode
+$ **./decode simple-secret.txt**
+The secret message:
+!
+The main message:
+ABCDEFGHIJKLMNOP
+----
+
+== Extra credit (0.3)
+
+In the file, `encode.c`, implement a utility that creates a text file that contains hidden subtext. 
+Include in your submission files that you generated with your utility.
 
 [discrete]
 = Submit your Work
@@ -89,18 +155,14 @@ $ git push
 
 Grades are out of 4 points.
 
-* (1 point) integer
-** (0.1 points) style 
-** (0.4 points) correct behavior: asks the user for input and creates the new string
-** (0.5 points) no memory errors
-* (2 point) logical_ops 
+* (2 point) compute
 ** (0.1 points) style 
 ** (0.9 points) correct behavior: asks the user for input and creates the new string
 ** (1.0 points) no memory errors
-* (1 points) bitmap
+* (2 points) decode
 ** (0.1 points) style 
-** (0.4 points) correct behavior
-** (0.5 points) no memory errors
+** (0.9 points) correct behavior
+** (1.0 points) no memory errors
 
 *Code rubrics*
 

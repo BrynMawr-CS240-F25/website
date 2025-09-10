@@ -15,9 +15,12 @@
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_assignment_2_c_what_you_can_do">Assignment 2: C what you can do</a></li>
-<li><a href="#_integers">1. Integers</a></li>
-<li><a href="#_chips">2. Chips</a></li>
-<li><a href="#_subtext">3. Subtext</a></li>
+<li><a href="#_compute">1. Compute</a></li>
+<li><a href="#_subtext">2. Subtext</a>
+<ul class="sectlevel2">
+<li><a href="#_extra_credit_0_3">2.1. Extra credit (0.3)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -60,21 +63,57 @@ $ git pull</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_integers">1. Integers</h2>
+<h2 id="_compute">1. Compute</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Write a program, <code>integer.c</code>, that outputs an integer in binary using two&#8217;s compliment.</p>
+<p>Write a program, <code>compute.c</code>, that simulates bitwise addition and subtraction between 4 bit numbers.
+This program should implement a function <code>add</code> with the following function signature.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>$ <strong>make integer</strong>
-gcc integer.c -o integer
-
-$ <strong>./integer 3</strong>
-0000 0011
-
-$ <strong>./integer -1</strong>
-1111 1111</code></pre>
+<pre class="highlight"><code>#define TYPE_SIZE 4
+int add(int a[TYPE_SIZE], int b[TYPE_SIZE], int c[TYPE_SIZE], int carryin)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The function <code>add</code> computes <code>c = a + b</code>. The carryin stores an additional bit
+to be added to the least significant bits of a and b. The function returns
+the carry out bit.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make compute</strong>
+gcc -g -Wno-unused-variable -Wno-unused-but-set-variable   -Wl,-rpath=. compute.c -o compute
+$ <strong>./compute 2 - -2</strong>
+a: 2 = 0010
+b: -2 = 1110
+result: 0100
+Value as an unsigned integer (carryout = 0): 4
+Value as a signed integer (carryout = 0): 4
+$ <strong>./compute 2 + -2</strong>
+a: 2 = 0010
+b: -2 = 1110
+result: 0000
+Value as an unsigned integer (carryout = 1): 0
+Value as a signed integer (carryout = 1): 0
+$ <strong>./compute 2 + 2</strong>
+a: 2 = 0010
+b: 2 = 0010
+result: 0100
+Value as an unsigned integer (carryout = 0): 4
+Value as a signed integer (carryout = 0): 4
+$ <strong>./compute 2 + 9</strong>
+a: 2 = 0010
+b: 9 = 1001
+result: 1011
+Value as an unsigned integer (carryout = 0): 11
+Value as a signed integer (carryout = 0): -5
+$ <strong>./compute 2</strong>
+usage: ./compute <num1> <op> <num2>
+$ <strong>./compute 2 apl 9</strong>
+Invalid operator
+$ <strong>./compute 2 9</strong>
+usage: ./compute <num1> <op> <num2></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -83,31 +122,37 @@ $ <strong>./integer -1</strong>
 <div class="ulist">
 <ul>
 <li>
-<p>Your program must use command line arguments to enter the value.</p>
+<p>Your program must use command line arguments with form &lt;num1&gt; &lt;op&gt; &lt;num2&gt;</p>
 </li>
 <li>
-<p>You can assume all values can be represented with 1 byte.</p>
+<p>Your program should support both + and - operations</p>
 </li>
 <li>
-<p>Match the output formatting</p>
+<p>Your program should produce similar output:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Show the binary representations of the inputs</p>
+</li>
+<li>
+<p>Should the output in binary and as unsigned and signed integers</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_chips">2. Chips</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="_subtext">3. Subtext</h2>
+<h2 id="_subtext">2. Subtext</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Write a program, <code>decode.c</code>, that reads a binary file containing a sequence of characters.
-The first 4 bytes of the file store the number N of characters in the file. The remaining N
-bytes of the file correspond to a character as follows:</p>
+<p>Write a program, <code>decode.c</code>, that reads a binary file containing a sequence of characters
+as a series of bytes as follows.</p>
+</div>
+<div class="paragraph">
+<p>For each byte:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -120,7 +165,41 @@ bytes of the file correspond to a character as follows:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>For example, suppose the file is as follows (visualized using hexedit).</p>
+<p>For example, if we visualize the contents of the file, <code>simple-secret.txt</code> using hexedit,
+we see the following.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>00000000   41 42 C3 44  45 46 47 C8  49 4A 4B 4C  4D 4E 4F 50  0A    AB.DEFG.IJKLMNOP.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The leftmost column should the offset of the row from the beginning of the file. The middle
+columns show the file contents as hexadecimal numbers. And the rightmost file shows the contents of
+the file in ASCII. From this output, we can see that the highest order bit of each character
+in the file is <code>0010 0001 0000 0000 0</code>. The final character, 0A, is the newline character <code>\n</code>.
+<code>0010 0001</code>, or <code>0x21</code>, corresponds to the character <code>!</code> and <code>0x0</code> corresponds to the terminating
+character <code>\0</code>. Thus, the secret text is <code>!\0</code>. To regain
+the main text, we must reset the highest order bit of each byte to 0. This gives us the following
+hexadecimal values <code>41 42 83 44 45 46 47 48 49 4A 4B 4C 4D 4E 4F 50</code> which correspond to the ASCII
+values "ABCDEFGHIJKLMNOP"</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make decode</strong>
+gcc -g -Wno-unused-variable -Wno-unused-but-set-variable   -Wl,-rpath=. decode.c -o decode
+$ <strong>./decode simple-secret.txt</strong>
+The secret message:
+!
+The main message:
+ABCDEFGHIJKLMNOP</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_extra_credit_0_3">2.1. Extra credit (0.3)</h3>
+<div class="paragraph">
+<p>In the file, <code>encode.c</code>, implement a utility that creates a text file that contains hidden subtext.
+Include in your submission files that you generated with your utility.</p>
 </div>
 <h2 id="_submit_your_work" class="discrete">Submit your Work</h2>
 <div class="paragraph">
@@ -144,23 +223,7 @@ $ git push</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>(1 point) integer</p>
-<div class="ulist">
-<ul>
-<li>
-<p>(0.1 points) style</p>
-</li>
-<li>
-<p>(0.4 points) correct behavior: asks the user for input and creates the new string</p>
-</li>
-<li>
-<p>(0.5 points) no memory errors</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>(2 point) logical_ops</p>
+<p>(2 point) compute</p>
 <div class="ulist">
 <ul>
 <li>
@@ -176,17 +239,17 @@ $ git push</code></pre>
 </div>
 </li>
 <li>
-<p>(1 points) bitmap</p>
+<p>(2 points) decode</p>
 <div class="ulist">
 <ul>
 <li>
 <p>(0.1 points) style</p>
 </li>
 <li>
-<p>(0.4 points) correct behavior</p>
+<p>(0.9 points) correct behavior</p>
 </li>
 <li>
-<p>(0.5 points) no memory errors</p>
+<p>(1.0 points) no memory errors</p>
 </li>
 </ul>
 </div>
@@ -222,9 +285,10 @@ have good style.</p>
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-09-09 18:48:33 -0400
+Last updated 2025-09-10 14:11:15 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

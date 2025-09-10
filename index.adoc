@@ -17,7 +17,7 @@ Instructor: link:https://www.cs.brynmawr.edu/~alinen[Aline Normoyle]
 [.anns]
 
 * Welcome to systems programming! 
-* No assignment this week
+* No assignment this week. Next week, link:assts/asst02.html[Assignment 02] is due {ASST02_DUE}
 
 == Course Info
 
