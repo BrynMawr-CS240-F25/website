@@ -17,7 +17,8 @@ Instructor: link:https://www.cs.brynmawr.edu/~alinen[Aline Normoyle]
 [.anns]
 
 * Welcome to systems programming! 
-* No assignment this week. Next week, link:assts/asst02.html[Assignment 02] is due {ASST02_DUE}
+* link:assts/asst02.html[Assignment 02] is due {ASST02_DUE}
+* Congrats to last week's worksheet champions: Team 1195, TEAM_ER, and Team Intel Core i5
 
 == Course Info
 

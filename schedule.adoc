@@ -20,9 +20,9 @@
 * link:http://linuxcommand.org/lc3_learning_the_shell.php[Learning the shell]
 * link:lectures/Lecture-Week01-Sept2-Intro.pdf[Lecture - Sept 2]
 * link:lectures/Lecture-Week01-Sept4-C.pdf[Lecture - Sept 4]
-* link:lectures/class-examples/02-sept4/jokes.c[jokes.c]
-* link:lectures/class-examples/02-sept4/scan.c[scan.c]
-* link:lectures/class-examples/02-sept4/type.c[type.c]
+* link:lectures/class-examples/week01-sept4/jokes.c[jokes.c]
+* link:lectures/class-examples/week01-sept4/scan.c[scan.c]
+* link:lectures/class-examples/week01-sept4/type.c[type.c]
 
 //-----------------------------
 | 2 
@@ -31,18 +31,28 @@
 
 * Topics: number systems, integer/float/char binary formats, struct layouts, bit ops
 * Read: _Dive Into Systems_ link:https://diveintosystems.org/book/C4-Binary/index.html[Chapter 4.1-4.6] 
+* Read: _Dive into Systems_ link:https://diveintosystems.org/book/C3-C_debug/index.html[GDB and Valgrind]
+* Lab: Congrats to this week's worksheet champions: Team 1195, TEAM_ER, and Team Intel Core i5
 * link:assts/asst02.html[Assignment 02]: Due {ASST02_DUE}
-* Lab: link:https://diveintosystems.org/book/C3-C_debug/index.html[GDB and Valgrind], Check-ins
+
 | 
+* link:lectures/Lecture-Week02-Sept9-Binary.pdf[Lecture - Sept 2]
+* link:lectures/Lecture-Week02-Sept11-BitOps.pdf[Lecture - Sept 4]
+* link:lectures/class-examples/week03-sept9/overflow.c[overflow.c]
+* link:lectures/class-examples/week03-sept9/bigfish.c[bigfish.c]
+* link:lectures/class-examples/week03-sept9/badprog.c[badprog.c]
 
 //-----------------------------
 |3
 |{WEEK03} anchor:week03[]
 |*Computer Architecture Overview* 
 
-* Topics: von Neumann architecture, logic gates, circuits, how processors work
+* Topics: von Neumann architecture, logic gates, circuits, multiplexors, R-S latches 
 * Read: _Dive Into Systems_ link:https://diveintosystems.org/book/C5-Arch/index.html[Chapter 5.1-5.6] 
-* Lab: Desktop Disassembly
+* link:assts/asst02.html[Assignment 02]: Due {ASST02_DUE}
+* Lab: Desktop Disassembly 
+** link:Lectures/Lab03-precision-3630-workstation_Users-Guide_en-us.pdf[Precision 3630 Disassembly Instructions]
+** link:Lectures/Lab03-prec-t3420-om-pub-en-us.pdf[Precision t3420 Disassembly Instructions]
 
 | TBD
 
