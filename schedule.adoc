@@ -38,14 +38,15 @@
 | 
 * link:lectures/Lecture-Week02-Sept9-Binary.pdf[Lecture - Sept 2]
 * link:lectures/Lecture-Week02-Sept11-BitOps.pdf[Lecture - Sept 4]
-* link:lectures/class-examples/week03-sept9/overflow.c[overflow.c]
-* link:lectures/class-examples/week03-sept9/bigfish.c[bigfish.c]
-* link:lectures/class-examples/week03-sept9/badprog.c[badprog.c]
+* link:lectures/class-examples/week02-sept9/overflow.c[overflow.c]
+* link:lectures/class-examples/week02-sept9/bigfish.c[bigfish.c]
+* link:lectures/class-examples/week02-sept9/badprog.c[badprog.c]
+* link:lectures/class-examples/week03-sept16/flags.c[flags.c]
 
 //-----------------------------
 |3
 |{WEEK03} anchor:week03[]
-|*Computer Architecture Overview* 
+|*Computer Architecture Overview, Hardware I* 
 
 * Topics: von Neumann architecture, logic gates, circuits, multiplexors, R-S latches 
 * Read: _Dive Into Systems_ link:https://diveintosystems.org/book/C5-Arch/index.html[Chapter 5.1-5.6] 
@@ -54,25 +55,28 @@
 ** link:Lectures/Lab03-precision-3630-workstation_Users-Guide_en-us.pdf[Precision 3630 Disassembly Instructions]
 ** link:Lectures/Lab03-prec-t3420-om-pub-en-us.pdf[Precision t3420 Disassembly Instructions]
 
-| TBD
+| 
+* link:lectures/Lecture-Week03-Sept16-Arch.pdf[Lecture - Sept 18]
 
 //-----------------------------
 |4
 |{WEEK04} anchor:week04[]
-|*Hardware I*
+|*Hardware II*
 
-* Topics: chips, multiplexors, flip-flops, registers, RAM units, counters
+* Topics: chips, multiplexors, flip-flops, registers
+* Read: _Dive Into Systems_ link:https://diveintosystems.org/book/C5-Arch/index.html[Chapter 5.1-5.6] 
 * Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapters 1,2,3] 
 * Lab: Breadboard Adder
 
-| TBD
+| 
+* link:lectures/Lecture-Week03-Sept16-Arch.pdf[Lecture - Sept 18]
 
 //-----------------------------
 |5
 |{WEEK05} anchor:week05[]
-|*Hardware II* 
+|*Hardware III* 
 
-* Topics: machine language, von Neumann Architecture revisited
+* Topics: RAM units, machine language, von Neumann Architecture revisited
 * Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapters 4-5] 
 * Lab: Breadboard Subtractor
 
