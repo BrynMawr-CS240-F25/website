@@ -52,8 +52,8 @@
 * Read: _Dive Into Systems_ link:https://diveintosystems.org/book/C5-Arch/index.html[Chapter 5.1-5.6] 
 * link:assts/asst02.html[Assignment 02]: Due {ASST02_DUE}
 * Lab: Desktop Disassembly 
-** link:Lectures/Lab03-precision-3630-workstation_Users-Guide_en-us.pdf[Precision 3630 Disassembly Instructions]
-** link:Lectures/Lab03-prec-t3420-om-pub-en-us.pdf[Precision t3420 Disassembly Instructions]
+** link:lectures/Lab03-precision-3630-workstation_Users-Guide_en-us.pdf[Precision 3630 Disassembly Instructions]
+** link:lectures/Lab03-prec-t3420-om-pub-en-us.pdf[Precision t3420 Disassembly Instructions]
 
 | 
 * link:lectures/Lecture-Week03-Sept16-Arch.pdf[Lecture - Sept 18]
