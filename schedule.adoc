@@ -69,7 +69,7 @@
 * Lab: Breadboard Adder
 
 | 
-* link:lectures/Lecture-Week03-Sept16-Arch.pdf[Lecture - Sept 18]
+* link:lectures/Lecture-Week03-Sept16-Arch.pdf[Lecture - Sept 23]
 
 //-----------------------------
 |5
