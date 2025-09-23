@@ -63,9 +63,8 @@
 |{WEEK04} anchor:week04[]
 |*Hardware II*
 
-* Topics: chips, multiplexors, flip-flops, registers
+* Topics: Multiplexors, data flip-flops, registers
 * Read: _Dive Into Systems_ link:https://diveintosystems.org/book/C5-Arch/index.html[Chapter 5.1-5.6] 
-* Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapters 1,2,3] 
 * Lab: Breadboard Adder
 
 | 
@@ -76,8 +75,8 @@
 |{WEEK05} anchor:week05[]
 |*Hardware III* 
 
-* Topics: RAM units, machine language, von Neumann Architecture revisited
-* Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapters 4-5] 
+* Topics: machine language, von Neumann Architecture revisited
+* Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapters 1-5] 
 * Lab: Breadboard Subtractor
 
 | 

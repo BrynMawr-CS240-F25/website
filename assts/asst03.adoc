@@ -1,0 +1,135 @@
+include::header.adoc[]
+include::../dates.adoc[]
+
+:title: Assignment 3: Hack Hardware
+:Author Initials: ASN
+:Date:    2021-01-29
+:Revision: 0.1
+:ASST: A03-Hw
+
+= {title}
+
+**Due {ASST03_DUE}, before midnight**
+
+This next two assignments will implement a computer based on a Von Neuman architecture.
+The computer's design will be based on the architecture and instruction set described in 
+the book _The Elements of Computing Systems_ (called _Hack_). 
+
+We will complete this project in two parts:
+
+* Part 1: Simulate the chips described in Chapters 1-3
+* Part 2: Simulate the computer (Chapter 5) that can execute the machine code described in Chapter 4
+
+[discrete]
+= Update your repository
+
+We will use the same repository as link:asst01.html[Assignment 1]
+                                                                              
+First, you must accept the pull request on your repository on link:{gitrepo}[Github]             
+(link:PullRequest.png[screenshot]).                                                                          
+                                                                                
+[source, subs="attributes,quotes"]                                              
+----                                                                            
+$ cd {repo}                                                                     
+$ git pull                                                                      
+----                                                                            
+                                                                                
+Your repository should now contain a new folder named `{ASST}`.             
+
+:sectnums:
+
+= Getting Started
+
+In the file, `utils.c`, implement the functions `dec2bin` and `bin2dec` which convert between 16 bit 
+binary numbers (stored in an array) and decimal numbers. Feel free to re-use code from A02.
+
+[source]
+----
+void dec2bin(int input, unsigned char out[16])
+{
+  // todo
+}
+
+int bin2dec(unsigned char binary[16], bool isSigned)
+{
+  // todo
+  return 0;
+}
+----
+
+Add code to `gates.c` to test your two functions. 
+
+[source]
+----
+uchar a[16] = {0,0,0,0, 0,0,0,0, 0,0,0,0, 1,0,0,1}; 
+uchar b[16] = {1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1}; 
+
+check(bin2dec(a) == 9, "bin2dec");
+check(bin2dec(b, true) == -1, "bin2dec signed");
+----
+
+= Gates
+
+In the file, `gates.c`, implement the defined gates using only `nand()` or
+other gates that you have previously defined. Your implementations should emulate how 
+composite gates are built from combining simpler gates together. (*Hint: if you are using 
+an if statement, you are doing something wrong!*)
+
+Extend the unit tests in `test_gates.c` to test your functions. 
+
+[source, subs="quotes"]
+----
+$ *make*
+$ *./test_gates*
+----
+
+Requirements/Hints:
+
+* The functions in `gates.c` follow the specifications in chapter 1 of _The elements of computing systems_.
+* You may not use if statements in any function! For example, 
+** Not should be implemented in terms of Nand
+** And should be implemented in terms of Nand and Not
+** Or should be implemented in terms of nand, Not, And
+** etc
+* 16 bit versions of gates can use for loops
+* Warning: be careful to call `And` NOT `and`. `and` is a C++ keyword.
+
+= ALU
+
+In the file, `alu.c`, implement the defined gates using only `nand()` or
+other gates that you have previously defined. Your implementations should emulate how 
+composite gates are built from combining simpler gates together. (*Hint: if you are using 
+an if statement, you are doing something wrong!*)
+
+Extend the unit tests in `test_alu.c` to test your functions. 
+
+[source, subs="quotes"]
+----
+$ *make*
+$ *./test_alu*
+----
+
+Requirements/Hints:
+
+* The functions in `alu.c` follow the specifications in chapter 2 of _The elements of computing systems_.
+* You may not use if statements in any functions. Hint: use Mux instead
+* 16 bit versions of gates can use for loops
+
+= Memory
+
+In the files, `register.c` and `ram.h`, implement the `tick()` functions defined in each class. 
+`Bit::tick()` has already been implemented for you as an example. Again, you must use previously 
+defined gates. (*Hint: if you are using an if statement, you are doing something wrong!*)
+
+Extend the unit tests in `test_memory.c` to test your functions. 
+
+[source, subs="quotes"]
+----
+$ *make*
+$ *./test_memory*
+----
+
+Requirements/Hints:
+
+* The functions in `register.c` and `ram.h` follow the specifications in chapter 3 of _The elements of computing systems_.
+* You may not use if statements in any functions. Hint: use Mux and DMux instead
