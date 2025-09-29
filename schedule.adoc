@@ -48,7 +48,7 @@
 |{WEEK03} anchor:week03[]
 |*Computer Architecture Overview, Hardware I* 
 
-* Topics: von Neumann architecture, logic gates, circuits, multiplexors, R-S latches 
+* Topics: von Neumann architecture, logic gates, circuits
 * Read: _Dive Into Systems_ link:https://diveintosystems.org/book/C5-Arch/index.html[Chapter 5.1-5.6] 
 * link:assts/asst02.html[Assignment 02]: Due {ASST02_DUE}
 * Lab: Desktop Disassembly 
@@ -61,9 +61,10 @@
 //-----------------------------
 |4
 |{WEEK04} anchor:week04[]
-|*Hardware II*
+|*Hardware II, More C/C++*
 
-* Topics: Multiplexors, data flip-flops, registers
+* Topics: Multiplexors, R-S Latches, the CPU revisited. Simple example architecture: Hack
+* Read: link:https://diveintosystems.org/book/C2-C_depth/index.html[Chapter 2.1-2.8] 
 * Read: _Dive Into Systems_ link:https://diveintosystems.org/book/C5-Arch/index.html[Chapter 5.1-5.6] 
 * Lab: Breadboard Adder/Xor
 
@@ -76,19 +77,20 @@
 |{WEEK05} anchor:week05[]
 |*Hardware III* 
 
-* Topics: machine language, von Neumann Architecture revisited
+* Topics: Hack hardware design, machine language
 * Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapters 1-5] 
-* Lab: Breadboard Subtractor
+* Lab: Breadboard Counter
 
 | 
 
 //-----------------------------
 |6
 |{WEEK06} anchor:week06[]
-| *Hardware wrap-up, Review*
+| *Hardware IV, Assembly*
 
-* Lab: Check-ins and midterm practice 
-* Midterm 01: In-class {MIDTERM01_WK6} (1.5 hrs)
+* Topics: von Neumann Architecture revisited
+* Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapter 6] 
+* Lab: Completed breadboard demos
 
 | 
 
@@ -108,8 +110,7 @@ TBD
 |{WEEK08} anchor:week08[]
 |*More C, C++*
 
-* topics: dynamic memory, 2D arrays, file I/O, STL data structures
-* Read: link:https://diveintosystems.org/book/C2-C_depth/index.html[Chapter 2.1-2.8] 
+* Midterm 01: In-class {MIDTERM01_WK8} (1.5 hrs)
 * link:assts/asst03.html[Assignment 03: Hardware simulator] Due {ASST03_DUE}
 
 | TBD
