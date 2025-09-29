@@ -20,6 +20,8 @@ We will complete this project in two parts:
 * Part 1: Simulate the chips described in Chapters 1-3
 * Part 2: Simulate the computer (Chapter 5) that can execute the machine code described in Chapter 4
 
+**Demo Requirement: Check-in with the TA on either Oct 2 or Oct 3 from 6-8**
+
 [discrete]
 = Update your repository
 
