@@ -59,7 +59,7 @@ int bin2dec(unsigned char binary[16], bool isSigned)
 }
 ----
 
-Add code to `gates.c` to test your two functions. 
+Add code to `test_gates.c` to test your two functions. 
 
 [source]
 ----
