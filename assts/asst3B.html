@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.18">
+<title>Assignment 3B: Hack Computer</title>
+<link rel="stylesheet" href="../style/cs21.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_assignment_3b_hack_computer">Assignment 3B: Hack Computer</a></li>
+<li><a href="#_assembly_practice">1. Assembly practice</a></li>
+<li><a href="#_cpu">2. CPU</a></li>
+<li><a href="#_computer">3. Computer</a>
+<ul class="sectlevel2">
+<li><a href="#_interactive_debugger">3.1. Interactive debugger</a></li>
+<li><a href="#_simulator_extra_credit">3.2. Simulator (Extra Credit)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_assignment_3b_hack_computer">Assignment 3B: Hack Computer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Due Friday, October 31st, before midnight</strong></p>
+</div>
+<div class="paragraph">
+<p>This is the second assignment in which we build a simulated computer based on
+the architecture and instruction set described in the book <em>The Elements of
+Computing Systems</em> (called <em>Hack</em>).</p>
+</div>
+<div class="paragraph">
+<p>In the previous assignment, you</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Simulated the chips described in Chapters 1-3</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The goals of this assignment is to</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Become familiar with the assembly language described in chapter 4</p>
+</li>
+<li>
+<p>Simulate the computer (Chapter 5) that can execute the machine code described in Chapter 4</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Demo Requirement: Check-in with the TA on either Oct 23 or Oct 24 from 6-8, or with Prof. Normoyle&#8217;s office hours no Friday 2-4pm</strong></p>
+</div>
+<h2 id="_update_your_repository" class="discrete">Update your repository</h2>
+<div class="paragraph">
+<p>We will use the same repository as <a href="asst01.html">Assignment 1</a></p>
+</div>
+<div class="paragraph">
+<p>First, you must accept the pull request on your repository on <a href="https://github.com/BrynMawr-CS240-F25">Github</a>
+(<a href="PullRequest.png">screenshot</a>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ cd cs240-f25-classwork
+$ git pull</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Your repository should now contain a new folder named <code>A03-Hw</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_assembly_practice">1. Assembly practice</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Write the following programs in Hack assembly language. To test you programs, run them using the
+hardware simulator <a href="https://drive.google.com/file/d/1IkIR8Pwq3PY49QgXpUJOkUUVht-TKIET/view">available from nand2tetris</a>.
+You will need Java installed to run, but many of you will have Java already from other courses.</p>
+</div>
+<div class="paragraph">
+<p>All assembly programs are in the <code>asm</code> directory.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the file, <code>asm/ROFL.asm</code>, write a program that writes the string ROFL to memory addresses 0 to 4 in RAM. The ASCII characters for ROFL are 82, 79, 70, and 76.</p>
+</li>
+<li>
+<p>In the file, <code>asm/mult.asm</code>, write a program that computes R2 = R0 * R1. R0, R1, and R2 correspond to the first three locations in memory. Because the ALU does not natively support multiplication, use repeated addition to compute the answer.</p>
+</li>
+<li>
+<p>In the file, <code>asm/count_key.asm</code>, write a program that increments a count, stored in R0, whenever the user presses a key</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cpu">2. CPU</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the file, <code>common/cpu.c</code>, implement the function CPU::tick(). This function should implement the architecture from
+Figure 5.9 of <em>The elements of Computing Systems</em>. Extend the tests in <code>test_cpu.c</code> to check your implementation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ *make*
+$ *./test_cpu*</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_computer">3. Computer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Under construction</strong></p>
+</div>
+<div class="paragraph">
+<p>In the file, <code>common/computer.c</code>, implement the following functions</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Computer::load</code> which loads a .hack file containing instructions in machine code</p>
+</li>
+<li>
+<p><code>Computer::tick</code> which updates the state of the computer. This function implements Figure 5.10 of the book <em>The Elements of Computing Systems</em>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Extend the unit tests in <code>test_computer.c</code> to test your functions.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make</strong>
+$ <strong>./test_computer</strong></code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_interactive_debugger">3.1. Interactive debugger</h3>
+<div class="paragraph">
+<p><strong>Under construction</strong></p>
+</div>
+<div class="paragraph">
+<p>In the file, <code>hackdb.c</code>, write a program that allows the user to set breakpoints and
+step through a program by instructions. While paused, the program can also print out
+the values of registers and memory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make</strong>
+$ <strong>./hackdb</strong>
+usage: hackdb <filename.hack>
+$ <strong>./hackdb add100.hack</strong>
+hackdb> b 0
+hackdb> r
+Instruction 0: 0b 0000 0000 0001 1010 (0x001A) (26)
+hackdb> n
+hackdb> p A
+A: 0b 0000 0000 0001 1010 (0x001A) (26)
+hackdb> p M[0]
+M[0]: 0b 0000 0000 0000 0000 (0x0000) (0)
+hackdb> clr
+cleared all breakpoints
+hackdb> c
+continuing
+program has finished
+hackdb> p M[0]
+M[0]: 0b 0001 0011 1011 1010 (0x13BA) (5050)
+hackdb> quit
+$</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Your homework uses the <code>readline</code> library to handle command line input and history.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_simulator_extra_credit">3.2. Simulator (Extra Credit)</h3>
+<div class="paragraph">
+<p><strong>Under construction</strong></p>
+</div>
+<div class="paragraph">
+<p>In the file, <code>hacksim.c</code>, implement a fully simulated Hack architecture that supports the screen and keyboard.
+For performance, use the <code>ncurses</code> library to only update pixels when they change.
+The <code>ncurses</code> library can also detect keyboard presses.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2025-10-08 19:20:32 -0400
+</div>
+</div>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  messageStyle: "none",
+  tex2jax: {
+    inlineMath: [["\\(", "\\)"]],
+    displayMath: [["\\[", "\\]"]],
+    ignoreClass: "nostem|nolatexmath"
+  },
+  asciimath2jax: {
+    delimiters: [["\\$", "\\$"]],
+    ignoreClass: "nostem|noasciimath"
+  },
+  TeX: { equationNumbers: { autoNumber: "none" } }
+})
+MathJax.Hub.Register.StartupHook("AsciiMath Jax Ready", function () {
+  MathJax.InputJax.AsciiMath.postfilterHooks.Add(function (data, node) {
+    if ((node = data.script.parentNode) && (node = node.parentNode) && node.classList.contains("stemblock")) {
+      data.math.root.display = "block"
+    }
+    return data
+  })
+})
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+</body>
+</html>

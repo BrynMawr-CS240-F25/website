@@ -92,9 +92,10 @@
 * Topics: Hack Assembly, Machine Language, von Neumann Architecture revisited
 * Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapter 4-5] 
 * Lab: Completed breadboard demos
-* link:assts/asst03.html[Assignment 03: Hardware simulator I] Due {ASST03_DUE}
+* link:assts/assts3A.html[Assignment 3A: Hardware simulator I] Due {ASST03_DUE}
 
 | 
+* link:lectures/Lecture-Week06-Oct7-MachineCode.pdf[Lecture - Sept 30, Oct 2]
 
 //-----------------------------
 |7
@@ -108,11 +109,11 @@
 //-----------------------------
 |8
 |{WEEK08} anchor:week08[]
-|*Assembly Compiler*
+|*Midterm, Assembly Compiler*
 
 * Midterm 01: In-class {MIDTERM01_WK8} (1.5 hrs)
 * Read: _Elements of Computing Systems_, Chapter 6
-* link:assts/asst04.[Assignment 04: Hardware simulator II] Due {ASST04_DUE}
+* link:assts/assts3B.html[Assignment 3B: Hardware simulator II] Due {ASST04_DUE}
 
 | TBD
 

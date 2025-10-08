@@ -1,0 +1,128 @@
+include::header.adoc[]
+include::../dates.adoc[]
+
+:title: Assignment 3B: Hack Computer
+:Author Initials: ASN
+:Date:    2021-01-29
+:Revision: 0.1
+:ASST: A03-Hw
+
+= {title}
+
+**Due {ASST04_DUE}, before midnight**
+
+This is the second assignment in which we build a simulated computer based on
+the architecture and instruction set described in the book _The Elements of
+Computing Systems_ (called _Hack_). 
+
+In the previous assignment, you
+
+* Simulated the chips described in Chapters 1-3
+
+The goals of this assignment is to 
+
+* Become familiar with the assembly language described in chapter 4
+* Simulate the computer (Chapter 5) that can execute the machine code described in Chapter 4
+
+**Demo Requirement: Check-in with the TA on either Oct 23 or Oct 24 from 6-8, or with Prof. Normoyle's office hours no Friday 2-4pm**
+
+[discrete]
+= Update your repository
+
+We will use the same repository as link:asst01.html[Assignment 1]
+                                                                              
+First, you must accept the pull request on your repository on link:{gitrepo}[Github]             
+(link:PullRequest.png[screenshot]).                                                                          
+                                                                                
+[source, subs="attributes,quotes"]                                              
+----                                                                            
+$ cd {repo}                                                                     
+$ git pull                                                                      
+----                                                                            
+                                                                                
+Your repository should now contain a new folder named `{ASST}`.             
+
+:sectnums:
+
+= Assembly practice
+
+Write the following programs in Hack assembly language. To test you programs, run them using the 
+hardware simulator link:https://drive.google.com/file/d/1IkIR8Pwq3PY49QgXpUJOkUUVht-TKIET/view[available from nand2tetris].
+You will need Java installed to run, but many of you will have Java already from other courses.
+
+All assembly programs are in the `asm` directory.
+
+. In the file, `asm/ROFL.asm`, write a program that writes the string ROFL to memory addresses 0 to 4 in RAM. The ASCII characters for ROFL are 82, 79, 70, and 76. 
+. In the file, `asm/mult.asm`, write a program that computes R2 = R0 * R1. R0, R1, and R2 correspond to the first three locations in memory. Because the ALU does not natively support multiplication, use repeated addition to compute the answer.
+. In the file, `asm/count_key.asm`, write a program that increments a count, stored in R0, whenever the user presses a key
+
+= CPU
+
+In the file, `common/cpu.c`, implement the function CPU::tick(). This function should implement the architecture from 
+Figure 5.9 of _The elements of Computing Systems_. Extend the tests in `test_cpu.c` to check your implementation.
+
+[source]
+----
+$ *make*
+$ *./test_cpu*
+----
+
+= Computer
+
+**Under construction**
+
+In the file, `common/computer.c`, implement the following functions 
+
+* `Computer::load` which loads a .hack file containing instructions in machine code
+* `Computer::tick` which updates the state of the computer. This function implements Figure 5.10 of the book _The Elements of Computing Systems_.
+
+Extend the unit tests in `test_computer.c` to test your functions. 
+
+[source, subs="quotes"]
+----
+$ *make*
+$ *./test_computer*
+----
+
+== Interactive debugger
+
+**Under construction**
+
+In the file, `hackdb.c`, write a program that allows the user to set breakpoints and 
+step through a program by instructions. While paused, the program can also print out 
+the values of registers and memory.
+
+[source, subs="quotes"]
+----
+$ *make*
+$ *./hackdb*
+usage: hackdb <filename.hack>
+$ *./hackdb add100.hack*
+hackdb> b 0
+hackdb> r
+Instruction 0: 0b 0000 0000 0001 1010 (0x001A) (26)
+hackdb> n
+hackdb> p A 
+A: 0b 0000 0000 0001 1010 (0x001A) (26)
+hackdb> p M[0]
+M[0]: 0b 0000 0000 0000 0000 (0x0000) (0)  
+hackdb> clr
+cleared all breakpoints
+hackdb> c
+continuing
+program has finished
+hackdb> p M[0]
+M[0]: 0b 0001 0011 1011 1010 (0x13BA) (5050)
+hackdb> quit
+$
+----
+
+NOTE: Your homework uses the `readline` library to handle command line input and history. 
+
+== Simulator (Extra Credit)
+
+**Under construction**
+
+In the file, `hacksim.c`, implement a fully simulated Hack architecture that supports the screen and keyboard. 
+For performance, use the `ncurses` library to only update pixels when they change. 
+The `ncurses` library can also detect keyboard presses. 
