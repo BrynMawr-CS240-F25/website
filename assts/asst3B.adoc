@@ -61,40 +61,41 @@ All assembly programs are in the `asm` directory.
 In the file, `common/cpu.c`, implement the function CPU::tick(). This function should implement the architecture from 
 Figure 5.9 of _The elements of Computing Systems_. Extend the tests in `test_cpu.c` to check your implementation.
 
-[source]
+[source, subs="quotes"]
 ----
 $ *make*
 $ *./test_cpu*
+$ *./test_cpu_instructions*
 ----
 
 = Computer
 
 In the file, `common/computer.c`, implement the following functions 
 
-* `Computer::load(const char* filename)` which loads a .hack file containing instructions in machine code. Required features:
+* *Computer::load(const char* filename)* which loads a .hack file containing instructions in machine code. Required features:
 ** Your reader should skip all whitespace in the file
 ** Your reader should allow for line comments indicated with '//'
 ** Your reader should initialize the memory variable `m_num_instructions` with the number of instructions in the file.
-* `Computer::write_ram(unsigned int address, uchar data[16])` implements `RAM[address] = data`. 
-* `Computer::read_ram(unsigned int address, uchar data[16])` implements `data = RAM[address]`.
-* `Computer::read_rom(unsigned int address, uchar data[16])` implements `ROM[address] = data`.
-* `Computer::list(int start_instruction, int num_instructions)` prints the instructions from `ROM[start_instruction] through `ROM[start_instruction+num_instructions-1]`
-* `Computer::set_breakpoint(unsigned int bp)` sets the value of `m_breakpoint` to bp
-* `Computer::clear_breakpoint()` sets the value of `m_breakpoint` to -1
-* `Computer::finished()` return true if the program counter is greater than or equal to `num_instructions -1`
-* `Computer::run()` runs the current program (e.g. repeatedly calls `tick`) until reaching a breakpoint or completing. 
-* `Computer::reset()` restarts the computer. Sets `cpu.reset` to 1 and then calls `tick()`
-* `Computer::inspect(const char* name)` prints the internal state associated with name. Name can have any of the following values
-** `inM` prints the value of `m_cpu.inM`
-** `outM`: prints the value of `m_cpu.outM`
-** `addressM`: prints the value of `m_cpu.addressM`
-** `A`: prints the value of `m_cpu.A.out`
-** `writeM`: prints the value of `m_cpu.writeM`
-** `PC`: prints the value of `m_cpu.PC.out`
-** `D`: prints the value of `m_cpu.D.out`
-** [Address]: If `name` does not correspond to a known symbol, convert it to an integer and display the contents of M[addr]
-* `Computer::program_counter_value()` returns the current contents of `cpu.PC.out` as an integer
-* `Computer::tick` which updates the state of the computer. This function implements Figure 5.10 of the book _The Elements of Computing Systems_.. Below is a recommend algorithm
+* *Computer::write_ram(unsigned int address, uchar data[16])* implements `RAM[address] = data`. 
+* *Computer::read_ram(unsigned int address, uchar data[16])* implements `data = RAM[address]`.
+* *Computer::read_rom(unsigned int address, uchar data[16])* implements `ROM[address] = data`.
+* *Computer::list(int start_instruction, int num_instructions)* prints the instructions from `ROM[start_instruction] through `ROM[start_instruction+num_instructions-1]`
+* *Computer::set_breakpoint(unsigned int bp)* sets the value of `m_breakpoint` to bp
+* *Computer::clear_breakpoint()* sets the value of `m_breakpoint` to -1
+* *Computer::finished()* return true if the program counter is greater than or equal to `num_instructions -1`
+* *Computer::run()* runs the current program (e.g. repeatedly calls `tick`) until reaching a breakpoint or completing. 
+* *Computer::reset()* restarts the computer. Sets `cpu.reset` to 1 and then calls `tick()`
+* *Computer::inspect(const char* name)* prints the internal state associated with name. Name can have any of the following values
+** *inM* prints the value of `m_cpu.inM`
+** *outM*: prints the value of `m_cpu.outM`
+** *addressM*: prints the value of `m_cpu.addressM`
+** *A*: prints the value of `m_cpu.A.out`
+** *writeM*: prints the value of `m_cpu.writeM`
+** *PC*: prints the value of `m_cpu.PC.out`
+** *D*: prints the value of `m_cpu.D.out`
+** *[Address]*: If `name` does not correspond to a known symbol, convert it to an integer and display the contents of M[addr]
+* *Computer::program_counter_value()* returns the current contents of `cpu.PC.out` as an integer
+* *Computer::tick* which updates the state of the computer. This function implements Figure 5.10 of the book _The Elements of Computing Systems_.. Below is a recommend algorithm
 [source]
 ----
 Set CPU reset
@@ -249,22 +250,22 @@ int main(int argc, char** argv)
 
 You should extend the above code to support the following commands based on gdb.
 
-* `list`: Show the next 4 instructions, based on the current value in the program counter
-* `run`: Resets the computer and runs the current program
-* `continue`: Resumes running the program from the current instruction
-* `break [instruction_num]`: Sets the breakpoint to the given instruction number
-* `clear`: Clears the breakpoint
-* `print [name]`: Prints the value based on name
-* `list`: Show the next 4 instructions, starting with the current instruction
-* `next`: Step ahead one instruction
+* *list*: Show the next 4 instructions, based on the current value in the program counter
+* *run*: Resets the computer and runs the current program
+* *continue*: Resumes running the program from the current instruction
+* *break [instruction_num]*: Sets the breakpoint to the given instruction number
+* *clear*: Clears the breakpoint
+* *print [name]*: Prints the value based on name
+* *list*: Show the next 4 instructions, starting with the current instruction
+* *next*: Step ahead one instruction
 
 == Computer Simulator (Extra Credit)
 
 In the file `hacksim.c`, connect your computer simulator to a screen and keyboard. 
 For this part of the assignment, you will implement the following functions
 
-* `DrawScreen(Computer* computer, Image* image)` Copies the data stored in RAM (addresses 0x4000 to 0x5FFF) to the given image. The image data is a bitmap where each bit corresponds to pixel. For example, the first byte of the image stores 8 pixels. 
-* `SetKey(Computer* computer, KeyCode key)` Copies the current key to RAM at address 0x6000.
+* *DrawScreen(Computer* computer, Image* image)* Copies the data stored in RAM (addresses 0x4000 to 0x5FFF) to the given image. The image data is a bitmap where each bit corresponds to pixel. For example, the first byte of the image stores 8 pixels. 
+* *SetKey(Computer* computer, KeyCode key)* Copies the current key to RAM at address 0x6000.
 
 [source]
 ----

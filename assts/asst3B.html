@@ -118,8 +118,9 @@ Figure 5.9 of <em>The elements of Computing Systems</em>. Extend the tests in <c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>$ *make*
-$ *./test_cpu*</code></pre>
+<pre class="highlight"><code>$ <strong>make</strong>
+$ <strong>./test_cpu</strong>
+$ <strong>./test_cpu_instructions</strong></code></pre>
 </div>
 </div>
 </div>
@@ -133,7 +134,7 @@ $ *./test_cpu*</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><code>Computer::load(const char* filename)</code> which loads a .hack file containing instructions in machine code. Required features:</p>
+<p><strong>Computer::load(const char</strong> filename)* which loads a .hack file containing instructions in machine code. Required features:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -149,68 +150,68 @@ $ *./test_cpu*</code></pre>
 </div>
 </li>
 <li>
-<p><code>Computer::write_ram(unsigned int address, uchar data[16])</code> implements <code>RAM[address] = data</code>.</p>
+<p><strong>Computer::write_ram(unsigned int address, uchar data[16])</strong> implements <code>RAM[address] = data</code>.</p>
 </li>
 <li>
-<p><code>Computer::read_ram(unsigned int address, uchar data[16])</code> implements <code>data = RAM[address]</code>.</p>
+<p><strong>Computer::read_ram(unsigned int address, uchar data[16])</strong> implements <code>data = RAM[address]</code>.</p>
 </li>
 <li>
-<p><code>Computer::read_rom(unsigned int address, uchar data[16])</code> implements <code>ROM[address] = data</code>.</p>
+<p><strong>Computer::read_rom(unsigned int address, uchar data[16])</strong> implements <code>ROM[address] = data</code>.</p>
 </li>
 <li>
-<p><code>Computer::list(int start_instruction, int num_instructions)</code> prints the instructions from <code>ROM[start_instruction] through `ROM[start_instruction+num_instructions-1]</code></p>
+<p><strong>Computer::list(int start_instruction, int num_instructions)</strong> prints the instructions from <code>ROM[start_instruction] through `ROM[start_instruction+num_instructions-1]</code></p>
 </li>
 <li>
-<p><code>Computer::set_breakpoint(unsigned int bp)</code> sets the value of <code>m_breakpoint</code> to bp</p>
+<p><strong>Computer::set_breakpoint(unsigned int bp)</strong> sets the value of <code>m_breakpoint</code> to bp</p>
 </li>
 <li>
-<p><code>Computer::clear_breakpoint()</code> sets the value of <code>m_breakpoint</code> to -1</p>
+<p><strong>Computer::clear_breakpoint()</strong> sets the value of <code>m_breakpoint</code> to -1</p>
 </li>
 <li>
-<p><code>Computer::finished()</code> return true if the program counter is greater than or equal to <code>num_instructions -1</code></p>
+<p><strong>Computer::finished()</strong> return true if the program counter is greater than or equal to <code>num_instructions -1</code></p>
 </li>
 <li>
-<p><code>Computer::run()</code> runs the current program (e.g. repeatedly calls <code>tick</code>) until reaching a breakpoint or completing.</p>
+<p><strong>Computer::run()</strong> runs the current program (e.g. repeatedly calls <code>tick</code>) until reaching a breakpoint or completing.</p>
 </li>
 <li>
-<p><code>Computer::reset()</code> restarts the computer. Sets <code>cpu.reset</code> to 1 and then calls <code>tick()</code></p>
+<p><strong>Computer::reset()</strong> restarts the computer. Sets <code>cpu.reset</code> to 1 and then calls <code>tick()</code></p>
 </li>
 <li>
-<p><code>Computer::inspect(const char* name)</code> prints the internal state associated with name. Name can have any of the following values</p>
+<p><strong>Computer::inspect(const char</strong> name)* prints the internal state associated with name. Name can have any of the following values</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>inM</code> prints the value of <code>m_cpu.inM</code></p>
+<p><strong>inM</strong> prints the value of <code>m_cpu.inM</code></p>
 </li>
 <li>
-<p><code>outM</code>: prints the value of <code>m_cpu.outM</code></p>
+<p><strong>outM</strong>: prints the value of <code>m_cpu.outM</code></p>
 </li>
 <li>
-<p><code>addressM</code>: prints the value of <code>m_cpu.addressM</code></p>
+<p><strong>addressM</strong>: prints the value of <code>m_cpu.addressM</code></p>
 </li>
 <li>
-<p><code>A</code>: prints the value of <code>m_cpu.A.out</code></p>
+<p><strong>A</strong>: prints the value of <code>m_cpu.A.out</code></p>
 </li>
 <li>
-<p><code>writeM</code>: prints the value of <code>m_cpu.writeM</code></p>
+<p><strong>writeM</strong>: prints the value of <code>m_cpu.writeM</code></p>
 </li>
 <li>
-<p><code>PC</code>: prints the value of <code>m_cpu.PC.out</code></p>
+<p><strong>PC</strong>: prints the value of <code>m_cpu.PC.out</code></p>
 </li>
 <li>
-<p><code>D</code>: prints the value of <code>m_cpu.D.out</code></p>
+<p><strong>D</strong>: prints the value of <code>m_cpu.D.out</code></p>
 </li>
 <li>
-<p>[Address]: If <code>name</code> does not correspond to a known symbol, convert it to an integer and display the contents of M[addr]</p>
+<p><strong>[Address]</strong>: If <code>name</code> does not correspond to a known symbol, convert it to an integer and display the contents of M[addr]</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><code>Computer::program_counter_value()</code> returns the current contents of <code>cpu.PC.out</code> as an integer</p>
+<p><strong>Computer::program_counter_value()</strong> returns the current contents of <code>cpu.PC.out</code> as an integer</p>
 </li>
 <li>
-<p><code>Computer::tick</code> which updates the state of the computer. This function implements Figure 5.10 of the book <em>The Elements of Computing Systems</em>.. Below is a recommend algorithm</p>
+<p><strong>Computer::tick</strong> which updates the state of the computer. This function implements Figure 5.10 of the book <em>The Elements of Computing Systems</em>.. Below is a recommend algorithm</p>
 </li>
 </ul>
 </div>
@@ -394,28 +395,28 @@ int main(int argc, char** argv)
 <div class="ulist">
 <ul>
 <li>
-<p><code>list</code>: Show the next 4 instructions, based on the current value in the program counter</p>
+<p><strong>list</strong>: Show the next 4 instructions, based on the current value in the program counter</p>
 </li>
 <li>
-<p><code>run</code>: Resets the computer and runs the current program</p>
+<p><strong>run</strong>: Resets the computer and runs the current program</p>
 </li>
 <li>
-<p><code>continue</code>: Resumes running the program from the current instruction</p>
+<p><strong>continue</strong>: Resumes running the program from the current instruction</p>
 </li>
 <li>
-<p><code>break [instruction_num]</code>: Sets the breakpoint to the given instruction number</p>
+<p><strong>break [instruction_num]</strong>: Sets the breakpoint to the given instruction number</p>
 </li>
 <li>
-<p><code>clear</code>: Clears the breakpoint</p>
+<p><strong>clear</strong>: Clears the breakpoint</p>
 </li>
 <li>
-<p><code>print [name]</code>: Prints the value based on name</p>
+<p><strong>print [name]</strong>: Prints the value based on name</p>
 </li>
 <li>
-<p><code>list</code>: Show the next 4 instructions, starting with the current instruction</p>
+<p><strong>list</strong>: Show the next 4 instructions, starting with the current instruction</p>
 </li>
 <li>
-<p><code>next</code>: Step ahead one instruction</p>
+<p><strong>next</strong>: Step ahead one instruction</p>
 </li>
 </ul>
 </div>
@@ -429,10 +430,10 @@ For this part of the assignment, you will implement the following functions</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>DrawScreen(Computer* computer, Image* image)</code> Copies the data stored in RAM (addresses 0x4000 to 0x5FFF) to the given image. The image data is a bitmap where each bit corresponds to pixel. For example, the first byte of the image stores 8 pixels.</p>
+<p><strong>DrawScreen(Computer</strong> computer, Image* image)* Copies the data stored in RAM (addresses 0x4000 to 0x5FFF) to the given image. The image data is a bitmap where each bit corresponds to pixel. For example, the first byte of the image stores 8 pixels.</p>
 </li>
 <li>
-<p><code>SetKey(Computer* computer, KeyCode key)</code> Copies the current key to RAM at address 0x6000.</p>
+<p><strong>SetKey(Computer</strong> computer, KeyCode key)* Copies the current key to RAM at address 0x6000.</p>
 </li>
 </ul>
 </div>
@@ -471,7 +472,7 @@ You can run <code>./hacksim</code> remotely from a server by connecting with the
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-15 15:49:23 -0400
+Last updated 2025-10-15 15:55:28 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">
