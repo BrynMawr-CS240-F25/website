@@ -433,7 +433,7 @@ For this part of the assignment, you will implement the following functions</p>
 <p><strong>DrawScreen(Computer</strong> computer, Image* image)* Copies the data stored in RAM (addresses 0x4000 to 0x5FFF) to the given image. The image data is a bitmap where each bit corresponds to pixel. For example, the first byte of the image stores 8 pixels.</p>
 </li>
 <li>
-<p><strong>SetKey(Computer</strong> computer, KeyCode key)* Copies the current key to RAM at address 0x6000.</p>
+<p><strong>SetKey(Computer</strong> computer, KeySym key)* Copies the current key to RAM at address 0x6000.</p>
 </li>
 </ul>
 </div>
@@ -466,13 +466,25 @@ You can run <code>./hacksim</code> remotely from a server by connecting with the
 </tr>
 </table>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+X11 key symbols can be found <a href="https://github.com/D-Programming-Deimos/libX11/blob/master/c/X11/keysymdef.h">here</a>.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-15 15:55:28 -0400
+Last updated 2025-10-15 16:04:13 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">

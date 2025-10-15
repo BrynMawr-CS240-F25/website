@@ -265,7 +265,7 @@ In the file `hacksim.c`, connect your computer simulator to a screen and keyboar
 For this part of the assignment, you will implement the following functions
 
 * *DrawScreen(Computer* computer, Image* image)* Copies the data stored in RAM (addresses 0x4000 to 0x5FFF) to the given image. The image data is a bitmap where each bit corresponds to pixel. For example, the first byte of the image stores 8 pixels. 
-* *SetKey(Computer* computer, KeyCode key)* Copies the current key to RAM at address 0x6000.
+* *SetKey(Computer* computer, KeySym key)* Copies the current key to RAM at address 0x6000.
 
 [source]
 ----
@@ -285,3 +285,4 @@ of _The elements of computing systems_.
 
 NOTE: You can run `./hacksim` remotely from a server by connecting with the X option. For example `ssh username@goldengate.cs.brynmawr.edu -X` 
 
+NOTE: X11 key symbols can be found link:https://github.com/D-Programming-Deimos/libX11/blob/master/c/X11/keysymdef.h[here].
