@@ -16,8 +16,9 @@ Instructor: link:https://www.cs.brynmawr.edu/~alinen[Aline Normoyle]
 
 [.anns]
 
-* Welcome to systems programming! 
-* link:assts/asst03.html[Assignment 03] is due {ASST03_DUE}
+* Welcome to computer organization! 
+* Midterm 01 will be Tuesday, October 21st. 80 minutes in class.
+* link:assts/assts3B.html[Assignment 3B] is due {ASST04_DUE}
 
 == Course Info
 

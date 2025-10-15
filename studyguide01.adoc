@@ -1,0 +1,173 @@
+include::header.adoc[]
+
+:title: Study Guide - Midterm 01
+:Author Initials: ASN
+:Date:    2020-08-15
+:Revision: 0.1
+
+== {title}
+
+Midterms are closed book. You can bring one written cheat sheet. 80 minutes in class.
+
+Topics:
+
+* C programming: arrays, functions, pointers, strings
+* Data type formats: signed and unsigned integers, ASCII characters
+* Bitwise operators, bit fields
+* Binary arithmetic
+* Boolean algebra, truth tables
+* Gates, R-S Latches, Adders, Multiplexors, Demultiplexors
+* von Neuman architecture and its typical components: CPU, ALU, PC, IR, Registers, bus, RAM, Input and Outputs
+* Instruction pipeline: Fetch, decode, execute, store
+
+== Binary, hex, and bitwise operations
+
+* Convert the following binary numbers to hexadecimal. 
+** 0110 1010
+** 1110 0011
+** 0110 1110
+
+* Convert the following hexadecimal numbers to binary.
+** 0xF5
+** 0x03
+** 0x2D
+
+* Convert the following numbers to decimal.
+** 0b 0101 (as a 4-bit signed and unsigned integer)
+** 0b 1000 (as a 4-bit signed and unsigned integer)
+** 0x 0101
+** 0x B4
+
+* Compute the results of the following decimal expressions using 4-bit unsigned integers. Express your final answer in hexadecimal. Show your work.
+
+[cols="1,5"]
+|===
+|Expression
+|Result
+
+|3 << 8
+|{nbsp} +
+{nbsp} +
+{nbsp} +
+{nbsp} +
+{nbsp} +
+
+|2 & 7
+|{nbsp} +
+{nbsp} +
+{nbsp} +
+{nbsp} +
+{nbsp} +
+
+|=== 
+
+* Compute the results of the following decimal expressions using 4-bit signed integers. Express your final answer in hexadecimal. Show your answer.
+
+[cols="1,5"]
+|===
+|Expression
+|Result
+
+|-6 >> 3
+|{nbsp} +
+{nbsp} +
+{nbsp} +
+{nbsp} +
+{nbsp} +
+
+
+|2 ^ 7
+|{nbsp} +
+{nbsp} +
+{nbsp} +
+{nbsp} +
+{nbsp} +
+
+|=== 
+
+* Consider the following program
+
+[source]
+----
+1 #include <stdio.h>
+2
+3 int main() {
+4    unsigned char a = 0x7E;
+5    unsigned char leftMask = 0xC0;
+6    unsigned char rightMask = 0x03;
+7    unsigned char left = (leftMask & a) ;
+8    unsigned char right = (rightMask & a) ;
+9    unsigned char leftShift = left >> 4;
+10   unsigned char rightShift = right << 4;
+11   unsigned flipped = leftShift | rightShift;
+12 } 
+----
+
+* What is the value of `a` in binary?
+* What is the value of `flipped`? Show your work to give a rationale for your answer. 
+
+* Suppose we have a 4-bit bit field that stores whether an animal can fly, swim, or walk, defined with the following masks
+
+[source]
+----
+#define NONE 0x0
+#define FLY 0x1
+#define SWIM 0x2
+#define WALK 0x4
+----
+
+** Suppose an animal's bitfield contains the value 0x3. What capabilities does it have?
+** What value would the bitfield have for an otter, which can swim and walk?
+** What value would the bitfield have for a duck, which can fly, swim and walk?
+** What value would the bitfield have for a cow, which can only walk?
+ 
+== Programming
+
+* Draw the function stack for the following program.
+
+[source]
+----
+void mystery(int a, int b, int* c)
+{
+  *c = a & b;
+}
+
+int main()
+{
+  int a = 7;
+  int b = 8;
+  int c = 0;
+  mystery(a, b, &c);
+  return 0;
+}
+----
+
+* Draw the function stack for the following program.
+
+[source]
+----
+char mystery(char a)
+{
+  unsigned char x = a & 0x01;
+  unsigned char y = x << 6;
+  unsigned char z = a >> 1;
+  unsigned char result = y | z;
+  return result;
+}
+
+int main()
+{
+  char word[32];
+  strncpy(word, "woohoo", 32); // w = 0x77, o = 0x6F, h = 0x68
+  for (int i = 0; i < 2; i++)
+  {
+    word[i] = mystery(word[i]);
+  }
+  return 0;
+}
+----
+
+== Hardware Design
+
+* Design a gate that implements this truth table
+

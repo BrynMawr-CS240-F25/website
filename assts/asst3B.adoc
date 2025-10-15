@@ -69,60 +69,218 @@ $ *./test_cpu*
 
 = Computer
 
-**Under construction**
-
 In the file, `common/computer.c`, implement the following functions 
 
-* `Computer::load` which loads a .hack file containing instructions in machine code
-* `Computer::tick` which updates the state of the computer. This function implements Figure 5.10 of the book _The Elements of Computing Systems_.
+* `Computer::load(const char* filename)` which loads a .hack file containing instructions in machine code. Required features:
+** Your reader should skip all whitespace in the file
+** Your reader should allow for line comments indicated with '//'
+** Your reader should initialize the memory variable `m_num_instructions` with the number of instructions in the file.
+* `Computer::write_ram(unsigned int address, uchar data[16])` implements `RAM[address] = data`. 
+* `Computer::read_ram(unsigned int address, uchar data[16])` implements `data = RAM[address]`.
+* `Computer::read_rom(unsigned int address, uchar data[16])` implements `ROM[address] = data`.
+* `Computer::list(int start_instruction, int num_instructions)` prints the instructions from `ROM[start_instruction] through `ROM[start_instruction+num_instructions-1]`
+* `Computer::set_breakpoint(unsigned int bp)` sets the value of `m_breakpoint` to bp
+* `Computer::clear_breakpoint()` sets the value of `m_breakpoint` to -1
+* `Computer::finished()` return true if the program counter is greater than or equal to `num_instructions -1`
+* `Computer::run()` runs the current program (e.g. repeatedly calls `tick`) until reaching a breakpoint or completing. 
+* `Computer::reset()` restarts the computer. Sets `cpu.reset` to 1 and then calls `tick()`
+* `Computer::inspect(const char* name)` prints the internal state associated with name. Name can have any of the following values
+** `inM` prints the value of `m_cpu.inM`
+** `outM`: prints the value of `m_cpu.outM`
+** `addressM`: prints the value of `m_cpu.addressM`
+** `A`: prints the value of `m_cpu.A.out`
+** `writeM`: prints the value of `m_cpu.writeM`
+** `PC`: prints the value of `m_cpu.PC.out`
+** `D`: prints the value of `m_cpu.D.out`
+** [Address]: If `name` does not correspond to a known symbol, convert it to an integer and display the contents of M[addr]
+* `Computer::program_counter_value()` returns the current contents of `cpu.PC.out` as an integer
+* `Computer::tick` which updates the state of the computer. This function implements Figure 5.10 of the book _The Elements of Computing Systems_.. Below is a recommend algorithm
+[source]
+----
+Set CPU reset
 
-Extend the unit tests in `test_computer.c` to test your functions. 
+Update ROM address based on the PC
+Tick ROM
+
+Update the CPU instruction based on ROM
+Tick CPU
+
+Update RAM based on CPU outputs (writeM, outM, and addressM)
+Tick RAM
+Update CPU inputs (inM) based on memory input
+
+Reset computer reset to zero
+----
+
+You are given a set of unit tests in `test_computer.c`.
 
 [source, subs="quotes"]
 ----
 $ *make*
 $ *./test_computer*
+00: 0000 0000 0000 0100
+01: 1111 1100 0001 0000
+02: 1110 0111 1101 0000
+03: 0000 0000 0000 0011
+04: 1110 0011 0000 1000
+05: 0000 0000 0000 0110
+06: 1110 1010 1000 0111
+
+PC 0 to start: PASSED
+
+PC 1: PASSED
+A = 4: PASSED
+cpu.addressM = 4: PASSED
+cpu.writeM = 0: PASSED
+
+PC 2: PASSED
+A = 4: PASSED
+D = M[4] = 0: PASSED
+cpu.inM = 0: PASSED
+cpu.outM = 0: PASSED
+cpu.addressM = 4: PASSED
+cpu.writeM = 0: PASSED
+... etc
 ----
+
+NOTE: RAM creates very large arrays. Test run with valgrind, use the `--max-stackframe=3082608` option
 
 == Interactive debugger
 
-**Under construction**
-
 In the file, `hackdb.c`, write a program that allows the user to set breakpoints and 
 step through a program by instructions. While paused, the program can also print out 
-the values of registers and memory.
+the values of registers and memory. In the example below, we run the following program
+
+[source]
+----
+0000000000000100 //@4
+1111110000010000 //D=M
+1110011111010000 //D=D+1
+0000000000000011 //@3
+1110001100001000 // M=D
+0000 0000 0000 0110 // A = 6
+111 0 101010 000 111 // Command 0;JMP
+----
 
 [source, subs="quotes"]
 ----
 $ *make*
 $ *./hackdb*
-usage: hackdb <filename.hack>
-$ *./hackdb add100.hack*
-hackdb> b 0
-hackdb> r
-Instruction 0: 0b 0000 0000 0001 1010 (0x001A) (26)
-hackdb> n
-hackdb> p A 
-A: 0b 0000 0000 0001 1010 (0x001A) (26)
-hackdb> p M[0]
-M[0]: 0b 0000 0000 0000 0000 (0x0000) (0)  
-hackdb> clr
-cleared all breakpoints
-hackdb> c
-continuing
-program has finished
-hackdb> p M[0]
-M[0]: 0b 0001 0011 1011 1010 (0x13BA) (5050)
-hackdb> quit
+usage: hackdb filename.hack
+$ *./hackdb hack/M3=M4+1.hack*
+hdb> *list*
+00: 0000 0000 0000 0100
+01: 1111 1100 0001 0000
+02: 1110 0111 1101 0000
+03: 0000 0000 0000 0011
+
+hdb> *break 0*
+Setting break point on instruction 0
+hdb> *run*
+0] 0000 0000 0000 0100
+hdb> *print A*
+A: 0000 0000 0000 0100
+hdb> *next*
+1] 1111 1100 0001 0000
+hdb> *continue*
+Program exited
+6] 1110 1010 1000 0111
+hdb> *print A*
+A: 0000 0000 0000 0110
+hdb> *print D*
+D: 0000 0000 0000 0001
+hdb> *print 3*
+M[3]: 0000 0000 0000 0001
+hdb> *print 4*
+M[4]: 0000 0000 0000 0000
+hdb> *print PC*
+PC: 0000 0000 0000 0110
+hdb> *clear*
+Clearing break point
+hdb> *run*
+Program exited
+6] 1110 1010 1000 0111
+[.green]#hdb#> *exit*
 $
 ----
 
-NOTE: Your homework uses the `readline` library to handle command line input and history. 
+NOTE: Your homework uses the `readline` library to handle command line input and history. The basecode shows you have to use this library to implement a console application. When you run the basecode, the program quits when the user types `exit`.
 
-== Simulator (Extra Credit)
+[source]
+----
+void getcommand(char* buffer, int maxsize)                                      
+{                                                                               
+  // NOTE: \033[32m and \033[0m are special terminal sequences                  
+  // for setting the color of the prompt to green                               
+  char* line = readline("\033[32mhdb> \033[0m");                                
+  strncpy(buffer, line, maxsize);                                               
+  add_history(line);                                                            
+  free(line);                                                                   
+}                                                                               
+                                                                                
+int main(int argc, char** argv)
+{
+  if (argc != 2)
+  {
+    printf("usage: %s hack_program_file\n", argv[0]);
+    exit(0);
+  }
 
-**Under construction**
+  const char* filename = argv[1];
+  hack::Computer computer;
+  computer.load(filename);
 
-In the file, `hacksim.c`, implement a fully simulated Hack architecture that supports the screen and keyboard. 
-For performance, use the `ncurses` library to only update pixels when they change. 
-The `ncurses` library can also detect keyboard presses. 
+  char line[1024];
+  while (1)
+  {
+    getcommand(line, 1024);
+    if (strncmp(line, "exit", 4) == 0)
+    {
+      break;
+    }
+    else
+    {
+      printf("Unknown command: %s\n", line);
+    }
+  }
+  return 0;
+}
+----
+
+You should extend the above code to support the following commands based on gdb.
+
+* `list`: Show the next 4 instructions, based on the current value in the program counter
+* `run`: Resets the computer and runs the current program
+* `continue`: Resumes running the program from the current instruction
+* `break [instruction_num]`: Sets the breakpoint to the given instruction number
+* `clear`: Clears the breakpoint
+* `print [name]`: Prints the value based on name
+* `list`: Show the next 4 instructions, starting with the current instruction
+* `next`: Step ahead one instruction
+
+== Computer Simulator (Extra Credit)
+
+In the file `hacksim.c`, connect your computer simulator to a screen and keyboard. 
+For this part of the assignment, you will implement the following functions
+
+* `DrawScreen(Computer* computer, Image* image)` Copies the data stored in RAM (addresses 0x4000 to 0x5FFF) to the given image. The image data is a bitmap where each bit corresponds to pixel. For example, the first byte of the image stores 8 pixels. 
+* `SetKey(Computer* computer, KeyCode key)` Copies the current key to RAM at address 0x6000.
+
+[source]
+----
+$ ./hacksim hack/BlackScreen.hack
+[Opens an X11 window and draws a black screen]
+$ ./hacksim hack/KeyPress.hack
+[Opens an X11 window. The screen is white until the user presses a key]
+----
+
+We are using X11 for drawing and responding to key input. Code for opening a window 
+and responding to inputs are given to you in `hacksim.c`. The screen is configured 
+to display a bitmap image with size 512x256 stored as a sequence of bytes. To draw, 
+you must fetch the data at address @SCREEN set the corresponding bits. For keyboard 
+input, you must convert the key code to the Hack specification. ASCII keys have 
+a 1-1 mapping, but special keys (left arrow, delete) have the codes listed in table 5.6 
+of _The elements of computing systems_.
+
+NOTE: You can run `./hacksim` remotely from a server by connecting with the X option. For example `ssh username@goldengate.cs.brynmawr.edu -X` 
+
