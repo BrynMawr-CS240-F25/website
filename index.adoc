@@ -17,7 +17,7 @@ Instructor: link:https://www.cs.brynmawr.edu/~alinen[Aline Normoyle]
 [.anns]
 
 * Welcome to computer organization! 
-* Midterm 01 will be Tuesday, October 21st. 80 minutes in class.
+* Midterm 01 will be Tuesday, October 21st. 80 minutes in class. link:studyguide01.html[Study Guide]
 * link:assts/assts3B.html[Assignment 3B] is due {ASST04_DUE}
 
 == Course Info

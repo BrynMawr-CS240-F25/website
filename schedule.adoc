@@ -95,7 +95,7 @@
 * link:assts/assts3A.html[Assignment 3A: Hardware simulator I] Due {ASST03_DUE}
 
 | 
-* link:lectures/Lecture-Week06-Oct7-MachineCode.pdf[Lecture - Sept 30, Oct 2]
+* link:lectures/Lecture-Week06-Oct7-MachineCode.pdf[Lecture - Oct 7, Oct 9]
 
 //-----------------------------
 |7
@@ -109,13 +109,15 @@
 //-----------------------------
 |8
 |{WEEK08} anchor:week08[]
-|*Midterm, Assembly Compiler*
+|*Midterm, Assembler*
 
-* Midterm 01: In-class {MIDTERM01_WK8} (1.5 hrs)
+* Midterm 01: In-class {MIDTERM01_WK8} (1.5 hrs) 
 * Read: _Elements of Computing Systems_, Chapter 6
-* link:assts/assts3B.html[Assignment 3B: Hardware simulator II] Due {ASST04_DUE}
+* link:assts/asst3B.html[Assignment 3B: Hardware simulator II] Due {ASST04_DUE}
+* Lab: CPU and Computer design, Check-ins
 
-| TBD
+| 
+* link:studyguide01.html[StudyGuide]
 
 //-----------------------------
 |9
@@ -123,6 +125,7 @@
 |*Virtual Machine I*
 
 * Read: _Elements of Computing Systems_, Chapter 7
+* Lab: CPU and Computer design, Check-ins
 
 | TBD
 
@@ -132,46 +135,51 @@
 |*Virtual Machine II* 
 
 * Read: _Elements of Computing Systems_, Chapter 8
+* link:assts/asst4.html[Assignment 04: Assembler] Due {ASST05_DUE}
+* Lab: Assembly to machine code translation, Check-ins
 
 | TBD
 
 //-----------------------------
 |11
 |{WEEK11} anchor:week11[]
-|*High-level Language* 
+|*High-level Language, Compiler I* 
 
-* Read: _Elements of Computing Systems_, Chapter 9
-* link:[Project: Virtual Machine]: Due {ASST04_DUE}
+* Read: _Elements of Computing Systems_, Chapter 9, 10
+* link:[Project: Virtual Machine]: Due {ASST06_DUE} (with milestone deliverables)
+* Lab: Evaluating VM expressions
 
 | TBD
 
 //-----------------------------
 |12
 |{WEEK12} anchor:week12[]
-|*Compiler* 
+|*Compilers I & II* 
 
 * Topics: syntax analysis, code generation
 * Read: _Elements of Computing Systems_, Chapter 10-11
+* Lab: Evaluating VM expressions
 
 | 
 
 //-----------------------------
 |13
 |{WEEK13} anchor:week13[]
-|*Thanksgiving* 
+|*Compiler II, Thanksgiving* 
 
 * Read: _Elements of Computing Systems_, Chapter 10-11
-* **Thanksgiving: No Class Thursday**
+* link:[Final Project: Compiler and software]: Due {ASST07_DUE}
+* **Thanksgiving: No Class or lab Thursday**
 
 | 
 
 //-----------------------------
 |14
 |{WEEK14} anchor:week14[]
-| *Operating System*
+| *Midterm II*
 
-* Read: _Elements of Computing Systems_, Chapter 12
-* link:[Project: Compiler]: Due {ASST04_DUE}
+* **NO CLASS TUESDAY Dec 4**
+* Midterm 02, Thursday In-class {MIDTERM02} (80 min)
 
 | 
 
@@ -179,11 +187,11 @@
 //-----------------------------
 |15
 |{WEEK15} anchor:week15[]
-|*Review* 
+|*Operating System* 
 
-* In-Class: Review
-* Midterm 02, In-class {MIDTERM02} (1.5 hrs)
-* link:[Final Project: Simulated Computer]: Due {ASST05_DUE}
+* Read: _Elements of Computing Systems_, Chapter 12
+* Compiler worksheets
+* Final project check-ins and demos 
 
 |
 
