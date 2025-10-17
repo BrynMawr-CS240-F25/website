@@ -326,6 +326,9 @@ D=M+D
 @9
 D;JNE
 ----
+
+image::Hack_Worksheet.png[width=400px]
+
 * Convert the following Hack Assembly commands to machine code
 ** D=M+D
 ** @9
