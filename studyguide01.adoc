@@ -19,6 +19,9 @@ Topics:
 * Gates, R-S Latches, Adders, Multiplexors, Demultiplexors
 * von Neuman architecture and its typical components: CPU, ALU, PC, IR, Registers, bus, RAM, Input and Outputs
 * Instruction pipeline: Fetch, decode, execute, store
+* Hack ALU design
+* Hack assembly and machine code
+* Hack CPU design: inputs and outputs
 
 == Binary, hex, and bitwise operations
 
@@ -167,7 +170,176 @@ int main()
 }
 ----
 
-== Hardware Design
+* Draw the function stack for the following program
+
+
+[source]
+----
+void foo(int A[4])
+{
+  for (int i = 0; i < 4; i++) 
+  {
+    A[i] = ~A[i]; 
+  }
+}
+
+void main()
+{
+  unsigned char input[4];
+  foo(input);
+}
+
+----
+
+== Von Neuman Architecture
+
+image::von-neuman.png[height=400px]
+
+* What are four primary components of the von Neuman architecture?
+* What components does a central processing unit typically have in a von Neuman architecture?
+* List and describe the four steps of instruction execution.
+* What is instruction pipelining?
+* What is the purpose of the PC register?
+* What is the purpose of the IR register?
+* What is the bus in a von Neuman architecture?
+
+== Circuits and Hardware Design
+
+* Give an example of how abstractions are used in hardware design to build up complex functionality from simple components.
+* In regards to circuits, what is the different between sequential and combinatorial logic? 
+* What is a half-adder? A full-adder?
+* What is a ripple carry adder?
+* What is a ripple carry adder?
+* What is the purpose of the gate in a gated D-latch?
+* Can an R-S Latch ever produce inconsistent output? 
+* Give the truth tables for And, Or, Not, Nand, and Xor.
+
+* Draw the truth table that corresponds to this circuit.
+
+image::ExampleCircuit.png[height=400px]
 
 * Design a gate that implements this truth table
 
+[cols="1,1,1"]
+|===
+|A |B |Out
+|0 |0 |1
+|0 |1 |1
+|0 |1 |0
+|1 |1 |0
+|===
+
+* Draw the circuit and truth table corresponding to the Boolean expression `~A | B`
+* Draw the circuit that corresponds to the Boolean expression `(s & a)|(~s & b)`
+* Draw the truth table for a 1-bit adder circuit. From this table, give a Boolean expression for each of the outputs.
+* Design a circuit for the following truth table
+
+[cols="1,1,1,1"]
+|===
+| A | B | C | Out
+| 0 | 0 | 0 | 0   
+| 0 | 1 | 0 | 0   
+| 1 | 0 | 0 | 1   
+| 1 | 1 | 0 | 1   
+| 0 | 0 | 1 | 0   
+| 0 | 1 | 1 | 1   
+| 1 | 0 | 1 | 0   
+| 1 | 1 | 1 | 1 
+|===
+
+* Suppose you have a 4-bit adder, xor, not, and, or chips. Show how you can build a 4-bit chip that can either add and subtract, e.g. 
+** Inputs: 4-bit A, 4-bit B, 1-bit flag where 0 means add and 1 means subtract
+** Outputs: 4-bit result
+* Suppose you have eight 16-bit Gated D-latch chips (aka data flip-flops (DFFs)) combined in a single memory unit. How many bits are needed to address this memory? Draw a diagram that shows how multiplexors and demultiplexors can be used to build an addressable read/write memory for 8 registers. 
+* Consider the following Gated D-Latch built with nand gates. Suppose a = 1 and b = 0. How does the state of the gate change if the user sets Data to 0 and WE to 0?
+
+image::Gated-R-S-Latch.png[height=600px]
+
+* In a gated D-latch, what is the purpose of the gate?
+* How can multiple 1-bit DFFs be combined to create an 8-bit register? Draw a diagram.
+* What is the purpose of the clock in a von Neuman architecture? (Name two reasons)
+* Consider the following diagram from the data sheet of a 4-bit adder. What should the values of each pin be if we use this chip to calculate 5 + 4?
+
+image::Adder.png[height=400px] 
+
+=== Hack ALU
+
+image::ALU.png[height=200px]
+
+** Suppose we input X=7, Y=7, and (zx, nx, zy, ny, f, no) = (0,0,0,0,0,0). What is the value of out, ng, and zr?
+** Suppose we input X=7, Y=7, and (zx, nx, zy, ny, f, no) = (0,0,0,0,1,0). What is the value of out, ng, and zr?
+** Suppose we input X=7, Y=7, and (zx, nx, zy, ny, f, no) = (1,1,1,1,1,1). What is the value of out, ng, and zr?
+
+=== Hack Counter
+
+Recall the counter circuit that takes four inputs: an input value (In), a reset flag, an increment flag (Inc), and a load flag. The following timeline shows how the values of reset, inc, and load change over time. Suppose In = 5 and is constant throughout. If out = 27 to start, how does it value change with the inputs?
+
+image::Timeline-Counter.png[height=400px]
+
+== Hack Assembly and machine code
+
+The Hack assembly language has the following syntax.
+
+* *A-instruction*
+** @aaa where aaa is a non-negative number
+* *C-instruction* 
+** dest = comp; jump, where
+** dest can have one of three forms
+*** reg = {0|1|-1} where reg = {A|D|M}
+*** reg1 = reg2 where reg1 = {A|D|M} and reg2 = [-]{A|D|M}
+*** reg = reg1 op reg2 where reg1 = {A|D|M}, reg2 = {A|D|M|1}, and op = {+|-|&||}
+** jump can be one of {null, JGT, JEQ, JGE, JLT, JNE, JLE, JMP}
+
+The Hack assembly language maps to machine code as follows:
+
+* *A-instruction*
+** 0vvv vvvv vvvv vvvv where v is 1-bit (0 or 1)
+* *C-instruction*
+** 111a cccc ccdd djjj 
+
+image::Hack_MachineCode.png[height=400px]
+
+* Is the expression `M=45` a valid assembly instruction?
+* Is the expression `A=1` a valid assembly instruction?
+* Is the expression `A=D+1` a valid assembly instruction?
+* Write Hack assembly for the following expressions
+** A <- 43
+** D <- 0
+** R[100] <- 0
+** R[100] <- 17
+** RAM[3] <- RAM[4] + 1
+* Write a Hack program that implements the following algorithm
+[source]
+----
+i = 4
+sum = 3
+while (i-- >= 0)
+{
+  sum = sum + 3 
+}
+----
+* Fill in the contents of memory and registers for the following Hack assembly program. Assume the first instruction is stored at address 0 in ROM.
+[source]
+----
+@5
+D=A
+@8
+D=M+D
+@9
+D;JNE
+----
+* Convert the following Hack Assembly commands to machine code
+** D=M+D
+** @9
+** D;JNE
+* Recall the CPU design from your book _The Elements of Computing Systems_. 
+
+image::HackComputer.png[height=400px]
+
+** Suppose the CPU has the following state and inputs: inM = 0x50, reset = 0, D = 0x8, A = 0xA, PC = 0x3, addressM=0x100, outM=0x35, writeM=0 
+*** How will the contents of PC, D, A change as a result of running the instruction "D=M"? 
+*** How will the contents of PC, D, and A change as a result of running the instruction "@37"?
+*** How will the contents of PC, D, and A change as a result of running the instruction "D;JGT"?
+*** How will the contents of PC, D, and A change as a result of running the instruction "D=D+1"?
+*** How will the contents of writeM, outM, and addressM change as a result of running the instruction "M=M-1"?
+*** How will the contents of writeM, outM, and addressM change as a result of running the instruction "D=M-1"?
