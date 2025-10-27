@@ -92,7 +92,7 @@
 * Topics: Hack Assembly, Machine Language, von Neumann Architecture revisited
 * Read: _Elements of Computing Systems_ link:https://www.nand2tetris.org/course[Chapter 4-5] 
 * Lab: Completed breadboard demos
-* link:assts/assts3A.html[Assignment 3A: Hardware simulator I] Due {ASST03_DUE}
+* link:assts/assts3A.html[Assignment 3A: Hardware simulator I] Due {ASST3A_DUE}
 
 | 
 * link:lectures/Lecture-Week06-Oct7-MachineCode.pdf[Lecture - Oct 7, Oct 9]
@@ -109,22 +109,24 @@
 //-----------------------------
 |8
 |{WEEK08} anchor:week08[]
-|*Midterm, Assembler*
+|*Midterm, CPU Design*
 
+* Mapping machine instructions to control signals
 * Midterm 01: In-class {MIDTERM01_WK8} (1.5 hrs) 
-* Read: _Elements of Computing Systems_, Chapter 6
-* link:assts/asst3B.html[Assignment 3B: Hardware simulator II] Due {ASST04_DUE}
+* link:assts/asst3B.html[Assignment 3B: Hardware simulator II] Due {ASST3B_DUE}
 * Lab: CPU and Computer design, Check-ins
 
 | 
 * link:studyguide01.html[StudyGuide]
+* link:lectures/Lecture-Week08-Oct21-CPUDesign.pdf[Lecture - Oct 21]
 
 //-----------------------------
 |9
 |{WEEK09} anchor:week09[]
-|*Virtual Machine I*
+|*Assembler, Virtual Machine I*
 
-* Read: _Elements of Computing Systems_, Chapter 7
+* Topics: Parsing, symbol tables, virtual machine code, working with stack expressions and virtual memory segments
+* Read: _Elements of Computing Systems_, Chapter 6-7
 * Lab: CPU and Computer design, Check-ins
 
 | TBD
@@ -154,7 +156,7 @@
 //-----------------------------
 |12
 |{WEEK12} anchor:week12[]
-|*Compilers I & II* 
+|*Compiler II* 
 
 * Topics: syntax analysis, code generation
 * Read: _Elements of Computing Systems_, Chapter 10-11

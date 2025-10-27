@@ -9,7 +9,7 @@ include::../dates.adoc[]
 
 = {title}
 
-**Due {ASST03_DUE}, before midnight**
+**Due {ASST3A_DUE}, before midnight**
 
 This next two assignments will implement a computer based on a Von Neuman architecture.
 The computer's design will be based on the architecture and instruction set described in 

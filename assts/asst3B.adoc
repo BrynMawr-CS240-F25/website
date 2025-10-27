@@ -9,7 +9,7 @@ include::../dates.adoc[]
 
 = {title}
 
-**Due {ASST04_DUE}, before midnight**
+**Due {ASST3B_DUE}, before midnight**
 
 This is the second assignment in which we build a simulated computer based on
 the architecture and instruction set described in the book _The Elements of
@@ -24,7 +24,7 @@ The goals of this assignment is to
 * Become familiar with the assembly language described in chapter 4
 * Simulate the computer (Chapter 5) that can execute the machine code described in Chapter 4
 
-**Demo Requirement: Check-in with the TA on either Oct 23 or Oct 24 from 6-8, or with Prof. Normoyle's office hours no Friday 2-4pm**
+**Demo Requirement: Check-in with the TA on either Oct 23 or Oct 24 from 6-8, or with Prof. Normoyle's office hours on Friday 2-4pm**
 
 [discrete]
 = Update your repository
