@@ -1,12 +1,194 @@
 include::header.adoc[]
 include::../dates.adoc[]
 
-:title: Assignment 3B: Hack Computer
+:title: Assignment 04: Hack Assembler
 :Author Initials: ASN
 :Date:    2021-01-29
 :Revision: 0.1
-:ASST: A03-Hw
+:ASST: Hack-Compiler
 
 = {title}
 
 **Due {ASST04_DUE}, before midnight**
+
+In this assignment, we build an assembler that inputs an .asm file and outputs 
+a .hack file. 
+
+The APIs in this assignment follow the design in your book 
+_The Elements of Computing Systems_ but with some differences that will allow us to 
+reuse our work more easily in future assignments. 
+
+* We will use std::unordered_map from the standard template library to implement our symbol table
+* We separate the parser into a generic FileReader class and a set of C-style translation functions
+* The assembler class performs two passes through the assembly code. Although this makes the algorithm O(3N) instead of O(2N) (because we separate the first pass from the book into two steps: one to read the file and another to build the symbol table), the assembler class is completely self-contained. It can thus be used to convert assembly instructions to machine code without the need of an intermediate file. 
+
+Thus, the goals of this assignment are
+
+* Implement a generic file reader that you will re-use in your next assignments
+* Implement functions for translating assembly instructions to machine code
+
+**There is no demo requirement for this assignment**
+
+NOTE: Although we are using C++ classes and generic data types, our APIs primarily follow C-style conventions. If you are familiar with C++ strings and file streams, you may use them in your implementations but the APIs (e.g. function declarations) must not change.  
+
+[discrete]
+= Update your repository
+
+We will use the same repository as link:asst01.html[Assignment 1]
+                                                                              
+First, you must accept the pull request on your repository on link:{gitrepo}[Github]             
+(link:PullRequest.png[screenshot]).
+                                                                                
+[source, subs="attributes,quotes"]                                              
+----                                                                            
+$ cd {repo}                                                                     
+$ git pull                                                                      
+----                                                                            
+                                                                                
+Your repository should now contain a new folder named `{ASST}`.             
+
+:sectnums:
+
+= Preliminaries
+
+1) In the file, `common/utils.cpp`, copy your implementations of `dec2bin` and `bin2dec`. You can re-use these for your code writer class. 
+
+2) In the file, `common/utils.cpp`, implement the function `change_extionsion`
+
+* `change_extension(const char* filename, const char* newext, char* outfilename, int maxsize)`
+** filename (input): the original filename
+** newext (input): the new extension, including . (e.g. .hack)
+** outfilename (output): the new filename 
+** maxsize (input): the max number of characters that can be stored in outfilename 
+
+Run `test_utils` to check your work.
+
+[source,subs="quotes"]
+----
+$ **./test_utils**
+happy.asm -> happy.hack
+happy.asm -> happy.c
+happy.golucky -> happy.hack
+happy.py -> happy.golucky
+happy -> happy.golucky
+----
+
+= File Parser
+
+In the file, `common/filereader.cpp`, implement a class that facilitates reading a file line by line.
+
+* `bool open(const char* filename)`: Opens the file associated with filename for reading. The associated file pointer is a member variable (mFp). If the file cannot be opened, set mFp to NULL and set mHasMoreLines = false. If the file is successfully opened, this method should call `advance()`. This function returns true if the file was successfully opened and false otherwise. Lastly, if a file is opened when this method is called, the current file should be closed before opening a new one.
+* `~FileReader()`: closes the file corresponding to mFp
+* `bool hasMoreLines() const`: returns true if we have not reached the end of the file yet
+* `const char* line() const`: returns a constant pointer to the last line read (stored in mLine) 
+* `void advance()`: Calls `fgets` to get the next line and stores the result in mLine. The return value of `fgets` should be used to update mHasMoreLines. This function should also strip comments and whitespace from the line. See the class notes for details.
+
+Run `test_filereader` (implemented in `test_filereader.cpp`) to check your work.
+
+[source, subs="quotes"]
+----
+$ *make test_filereader*
+$ *cat asm/SetA.asm*
+// Set value in memory
+
+@11 // Set A=11
+D = A // D=11
+@ i  // Set A to location of i
+M = D // M[i] = 11
+$ **./test_filereader**
+@11
+D=A
+@i
+M=D
+----
+
+= ASM Translator
+
+In the file, `common/asmtranslator.cpp`, implement the following functions. 
+
+* `InstructionType cmd_type(const char* line)`: returns either A_INSTRUCTION, C_INSTRUCTION, or L_INSTRUCTION depending on the contents of line
+* `void cmd_symbol(const char* line, char* value, int size)`: extracts the symbol from `line` into the string `value`. `size` is the max number of characters that can be stored in `value`. The behavior of this function is undefined if line does not contain either an L_INSTRUCTION or A_INSTRUCTION.
+* `void cmd_dest(const char* line, char* value, int size)`: extracts the destination from `line` into `value`. The behavior is undefined if line is not a C_INSTRUCTION. 
+* `void cmd_comp(const char* line, char* value, int size)`: extracts the computation from `line` into `value`. The behavior is undefined if line is not a C_INSTRUCTION. 
+* `void cmd_jump(const char* line, char* value, int size)`: extracts the jump from `line` into `value`. The behavior is undefined if line is not a C_INSTRUCTION. 
+* `void write_jmp_code(const char* jmp, uchar code[16])`: writes the jump bits to code based on the given string (e.g. "JMP", "JGE", etc)
+* `void write_dest_code(const char* dest, uchar code[16])`: writes the destination bits to code based on the given destination string (e.g. "D", "A", etc)
+* `void write_comp_code(const char* comp, uchar code[16])`: writes the computation bits to code based on the given computation string (e.g. "M+1", etc)
+* `void write_a(int value, uchar code[16])`: writes an A instruction corresponding to the passed decimal value.
+
+Run `test_asmtranslator` (implemented in `test_asmtranslator.cpp`) to check your work. Add more tests to check your work.
+
+[source]
+----
+$ *make*
+$ *./test_asmtranslator*
+A instruction type: PASSED
+L instruction type: PASSED
+C instruction type: PASSED
+cmd_symbol: PASSED
+cmd_symbol: PASSED
+D;JMP dest: PASSED
+D;JMP comp: PASSED
+D;JMP jump: PASSED
+AD=0 dest: PASSED
+AD=0 comp: PASSED
+AD=0 jump: PASSED
+D=M+1 dest: PASSED
+D=M+1 comp: PASSED
+D=M+1 jump: PASSED
+D=1;JMP dest: PASSED
+D=1;JMP comp: PASSED
+D=1;JMP jump: PASSED
+M=M+1: PASSED
+@11: PASSED
+----
+
+= Assembler
+
+In the file, `common/assembler.cpp`, implement the following functions.
+
+* The constructor should initialize the symbol table with Hack's built-in symbols. (See your book or our previous lab for details).
+* `translate(instructions)` should compute the type and machine codes for each instruction using two passes
+** The first pass should build the symbol table
+** The second pass should replace symbols with values and convert the instructions to machine codes
+* `write(const char* filename, instructions)` should write the machine code to a file with the given filename.
+
+To check your work, run the utility `hack-assembler` to convert the ASM examples to hack machine code. Then compare your output to the files in the `/hack` directory.
+
+[source, subs="quotes"]
+----
+$ *make*
+$ *cat asm/SetA.asm*
+// Set value in memory
+
+@11 // Set A=11
+D = A // D=11
+@ i  // Set A to location of i
+M = D // M[i] = 11
+$ *./hack-assembler asm/SetA.asm*
+$ *cat asm/SetA.hack*
+0000 0000 0000 1011 // @11
+1110 1100 0001 0000 // D=A
+0000 0000 0001 0000 // @i
+1110 0011 0000 1000 // M=D
+$ *cat hack/SetA.hack*
+0000000000001011
+1110110000010000
+0000000000010000
+1110001100001000
+$ *compare.sh asm/SetA.hack hack/SetA.hack*
+asm/SetA.hack and hack/SetA.hack are identical
+----
+
+[discrete]
+= Submit your Work
+
+Push you work to Github to submit your work.
+
+[source, subs="attributes"]
+----
+$ cd {ASST}
+$ git add .
+$ git commit -m "{ASST} complete"
+$ git push
+----

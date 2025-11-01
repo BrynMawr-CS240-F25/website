@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>Assignment 3B: Hack Computer</title>
+<title>Assignment 04: Hack Assembler</title>
 <link rel="stylesheet" href="../style/cs21.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -14,23 +14,326 @@
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_assignment_3b_hack_computer">Assignment 3B: Hack Computer</a></li>
+<li><a href="#_assignment_04_hack_assembler">Assignment 04: Hack Assembler</a></li>
+<li><a href="#_preliminaries">1. Preliminaries</a></li>
+<li><a href="#_file_parser">2. File Parser</a></li>
+<li><a href="#_asm_translator">3. ASM Translator</a></li>
+<li><a href="#_assembler">4. Assembler</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_assignment_3b_hack_computer">Assignment 3B: Hack Computer</h2>
+<h2 id="_assignment_04_hack_assembler">Assignment 04: Hack Assembler</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Due Friday, November 7th, before midnight</strong></p>
+</div>
+<div class="paragraph">
+<p>In this assignment, we build an assembler that inputs an .asm file and outputs
+a .hack file.</p>
+</div>
+<div class="paragraph">
+<p>The APIs in this assignment follow the design in your book
+<em>The Elements of Computing Systems</em> but with some differences that will allow us to
+reuse our work more easily in future assignments.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We will use std::unordered_map from the standard template library to implement our symbol table</p>
+</li>
+<li>
+<p>We separate the parser into a generic FileReader class and a set of C-style translation functions</p>
+</li>
+<li>
+<p>The assembler class performs two passes through the assembly code. Although this makes the algorithm O(3N) instead of O(2N) (because we separate the first pass from the book into two steps: one to read the file and another to build the symbol table), the assembler class is completely self-contained. It can thus be used to convert assembly instructions to machine code without the need of an intermediate file.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Thus, the goals of this assignment are</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Implement a generic file reader that you will re-use in your next assignments</p>
+</li>
+<li>
+<p>Implement functions for translating assembly instructions to machine code</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>There is no demo requirement for this assignment</strong></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Although we are using C classes and generic data types, our APIs primarily follow C-style conventions. If you are familiar with C strings and file streams, you may use them in your implementations but the APIs (e.g. function declarations) must not change.
+</td>
+</tr>
+</table>
+</div>
+<h2 id="_update_your_repository" class="discrete">Update your repository</h2>
+<div class="paragraph">
+<p>We will use the same repository as <a href="asst01.html">Assignment 1</a></p>
+</div>
+<div class="paragraph">
+<p>First, you must accept the pull request on your repository on <a href="https://github.com/BrynMawr-CS240-F25">Github</a>
+(<a href="PullRequest.png">screenshot</a>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ cd cs240-f25-classwork
+$ git pull</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Your repository should now contain a new folder named <code>Hack-Compiler</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preliminaries">1. Preliminaries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>1) In the file, <code>common/utils.cpp</code>, copy your implementations of <code>dec2bin</code> and <code>bin2dec</code>. You can re-use these for your code writer class.</p>
+</div>
+<div class="paragraph">
+<p>2) In the file, <code>common/utils.cpp</code>, implement the function <code>change_extionsion</code></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>change_extension(const char* filename, const char* newext, char* outfilename, int maxsize)</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>filename (input): the original filename</p>
+</li>
+<li>
+<p>newext (input): the new extension, including . (e.g. .hack)</p>
+</li>
+<li>
+<p>outfilename (output): the new filename</p>
+</li>
+<li>
+<p>maxsize (input): the max number of characters that can be stored in outfilename</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Run <code>test_utils</code> to check your work.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./test_utils</strong>
+happy.asm -> happy.hack
+happy.asm -> happy.c
+happy.golucky -> happy.hack
+happy.py -> happy.golucky
+happy -> happy.golucky</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_file_parser">2. File Parser</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the file, <code>common/filereader.cpp</code>, implement a class that facilitates reading a file line by line.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>bool open(const char* filename)</code>: Opens the file associated with filename for reading. The associated file pointer is a member variable (mFp). If the file cannot be opened, set mFp to NULL and set mHasMoreLines = false. If the file is successfully opened, this method should call <code>advance()</code>. This function returns true if the file was successfully opened and false otherwise. Lastly, if a file is opened when this method is called, the current file should be closed before opening a new one.</p>
+</li>
+<li>
+<p><code>~FileReader()</code>: closes the file corresponding to mFp</p>
+</li>
+<li>
+<p><code>bool hasMoreLines() const</code>: returns true if we have not reached the end of the file yet</p>
+</li>
+<li>
+<p><code>const char* line() const</code>: returns a constant pointer to the last line read (stored in mLine)</p>
+</li>
+<li>
+<p><code>void advance()</code>: Calls <code>fgets</code> to get the next line and stores the result in mLine. The return value of <code>fgets</code> should be used to update mHasMoreLines. This function should also strip comments and whitespace from the line. See the class notes for details.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Run <code>test_filereader</code> (implemented in <code>test_filereader.cpp</code>) to check your work.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make test_filereader</strong>
+$ <strong>cat asm/SetA.asm</strong>
+// Set value in memory
+
+@11 // Set A=11
+D = A // D=11
+@ i  // Set A to location of i
+M = D // M[i] = 11
+$ <strong>./test_filereader</strong>
+@11
+D=A
+@i
+M=D</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_asm_translator">3. ASM Translator</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the file, <code>common/asmtranslator.cpp</code>, implement the following functions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>InstructionType cmd_type(const char* line)</code>: returns either A_INSTRUCTION, C_INSTRUCTION, or L_INSTRUCTION depending on the contents of line</p>
+</li>
+<li>
+<p><code>void cmd_symbol(const char* line, char* value, int size)</code>: extracts the symbol from <code>line</code> into the string <code>value</code>. <code>size</code> is the max number of characters that can be stored in <code>value</code>. The behavior of this function is undefined if line does not contain either an L_INSTRUCTION or A_INSTRUCTION.</p>
+</li>
+<li>
+<p><code>void cmd_dest(const char* line, char* value, int size)</code>: extracts the destination from <code>line</code> into <code>value</code>. The behavior is undefined if line is not a C_INSTRUCTION.</p>
+</li>
+<li>
+<p><code>void cmd_comp(const char* line, char* value, int size)</code>: extracts the computation from <code>line</code> into <code>value</code>. The behavior is undefined if line is not a C_INSTRUCTION.</p>
+</li>
+<li>
+<p><code>void cmd_jump(const char* line, char* value, int size)</code>: extracts the jump from <code>line</code> into <code>value</code>. The behavior is undefined if line is not a C_INSTRUCTION.</p>
+</li>
+<li>
+<p><code>void write_jmp_code(const char* jmp, uchar code[16])</code>: writes the jump bits to code based on the given string (e.g. "JMP", "JGE", etc)</p>
+</li>
+<li>
+<p><code>void write_dest_code(const char* dest, uchar code[16])</code>: writes the destination bits to code based on the given destination string (e.g. "D", "A", etc)</p>
+</li>
+<li>
+<p><code>void write_comp_code(const char* comp, uchar code[16])</code>: writes the computation bits to code based on the given computation string (e.g. "M+1", etc)</p>
+</li>
+<li>
+<p><code>void write_a(int value, uchar code[16])</code>: writes an A instruction corresponding to the passed decimal value.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Run <code>test_asmtranslator</code> (implemented in <code>test_asmtranslator.cpp</code>) to check your work. Add more tests to check your work.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ *make*
+$ *./test_asmtranslator*
+A instruction type: PASSED
+L instruction type: PASSED
+C instruction type: PASSED
+cmd_symbol: PASSED
+cmd_symbol: PASSED
+D;JMP dest: PASSED
+D;JMP comp: PASSED
+D;JMP jump: PASSED
+AD=0 dest: PASSED
+AD=0 comp: PASSED
+AD=0 jump: PASSED
+D=M+1 dest: PASSED
+D=M+1 comp: PASSED
+D=M+1 jump: PASSED
+D=1;JMP dest: PASSED
+D=1;JMP comp: PASSED
+D=1;JMP jump: PASSED
+M=M+1: PASSED
+@11: PASSED</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_assembler">4. Assembler</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the file, <code>common/assembler.cpp</code>, implement the following functions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The constructor should initialize the symbol table with Hack&#8217;s built-in symbols. (See your book or our previous lab for details).</p>
+</li>
+<li>
+<p><code>translate(instructions)</code> should compute the type and machine codes for each instruction using two passes</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The first pass should build the symbol table</p>
+</li>
+<li>
+<p>The second pass should replace symbols with values and convert the instructions to machine codes</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>write(const char* filename, instructions)</code> should write the machine code to a file with the given filename.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To check your work, run the utility <code>hack-assembler</code> to convert the ASM examples to hack machine code. Then compare your output to the files in the <code>/hack</code> directory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make</strong>
+$ <strong>cat asm/SetA.asm</strong>
+// Set value in memory
+
+@11 // Set A=11
+D = A // D=11
+@ i  // Set A to location of i
+M = D // M[i] = 11
+$ <strong>./hack-assembler asm/SetA.asm</strong>
+$ <strong>cat asm/SetA.hack</strong>
+0000 0000 0000 1011 // @11
+1110 1100 0001 0000 // D=A
+0000 0000 0001 0000 // @i
+1110 0011 0000 1000 // M=D
+$ <strong>cat hack/SetA.hack</strong>
+0000000000001011
+1110110000010000
+0000000000010000
+1110001100001000
+$ <strong>compare.sh asm/SetA.hack hack/SetA.hack</strong>
+asm/SetA.hack and hack/SetA.hack are identical</code></pre>
+</div>
+</div>
+<h2 id="_submit_your_work" class="discrete">Submit your Work</h2>
+<div class="paragraph">
+<p>Push you work to Github to submit your work.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ cd Hack-Compiler
+$ git add .
+$ git commit -m "Hack-Compiler complete"
+$ git push</code></pre>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-27 11:57:13 -0400
+Last updated 2025-11-01 17:02:25 -0400
 </div>
 </div>
 <script type="text/x-mathjax-config">
