@@ -137,7 +137,7 @@
 |*Virtual Machine II* 
 
 * Read: _Elements of Computing Systems_, Chapter 8
-* link:assts/asst4.html[Assignment 04: Assembler] Due {ASST05_DUE}
+* link:assts/asst04.html[Assignment 04: Assembler] Due {ASST05_DUE}
 * Lab: Assembly to machine code translation, Check-ins
 
 | TBD

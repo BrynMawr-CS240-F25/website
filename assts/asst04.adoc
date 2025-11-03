@@ -104,7 +104,7 @@ M=D
 
 = ASM Translator
 
-In the file, `common/asmtranslator.cpp`, implement the following functions. 
+In the file, `common/assembler.cpp`, implement the following functions. 
 
 * `InstructionType cmd_type(const char* line)`: returns either A_INSTRUCTION, C_INSTRUCTION, or L_INSTRUCTION depending on the contents of line
 * `void cmd_symbol(const char* line, char* value, int size)`: extracts the symbol from `line` into the string `value`. `size` is the max number of characters that can be stored in `value`. The behavior of this function is undefined if line does not contain either an L_INSTRUCTION or A_INSTRUCTION.
@@ -147,7 +147,7 @@ M=M+1: PASSED
 
 In the file, `common/assembler.cpp`, implement the following functions.
 
-* The constructor should initialize the symbol table with Hack's built-in symbols. (See your book or our previous lab for details).
+* `initSymbolTable` should initialize the symbol table with Hack's built-in symbols. (See your book or our previous lab for details).
 * `translate(instructions)` should compute the type and machine codes for each instruction using two passes
 ** The first pass should build the symbol table
 ** The second pass should replace symbols with values and convert the instructions to machine codes
@@ -176,7 +176,7 @@ $ *cat hack/SetA.hack*
 1110110000010000
 0000000000010000
 1110001100001000
-$ *compare.sh asm/SetA.hack hack/SetA.hack*
+$ *compare.sh SetA*
 asm/SetA.hack and hack/SetA.hack are identical
 ----
 

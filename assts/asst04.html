@@ -196,7 +196,7 @@ M=D</code></pre>
 <h2 id="_asm_translator">3. ASM Translator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the file, <code>common/asmtranslator.cpp</code>, implement the following functions.</p>
+<p>In the file, <code>common/assembler.cpp</code>, implement the following functions.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -268,7 +268,7 @@ M=M+1: PASSED
 <div class="ulist">
 <ul>
 <li>
-<p>The constructor should initialize the symbol table with Hack&#8217;s built-in symbols. (See your book or our previous lab for details).</p>
+<p><code>initSymbolTable</code> should initialize the symbol table with Hack&#8217;s built-in symbols. (See your book or our previous lab for details).</p>
 </li>
 <li>
 <p><code>translate(instructions)</code> should compute the type and machine codes for each instruction using two passes</p>
@@ -312,7 +312,7 @@ $ <strong>cat hack/SetA.hack</strong>
 1110110000010000
 0000000000010000
 1110001100001000
-$ <strong>compare.sh asm/SetA.hack hack/SetA.hack</strong>
+$ <strong>compare.sh SetA</strong>
 asm/SetA.hack and hack/SetA.hack are identical</code></pre>
 </div>
 </div>
@@ -333,7 +333,7 @@ $ git push</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-11-01 17:02:25 -0400
+Last updated 2025-11-03 08:01:23 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">
