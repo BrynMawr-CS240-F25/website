@@ -34,11 +34,9 @@ NOTE: Although we are using C++ classes and generic data types, our APIs primari
 [discrete]
 = Update your repository
 
-We will use the same repository as link:asst01.html[Assignment 1]
+We will use the same repository as link:asst01.html[Assignment 1]. The changes have already 
+been merged into your repository.
                                                                               
-First, you must accept the pull request on your repository on link:{gitrepo}[Github]             
-(link:PullRequest.png[screenshot]).
-                                                                                
 [source, subs="attributes,quotes"]                                              
 ----                                                                            
 $ cd {repo}                                                                     
