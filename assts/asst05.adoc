@@ -1,0 +1,122 @@
+include::header.adoc[]
+include::../dates.adoc[]
+
+:title: Assignment 05: Hack Virtual Machine
+:Author Initials: ASN
+:Date:    2021-01-29
+:Revision: 0.1
+:ASST: Hack-Compiler
+
+= {title}
+
+**Due {ASST05_DUE}, before midnight**
+
+In this assignment, we build a translator from VM code to Hack assembler. Your 
+translator will input .vm files and output .asm files. 
+
+The APIs in this assignment follow the design in your book 
+_The Elements of Computing Systems_ but with some differences that will allow us to 
+reuse our work more easily in future assignments. 
+
+* We will re-use the FileReader from your previous assignment. 
+
+The goals of this assignment are
+
+* Implement functions for translating VM instructions to assembly instructions
+
+**There is a demo requirement for this assignment. You must check-in with the TA or Prof. Normoyle 
+on Nov 13 or 14 during office hours.**
+
+[discrete]
+= Update your repository
+
+We will use the same repository as link:asst01.html[Assignment 1]. The changes have already 
+been merged into your repository.
+                                                                              
+[source, subs="attributes,quotes"]                                              
+----                                                                            
+$ cd {repo}                                                                     
+$ git pull                                                                      
+----                                                                            
+                                                                                
+Your repository should include new files under the folder named `{ASST}`.             
+
+:sectnums:
+
+= Preliminaries
+
+Add an option to your FileReader to enable/disable removing whitespace when reading a file
+
+* bool open(const char* filename, bool stripWhitespace)
+
+= VM Parsing
+
+In the file, `common/vmtranslator.cpp`, implement the following functions. 
+
+* `VMType vm_type(const char* line)`
+* `void vm_arg1(const char* line, char* value, int size)`
+* `void vm_arg2(const char* line, char* value, int size)`
+
+Run `test_vmparser` (implemented in `test_vmparser.cpp`) to check your work. 
+
+[source]
+----
+$ *make*
+$ *./test_vmparser*
+----
+
+= VM Translation I
+
+In the file, `common/vmtranslator.cpp`, implement the following methods inside VMTranslator.
+
+* `writeArithmetic(command, instructions)`
+* `writePushPop(command, instructions)`
+
+To check your work, you will need to test your generated assembly code in
+either the nand2tetris CPU simulator or in your own CPU simulator from
+link:asst03.html[Assignment 03]. The following program generates tests that 
+you can run. Make sure that the contents of RAM match the desired state after 
+your program runs.
+
+[source, subs="quotes"]
+----
+$ ./generate_asm_expressions
+----
+
+= VM Translation II
+
+In the file, `common/vmtranslator.cpp`, implement the following methods inside VMTranslator.
+
+* `setFileName(const char* filename);`
+* `writeInit(instructions);`
+* `writeLabel(const char* command, instructions);`
+* `writeGoto(const char* command, instructions);`
+* `writeIf(const char* command, instructions);`
+* `writeCall(const char* command, instructions);`
+* `writeFunction(const char* functionName, int numLocals, instructions);`
+* `writeReturn(instructions);`
+
+To check your work, you will need to test your generated assembly code in
+either the nand2tetris CPU simulator or in your own CPU simulator from
+link:asst03.html[Assignment 03]. The following program generates tests that 
+you can run. Make sure that the contents of RAM match the desired state after 
+your program runs.
+
+[source, subs="quotes"]
+----
+$ ./generate_asm_branches
+$ ./generate_asm_functions
+----
+
+[discrete]
+= Submit your Work
+
+Push you work to Github to submit your work.
+
+[source, subs="attributes"]
+----
+$ cd {ASST}
+$ git add .
+$ git commit -m "{ASST} complete"
+$ git push
+----

@@ -10,6 +10,7 @@ include::../dates.adoc[]
 = {title}
 
 **Due {ASST04_DUE}, before midnight**
+**Extended! to Nov 10, before midnight**
 
 In this assignment, we build an assembler that inputs an .asm file and outputs 
 a .hack file. 

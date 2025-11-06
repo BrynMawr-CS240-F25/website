@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.18">
+<title>Assignment 05: Hack Virtual Machine</title>
+<link rel="stylesheet" href="../style/cs21.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_assignment_05_hack_virtual_machine">Assignment 05: Hack Virtual Machine</a></li>
+<li><a href="#_preliminaries">1. Preliminaries</a></li>
+<li><a href="#_vm_parsing">2. VM Parsing</a></li>
+<li><a href="#_vm_translation_i">3. VM Translation I</a></li>
+<li><a href="#_vm_translation_ii">4. VM Translation II</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_assignment_05_hack_virtual_machine">Assignment 05: Hack Virtual Machine</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Due Friday, November 21st, before midnight</strong></p>
+</div>
+<div class="paragraph">
+<p>In this assignment, we build a translator from VM code to Hack assembler. Your
+translator will input .vm files and output .asm files.</p>
+</div>
+<div class="paragraph">
+<p>The APIs in this assignment follow the design in your book
+<em>The Elements of Computing Systems</em> but with some differences that will allow us to
+reuse our work more easily in future assignments.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We will re-use the FileReader from your previous assignment.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The goals of this assignment are</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Implement functions for translating VM instructions to assembly instructions</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>There is a demo requirement for this assignment. You must check-in with the TA or Prof. Normoyle
+on Nov 13 or 14 during office hours.</strong></p>
+</div>
+<h2 id="_update_your_repository" class="discrete">Update your repository</h2>
+<div class="paragraph">
+<p>We will use the same repository as <a href="asst01.html">Assignment 1</a>. The changes have already
+been merged into your repository.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ cd cs240-f25-classwork
+$ git pull</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Your repository should include new files under the folder named <code>Hack-Compiler</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preliminaries">1. Preliminaries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add an option to your FileReader to enable/disable removing whitespace when reading a file</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>bool open(const char* filename, bool stripWhitespace)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vm_parsing">2. VM Parsing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the file, <code>common/vmtranslator.cpp</code>, implement the following functions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>VMType vm_type(const char* line)</code></p>
+</li>
+<li>
+<p><code>void vm_arg1(const char* line, char* value, int size)</code></p>
+</li>
+<li>
+<p><code>void vm_arg2(const char* line, char* value, int size)</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Run <code>test_vmparser</code> (implemented in <code>test_vmparser.cpp</code>) to check your work.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ *make*
+$ *./test_vmparser*</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vm_translation_i">3. VM Translation I</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the file, <code>common/vmtranslator.cpp</code>, implement the following methods inside VMTranslator.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>writeArithmetic(command, instructions)</code></p>
+</li>
+<li>
+<p><code>writePushPop(command, instructions)</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To check your work, you will need to test your generated assembly code in
+either the nand2tetris CPU simulator or in your own CPU simulator from
+<a href="asst03.html">Assignment 03</a>. The following program generates tests that
+you can run. Make sure that the contents of RAM match the desired state after
+your program runs.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ ./generate_asm_expressions</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vm_translation_ii">4. VM Translation II</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the file, <code>common/vmtranslator.cpp</code>, implement the following methods inside VMTranslator.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>setFileName(const char* filename);</code></p>
+</li>
+<li>
+<p><code>writeInit(instructions);</code></p>
+</li>
+<li>
+<p><code>writeLabel(const char* command, instructions);</code></p>
+</li>
+<li>
+<p><code>writeGoto(const char* command, instructions);</code></p>
+</li>
+<li>
+<p><code>writeIf(const char* command, instructions);</code></p>
+</li>
+<li>
+<p><code>writeCall(const char* command, instructions);</code></p>
+</li>
+<li>
+<p><code>writeFunction(const char* functionName, int numLocals, instructions);</code></p>
+</li>
+<li>
+<p><code>writeReturn(instructions);</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To check your work, you will need to test your generated assembly code in
+either the nand2tetris CPU simulator or in your own CPU simulator from
+<a href="asst03.html">Assignment 03</a>. The following program generates tests that
+you can run. Make sure that the contents of RAM match the desired state after
+your program runs.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ ./generate_asm_branches
+$ ./generate_asm_functions</code></pre>
+</div>
+</div>
+<h2 id="_submit_your_work" class="discrete">Submit your Work</h2>
+<div class="paragraph">
+<p>Push you work to Github to submit your work.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ cd Hack-Compiler
+$ git add .
+$ git commit -m "Hack-Compiler complete"
+$ git push</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2025-11-06 08:56:06 -0500
+</div>
+</div>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  messageStyle: "none",
+  tex2jax: {
+    inlineMath: [["\\(", "\\)"]],
+    displayMath: [["\\[", "\\]"]],
+    ignoreClass: "nostem|nolatexmath"
+  },
+  asciimath2jax: {
+    delimiters: [["\\$", "\\$"]],
+    ignoreClass: "nostem|noasciimath"
+  },
+  TeX: { equationNumbers: { autoNumber: "none" } }
+})
+MathJax.Hub.Register.StartupHook("AsciiMath Jax Ready", function () {
+  MathJax.InputJax.AsciiMath.postfilterHooks.Add(function (data, node) {
+    if ((node = data.script.parentNode) && (node = node.parentNode) && node.classList.contains("stemblock")) {
+      data.math.root.display = "block"
+    }
+    return data
+  })
+})
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+</body>
+</html>
