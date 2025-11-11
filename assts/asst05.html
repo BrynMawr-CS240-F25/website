@@ -42,38 +42,20 @@
 <p><strong>Due Friday, November 21st, before midnight</strong></p>
 </div>
 <div class="paragraph">
-<p><strong>Milestone 1 Due: Nov 17th (Monday)</strong>
-<strong>Office Hour Check-ins due in office hours Nov 20th or 21st. (Thursday, Friday)</strong></p>
+<p><strong>Milestone 1 Due: Nov 17th (Monday)</strong></p>
 </div>
 <div class="paragraph">
 <p>In this assignment, we build a translator from VM code to Hack assembler. Your
-translator will input .vm files and output .asm files.</p>
+translator will input .vm files and output .asm and .hack files.</p>
 </div>
 <div class="paragraph">
 <p>The APIs in this assignment follow the design in your book
 <em>The Elements of Computing Systems</em> but with some differences that will allow us to
-reuse our work more easily in future assignments.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>We will re-use the FileReader from your previous assignment.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The goals of this assignment are</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Implement functions for translating VM instructions to assembly instructions</p>
-</li>
-</ul>
+reuse our work more easily across assignments.</p>
 </div>
 <div class="paragraph">
 <p><strong>There is a demo requirement for this assignment. You must check-in with the TA or Prof. Normoyle
-on Nov 13 or 14 during office hours.</strong></p>
+on Nov 20th or 21st during office hours.</strong></p>
 </div>
 <h2 id="_update_your_repository" class="discrete">Update your repository</h2>
 <div class="paragraph">
@@ -98,7 +80,7 @@ $ git pull</code></pre>
 <p>In the files <code>common/filereader.cpp</code> and <code>common/filereader.h</code>, add an option
 to your FileReader to enable/disable removing all whitespace when reading a
 file. When stripWhitespace is false, be careful to handle the case where a line
-is empty (including lines that only contain whitespace).</p>
+is empty or only includes whitespace.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -118,7 +100,6 @@ is empty (including lines that only contain whitespace).</p>
 push constant 111
 
 $ <strong>make test_readvm</strong>
-g++ ... etc
 $ <strong>./test_readvm vm/SimpleConstant.vm</strong>
 push constant 111</code></pre>
 </div>
@@ -147,7 +128,7 @@ Run <code>test_vmparser</code> (implemented in <code>test_vmparser.cpp</code>) t
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>$ *make*
+<pre class="highlight"><code>$ *make -j6*
 $ *./test_vmparser*
 push argument 1 -&gt; cmd: 1 arg1: argument arg2: 1
 label L2 -&gt; cmd: 3 arg1: L2 arg2:
@@ -155,6 +136,18 @@ sub -&gt; cmd: 0 arg1:  arg2:
 if-goto end -&gt; cmd: 4 arg1: end arg2:
 function print1 3 -&gt; cmd: 6 arg1: print1 arg2: 3</code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>make -j6</code> runs using multiple jobs (e.g processes) for a faster build speed.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -227,7 +220,6 @@ for each line
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>$ <strong>make -j6</strong>
-....
 $ <strong>cat vm/Bootstrap.vm</strong>
 // Bootstrap code is added automatically....
 $ <strong>./vm_compiler vm/Bootstrap.vm</strong>
@@ -240,18 +232,6 @@ Check: RAM[0] = 256? (Got 256): PASSED
 Check: RAM[256] = 0? (Got 0): PASSED
 ....</code></pre>
 </div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<code>make -j6</code> runs using multiple jobs (e.g processes) for a faster build speed.
-</td>
-</tr>
-</table>
 </div>
 </div>
 <div class="sect2">
@@ -269,11 +249,10 @@ Check: RAM[256] = 0? (Got 0): PASSED
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>$ <strong>make -j6</strong>
-....
 $ <strong>./vm_compiler vm/SimpleConstant.vm</strong>
 Writing vm/SimpleConstant.asm
 Writing vm/SimpleConstant.hack
-$ ./test_vm_milestone1
+$ <strong>./test_vm_milestone1</strong>
 Testing vm/SimpleConstant.hack...
 Program exited
 Check: RAM[0] = 257? (Got 257): PASSED
@@ -321,14 +300,12 @@ You are given a script, <code>compile_tests_milestone1.sh</code> to automaticall
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>$ <strong>make -j6</strong>
-....
-$ ./compile_tests_milestone1.sh
+$ <strong>./compile_tests_milestone1.sh</strong>
 Writing vm/Bootstrap.asm
 Writing vm/Bootstrap.hack
 Writing vm/SimpleConstant.asm
 Writing vm/SimpleConstant.hack
-...etc
-$ ./test_vm_milestone1
+$ <strong>./test_vm_milestone1</strong>
 Testing vm/SimpleAdd.hack...
 Program exited
 Check: RAM[0] = 257? (Got 257): PASSED
@@ -400,15 +377,12 @@ Auto-generated labels should be unique. A simple way to guarantee unique names i
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>$ <strong>make -j6</strong>
-....
-$ ./compile_tests_milestone1.sh
+$ <strong>./compile_tests_milestone1.sh</strong>
 Writing vm/Bootstrap.asm
 Writing vm/Bootstrap.hack
 Writing vm/SimpleConstant.asm
 Writing vm/SimpleConstant.hack
-...etc
-$ ./test_vm_milestone1
-...
+$ <strong>./test_vm_milestone1</strong>
 Testing vm/SimpleLocal.hack...
 Program exited
 Check: RAM[0] = 256? (Got 256): PASSED
@@ -449,14 +423,13 @@ Check: RAM[306] = 111? (Got 111): PASSED
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>$ <strong>make -j6</strong>
-....
-$ ./compile_tests_milestone2.sh
+$ <strong>./compile_tests_milestone2.sh</strong>
 Writing vm/IfElse.asm
 Writing vm/IfElse.hack
 Writing vm/While.asm
 Writing vm/While.hack
 ...etc
-$ ./test_vm_milestone2</code></pre>
+$ <strong>./test_vm_milestone2</strong></code></pre>
 </div>
 </div>
 </div>
@@ -484,12 +457,10 @@ $ ./test_vm_milestone2</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>$ <strong>make -j6</strong>
-....
-$ ./compile_tests_milestone2.sh
-...
+$ <strong>./compile_tests_milestone2.sh</strong>
 Writing vm/AddFn.asm
 Writing vm/AddFn.hack
-$ ./test_vm_milestone2</code></pre>
+$ <strong>./test_vm_milestone2</strong></code></pre>
 </div>
 </div>
 <h2 id="_submit_your_work" class="discrete">Submit your Work</h2>
@@ -510,7 +481,7 @@ $ git push</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-11-10 20:49:10 -0500
+Last updated 2025-11-10 20:59:31 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -12,23 +12,16 @@ include::../dates.adoc[]
 **Due {ASST05_DUE}, before midnight**
 
 **Milestone 1 Due: Nov 17th (Monday)**
-**Office Hour Check-ins due in office hours Nov 20th or 21st. (Thursday, Friday)**
 
 In this assignment, we build a translator from VM code to Hack assembler. Your 
-translator will input .vm files and output .asm files. 
+translator will input .vm files and output .asm and .hack files. 
 
 The APIs in this assignment follow the design in your book 
 _The Elements of Computing Systems_ but with some differences that will allow us to 
-reuse our work more easily in future assignments. 
-
-* We will re-use the FileReader from your previous assignment. 
-
-The goals of this assignment are
-
-* Implement functions for translating VM instructions to assembly instructions
+reuse our work more easily across assignments. 
 
 **There is a demo requirement for this assignment. You must check-in with the TA or Prof. Normoyle 
-on Nov 13 or 14 during office hours.**
+on Nov 20th or 21st during office hours.**
 
 [discrete]
 = Update your repository
@@ -51,7 +44,7 @@ Your repository should include new files under the folder named `{ASST}`.
 In the files `common/filereader.cpp` and `common/filereader.h`, add an option
 to your FileReader to enable/disable removing all whitespace when reading a
 file. When stripWhitespace is false, be careful to handle the case where a line
-is empty (including lines that only contain whitespace).
+is empty or only includes whitespace.
 
 * `bool open(const char* filename, bool stripWhitespace = true)`
 
@@ -65,7 +58,6 @@ $ *cat vm/SimpleConstant.vm*
 push constant 111
 
 $ *make test_readvm*
-g++ ... etc
 $ *./test_readvm vm/SimpleConstant.vm*
 push constant 111
 ----
@@ -82,7 +74,7 @@ Run `test_vmparser` (implemented in `test_vmparser.cpp`) to check your work.
 
 [source]
 ----
-$ *make*
+$ *make -j6*
 $ *./test_vmparser*
 push argument 1 -> cmd: 1 arg1: argument arg2: 1
 label L2 -> cmd: 3 arg1: L2 arg2:
@@ -90,6 +82,8 @@ sub -> cmd: 0 arg1:  arg2:
 if-goto end -> cmd: 4 arg1: end arg2:
 function print1 3 -> cmd: 6 arg1: print1 arg2: 3
 ----
+
+NOTE: `make -j6` runs using multiple jobs (e.g processes) for a faster build speed.
 
 = Milestone I
 
@@ -124,7 +118,6 @@ for each line
 [source, subs="quotes"]
 ----
 $ *make -j6*
-....
 $ *cat vm/Bootstrap.vm*
 // Bootstrap code is added automatically....
 $ *./vm_compiler vm/Bootstrap.vm*
@@ -138,7 +131,6 @@ Check: RAM[256] = 0? (Got 0): PASSED
 ....
 ----
 
-NOTE: `make -j6` runs using multiple jobs (e.g processes) for a faster build speed.
 
 //image::bootstrap-cpu.png[with=300px]
 //image::bootstrap-vm.png[with=300px]
@@ -152,11 +144,10 @@ In the file, `common/vmtranslator.cpp`, implement the "push constant X" command 
 [source, subs="quotes"]
 ----
 $ *make -j6*
-....
 $ *./vm_compiler vm/SimpleConstant.vm*
 Writing vm/SimpleConstant.asm
 Writing vm/SimpleConstant.hack
-$ ./test_vm_milestone1
+$ *./test_vm_milestone1*
 Testing vm/SimpleConstant.hack...
 Program exited
 Check: RAM[0] = 257? (Got 257): PASSED
@@ -177,14 +168,12 @@ NOTE: You are given a script, `compile_tests_milestone1.sh` to automatically com
 [source, subs="quotes"]
 ----
 $ *make -j6*
-....
-$ ./compile_tests_milestone1.sh
+$ *./compile_tests_milestone1.sh*
 Writing vm/Bootstrap.asm
 Writing vm/Bootstrap.hack
 Writing vm/SimpleConstant.asm
 Writing vm/SimpleConstant.hack
-...etc
-$ ./test_vm_milestone1
+$ *./test_vm_milestone1*
 Testing vm/SimpleAdd.hack...
 Program exited
 Check: RAM[0] = 257? (Got 257): PASSED
@@ -217,15 +206,12 @@ In the file, `common/vmtranslator.cpp`, implement the arithmetic and logic comma
 [source, subs="quotes"]
 ----
 $ *make -j6*
-....
-$ ./compile_tests_milestone1.sh
+$ *./compile_tests_milestone1.sh*
 Writing vm/Bootstrap.asm
 Writing vm/Bootstrap.hack
 Writing vm/SimpleConstant.asm
 Writing vm/SimpleConstant.hack
-...etc
-$ ./test_vm_milestone1
-... 
+$ *./test_vm_milestone1*
 Testing vm/SimpleLocal.hack...
 Program exited
 Check: RAM[0] = 256? (Got 256): PASSED
@@ -251,14 +237,13 @@ In the file, `common/vmtranslator.cpp`, implement the goto, if-goto and label co
 [source, subs="quotes"]
 ----
 $ *make -j6*
-....
-$ ./compile_tests_milestone2.sh
+$ *./compile_tests_milestone2.sh*
 Writing vm/IfElse.asm
 Writing vm/IfElse.hack
 Writing vm/While.asm
 Writing vm/While.hack
 ...etc
-$ ./test_vm_milestone2
+$ *./test_vm_milestone2*
 ----
 
 == Functions
@@ -273,13 +258,10 @@ In the file, `common/vmtranslator.cpp`, implement the call, function, and return
 [source, subs="quotes"]
 ----
 $ *make -j6*
-....
-$ ./compile_tests_milestone2.sh
-...
+$ *./compile_tests_milestone2.sh*
 Writing vm/AddFn.asm
 Writing vm/AddFn.hack
-$ ./test_vm_milestone2
-
+$ *./test_vm_milestone2*
 ----
 
 
