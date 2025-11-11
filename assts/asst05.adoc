@@ -11,6 +11,9 @@ include::../dates.adoc[]
 
 **Due {ASST05_DUE}, before midnight**
 
+**Milestone 1 Due: Nov 17th (Monday)**
+**Office Hour Check-ins due in office hours Nov 20th or 21st. (Thursday, Friday)**
+
 In this assignment, we build a translator from VM code to Hack assembler. Your 
 translator will input .vm files and output .asm files. 
 
@@ -45,68 +48,240 @@ Your repository should include new files under the folder named `{ASST}`.
 
 = Preliminaries
 
-Add an option to your FileReader to enable/disable removing whitespace when reading a file
+In the files `common/filereader.cpp` and `common/filereader.h`, add an option
+to your FileReader to enable/disable removing all whitespace when reading a
+file. When stripWhitespace is false, be careful to handle the case where a line
+is empty (including lines that only contain whitespace).
 
-* bool open(const char* filename, bool stripWhitespace)
+* `bool open(const char* filename, bool stripWhitespace = true)`
+
+To test your function, run `test_readvm.cpp`
+
+[source, subs="quotes"]
+----
+$ *cat vm/SimpleConstant.vm*
+// Pushes constant 111
+
+push constant 111
+
+$ *make test_readvm*
+g++ ... etc
+$ *./test_readvm vm/SimpleConstant.vm*
+push constant 111
+----
 
 = VM Parsing
 
 In the file, `common/vmtranslator.cpp`, implement the following functions. 
 
-* `VMType vm_type(const char* line)`
-* `void vm_arg1(const char* line, char* value, int size)`
-* `void vm_arg2(const char* line, char* value, int size)`
+* `VMType vm_type(const char* line)`: Return the type of command, for example, VM_POP or VM_ARITHMETIC
+* `void vm_parse(const char* line, VMCommand* cmd)`: Fill in the fields of cmd based on the input string. 
 
+`VMCommand` (defined `common/vmcommand.h`) is a struct that contains the VM type, command, and arguments.  
 Run `test_vmparser` (implemented in `test_vmparser.cpp`) to check your work. 
 
 [source]
 ----
 $ *make*
 $ *./test_vmparser*
+push argument 1 -> cmd: 1 arg1: argument arg2: 1
+label L2 -> cmd: 3 arg1: L2 arg2:
+sub -> cmd: 0 arg1:  arg2:
+if-goto end -> cmd: 4 arg1: end arg2:
+function print1 3 -> cmd: 6 arg1: print1 arg2: 3
 ----
 
-= VM Translation I
+= Milestone I
 
-In the file, `common/vmtranslator.cpp`, implement the following methods inside VMTranslator.
+In the file, `common/vmtranslator.cpp`, we will implement the features of VMTranslator step by step, 
+testing each as we go.
 
-* `writeArithmetic(command, instructions)`
-* `writePushPop(command, instructions)`
+To check your work, run `vm_compiler` which compiles either a VM file or a directory of VM files to 
+both an ASM and Hack file. Then, run your generated code in either 
 
-To check your work, you will need to test your generated assembly code in
-either the nand2tetris CPU simulator or in your own CPU simulator from
-link:asst03.html[Assignment 03]. The following program generates tests that 
-you can run. Make sure that the contents of RAM match the desired state after 
-your program runs.
+* The nand2tetris CPUEmulator. Open the ASM file in the emulator, run, and check that the contents of memory are correct 
+* Our simulated computer. You have been given executables for testing called `test_vm_milestone1` and `test_vm_milestone2`. This program loads the programs in the /vm directory and checks the contents of RAM afterwards. The executable will only run on Ubuntu Linux. However, the source code has been checked into your repository, under the hack-hw, so you can also compile your own.
+
+NOTE: You can also run the VM examples in the VMEmulator. This is helpful for understanding the scripts before you translate them to assembly. 
+
+== Bootstrap
+
+In the file, `common/vmtranslator.cpp`, implement the following methods of VMTranslator.
+
+* `translateFile(const char* filename)`: This method should use FileReader to open the given filename and process each line. For each line, we determine the VM command type and then call the associated `writeXX` method to generate assembly instructions for it. The instructions should be added to the vector of strings, `mInstructions`. The algorithm should look as follows:
+[source]
+----
+setFileName // Save the current filename to use for symbol generation
+for each line
+  parse the line into a VMCommand cmd
+  call `writeX(&cmd)` depending on the VM command type X
+----
+
+* `writeInit()`: This function writes bootstrap code. To start, add instructions for setting `SP = 256`
+* `setFileName(const char* filename)`: This function saves the current file being processed in mFilename. The saved filename should not have path and extension characters (e.g. / or .)
+* `write(const char* filename)`: This function writes the contents of mInstructions to a file with the given filename.
 
 [source, subs="quotes"]
 ----
-$ ./generate_asm_expressions
+$ *make -j6*
+....
+$ *cat vm/Bootstrap.vm*
+// Bootstrap code is added automatically....
+$ *./vm_compiler vm/Bootstrap.vm*
+Writing vm/Bootstrap.asm
+Writing vm/Bootstrap.hack
+$ *./test_vm_milestone1*
+Testing vm/Bootstrap.hack...
+Program exited
+Check: RAM[0] = 256? (Got 256): PASSED
+Check: RAM[256] = 0? (Got 0): PASSED
+....
 ----
 
-= VM Translation II
+NOTE: `make -j6` runs using multiple jobs (e.g processes) for a faster build speed.
 
-In the file, `common/vmtranslator.cpp`, implement the following methods inside VMTranslator.
+//image::bootstrap-cpu.png[with=300px]
+//image::bootstrap-vm.png[with=300px]
 
-* `setFileName(const char* filename);`
-* `writeInit(instructions);`
-* `writeLabel(const char* command, instructions);`
-* `writeGoto(const char* command, instructions);`
-* `writeIf(const char* command, instructions);`
-* `writeCall(const char* command, instructions);`
-* `writeFunction(const char* functionName, int numLocals, instructions);`
-* `writeReturn(instructions);`
+== push constant
 
-To check your work, you will need to test your generated assembly code in
-either the nand2tetris CPU simulator or in your own CPU simulator from
-link:asst03.html[Assignment 03]. The following program generates tests that 
-you can run. Make sure that the contents of RAM match the desired state after 
-your program runs.
+In the file, `common/vmtranslator.cpp`, implement the "push constant X" command in `writePushPop`.
+
+* `void writePushPop(VMCommand* cmd)`, Converts push and pop commands to assembly. Adds the assembly instructions to the member variable `mInstructions`
 
 [source, subs="quotes"]
 ----
-$ ./generate_asm_branches
-$ ./generate_asm_functions
+$ *make -j6*
+....
+$ *./vm_compiler vm/SimpleConstant.vm*
+Writing vm/SimpleConstant.asm
+Writing vm/SimpleConstant.hack
+$ ./test_vm_milestone1
+Testing vm/SimpleConstant.hack...
+Program exited
+Check: RAM[0] = 257? (Got 257): PASSED
+Check: RAM[256] = 111? (Got 111): PASSED
 ----
+
+== Arithmetic and logic
+
+In the file, `common/vmtranslator.cpp`, implement the arithmetic and logic commands in `writeArithmetic`.
+
+* `void writeArithmetic(VMCommand* cmd)`, Converts the following commands to assembly. Adds the assembly instructions to the member variable `mInstructions`
+** add, sub, neg
+** and, or, not
+** eq, lt, gt
+
+NOTE: You are given a script, `compile_tests_milestone1.sh` to automatically compile all test scripts.
+
+[source, subs="quotes"]
+----
+$ *make -j6*
+....
+$ ./compile_tests_milestone1.sh
+Writing vm/Bootstrap.asm
+Writing vm/Bootstrap.hack
+Writing vm/SimpleConstant.asm
+Writing vm/SimpleConstant.hack
+...etc
+$ ./test_vm_milestone1
+Testing vm/SimpleAdd.hack...
+Program exited
+Check: RAM[0] = 257? (Got 257): PASSED
+Check: RAM[256] = 15? (Got 15): PASSED
+Testing vm/SimpleSub.hack...
+Program exited
+Check: RAM[0] = 257? (Got 257): PASSED
+Check: RAM[256] = -1? (Got -1): PASSED
+Testing vm/SimpleNeg.hack...
+Program exited
+Check: RAM[0] = 258? (Got 258): PASSED
+Check: RAM[257] = -8? (Got -8): PASSED
+... etc
+----
+
+NOTE: False is represented using 0 and True is represented using -1
+
+NOTE: Auto-generated labels should be unique. A simple way to guarantee unique names is to add a numeric suffix that increments each time a new label is created.
+
+== Memory
+
+In the file, `common/vmtranslator.cpp`, implement the arithmetic and logic commands in `writePushPop`.
+
+* `void writePushPop(VMCommand* cmd)`, Converts the following commands to assembly. Adds the assembly instructions to the member variable `mInstructions`
+** local, argument, this, that
+** pointer
+** static
+** temp
+
+[source, subs="quotes"]
+----
+$ *make -j6*
+....
+$ ./compile_tests_milestone1.sh
+Writing vm/Bootstrap.asm
+Writing vm/Bootstrap.hack
+Writing vm/SimpleConstant.asm
+Writing vm/SimpleConstant.hack
+...etc
+$ ./test_vm_milestone1
+... 
+Testing vm/SimpleLocal.hack...
+Program exited
+Check: RAM[0] = 256? (Got 256): PASSED
+Check: RAM[1] = 300? (Got 300): PASSED
+Check: RAM[256] = 111? (Got 111): PASSED
+Check: RAM[303] = 111? (Got 111): PASSED
+Check: RAM[306] = 111? (Got 111): PASSED
+... etc
+----
+
+= Milestone II
+
+Now, we will implement branching and functions. We will use the same methods for testing as before.
+
+== Branching
+
+In the file, `common/vmtranslator.cpp`, implement the goto, if-goto and label commands.
+
+* `void writeLabel(VMCommand* cmd)`, Converts label commands to assembly. Adds the assembly instructions to the member variable `mInstructions`
+* `void writeGoto(VMCommand* cmd)`, Converts goto commands to assembly. Adds the assembly instructions to the member variable `mInstructions`
+* `void writeIf(VMCommand* cmd)`, Converts if-goto commands to assembly. Adds the assembly instructions to the member variable `mInstructions`
+
+[source, subs="quotes"]
+----
+$ *make -j6*
+....
+$ ./compile_tests_milestone2.sh
+Writing vm/IfElse.asm
+Writing vm/IfElse.hack
+Writing vm/While.asm
+Writing vm/While.hack
+...etc
+$ ./test_vm_milestone2
+----
+
+== Functions
+
+In the file, `common/vmtranslator.cpp`, implement the call, function, and return methods inside VMTranslator. Additionally, extend the bootstrap code to `goto Sys.init` when the member variable `mSysInit` is true. 
+
+* `writeInit();`: writes bootstrap code into `mInstructions`
+* `writeCall(VMCommand* cmd);`: generates assembly code corresponding to a function call.
+* `writeFunction(VMCommand* cmd);`: generates assembly code corresponding to a function definition.
+* `writeReturn();`: generates assembly code corresponding to a function return.
+
+[source, subs="quotes"]
+----
+$ *make -j6*
+....
+$ ./compile_tests_milestone2.sh
+...
+Writing vm/AddFn.asm
+Writing vm/AddFn.hack
+$ ./test_vm_milestone2
+
+----
+
 
 [discrete]
 = Submit your Work

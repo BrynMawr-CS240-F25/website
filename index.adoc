@@ -16,8 +16,8 @@ Instructor: link:https://www.cs.brynmawr.edu/~alinen[Aline Normoyle]
 
 [.anns]
 
-* Office Hours on Friday evening October 31 are xancelled.
-* Prof. Normoyle's office hours on Friday Nov 7 will be virtual. Please reach out over slack for an appointment.
+* Prof. Normoyle's office hours on Friday Nov 14 will be on campus. 
+* link:assts/asst05.html[Assignment 05] is due Friday, Nov 21st
 * link:assts/asst04.html[Assignment 04] is due Monday, Nov 10th, no extensions
 * Welcome to computer organization! 
 

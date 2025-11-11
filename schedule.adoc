@@ -126,7 +126,7 @@
 |*Assembler, Virtual Machine I*
 
 * Topics: Assembler implementation: Parsing, symbol tables
-* Topics: Virtual machinei: VM code specification, working with stack expressions and virtual memory segments
+* Topics: Virtual machine: VM code specification, working with stack expressions and virtual memory segments
 * Read: _Elements of Computing Systems_, Chapter 6-7
 * Lab: Assembly to machine code translation, Check-ins
 
@@ -141,7 +141,7 @@
 
 * Read: _Elements of Computing Systems_, Chapter 8
 * link:assts/asst04.html[Assignment 04: Assembler] Due {ASST05_DUE}
-* Lab: Assembler checkins
+* Lab: Assembler check-ins
 
 | 
 * link:lectures/Lecture-Week10-Nov4-VM2.pdf[Lecture - Nov 4]
@@ -153,7 +153,7 @@
 |*High-level Language, Compiler I* 
 
 * Read: _Elements of Computing Systems_, Chapter 9, 10
-* link:[Project: Virtual Machine]: Due {ASST06_DUE} (with milestone deliverables)
+* link:asst/asst05.html[Assignment 05: Virtual Machine]: Due {ASST05_DUE} (with milestone deliverable on Nov 17)
 * Lab: VM practice
 
 | TBD

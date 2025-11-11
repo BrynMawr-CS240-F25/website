@@ -17,8 +17,20 @@
 <li><a href="#_assignment_05_hack_virtual_machine">Assignment 05: Hack Virtual Machine</a></li>
 <li><a href="#_preliminaries">1. Preliminaries</a></li>
 <li><a href="#_vm_parsing">2. VM Parsing</a></li>
-<li><a href="#_vm_translation_i">3. VM Translation I</a></li>
-<li><a href="#_vm_translation_ii">4. VM Translation II</a></li>
+<li><a href="#_milestone_i">3. Milestone I</a>
+<ul class="sectlevel2">
+<li><a href="#_bootstrap">3.1. Bootstrap</a></li>
+<li><a href="#_push_constant">3.2. push constant</a></li>
+<li><a href="#_arithmetic_and_logic">3.3. Arithmetic and logic</a></li>
+<li><a href="#_memory">3.4. Memory</a></li>
+</ul>
+</li>
+<li><a href="#_milestone_ii">4. Milestone II</a>
+<ul class="sectlevel2">
+<li><a href="#_branching">4.1. Branching</a></li>
+<li><a href="#_functions">4.2. Functions</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -28,6 +40,10 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Due Friday, November 21st, before midnight</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Milestone 1 Due: Nov 17th (Monday)</strong>
+<strong>Office Hour Check-ins due in office hours Nov 20th or 21st. (Thursday, Friday)</strong></p>
 </div>
 <div class="paragraph">
 <p>In this assignment, we build a translator from VM code to Hack assembler. Your
@@ -79,14 +95,33 @@ $ git pull</code></pre>
 <h2 id="_preliminaries">1. Preliminaries</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Add an option to your FileReader to enable/disable removing whitespace when reading a file</p>
+<p>In the files <code>common/filereader.cpp</code> and <code>common/filereader.h</code>, add an option
+to your FileReader to enable/disable removing all whitespace when reading a
+file. When stripWhitespace is false, be careful to handle the case where a line
+is empty (including lines that only contain whitespace).</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>bool open(const char* filename, bool stripWhitespace)</p>
+<p><code>bool open(const char* filename, bool stripWhitespace = true)</code></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>To test your function, run <code>test_readvm.cpp</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>cat vm/SimpleConstant.vm</strong>
+// Pushes constant 111
+
+push constant 111
+
+$ <strong>make test_readvm</strong>
+g++ ... etc
+$ <strong>./test_readvm vm/SimpleConstant.vm</strong>
+push constant 111</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -99,102 +134,362 @@ $ git pull</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><code>VMType vm_type(const char* line)</code></p>
+<p><code>VMType vm_type(const char* line)</code>: Return the type of command, for example, VM_POP or VM_ARITHMETIC</p>
 </li>
 <li>
-<p><code>void vm_arg1(const char* line, char* value, int size)</code></p>
-</li>
-<li>
-<p><code>void vm_arg2(const char* line, char* value, int size)</code></p>
+<p><code>void vm_parse(const char* line, VMCommand* cmd)</code>: Fill in the fields of cmd based on the input string.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Run <code>test_vmparser</code> (implemented in <code>test_vmparser.cpp</code>) to check your work.</p>
+<p><code>VMCommand</code> (defined <code>common/vmcommand.h</code>) is a struct that contains the VM type, command, and arguments.
+Run <code>test_vmparser</code> (implemented in <code>test_vmparser.cpp</code>) to check your work.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>$ *make*
-$ *./test_vmparser*</code></pre>
+$ *./test_vmparser*
+push argument 1 -&gt; cmd: 1 arg1: argument arg2: 1
+label L2 -&gt; cmd: 3 arg1: L2 arg2:
+sub -&gt; cmd: 0 arg1:  arg2:
+if-goto end -&gt; cmd: 4 arg1: end arg2:
+function print1 3 -&gt; cmd: 6 arg1: print1 arg2: 3</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_vm_translation_i">3. VM Translation I</h2>
+<h2 id="_milestone_i">3. Milestone I</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the file, <code>common/vmtranslator.cpp</code>, implement the following methods inside VMTranslator.</p>
+<p>In the file, <code>common/vmtranslator.cpp</code>, we will implement the features of VMTranslator step by step,
+testing each as we go.</p>
+</div>
+<div class="paragraph">
+<p>To check your work, run <code>vm_compiler</code> which compiles either a VM file or a directory of VM files to
+both an ASM and Hack file. Then, run your generated code in either</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>writeArithmetic(command, instructions)</code></p>
+<p>The nand2tetris CPUEmulator. Open the ASM file in the emulator, run, and check that the contents of memory are correct</p>
 </li>
 <li>
-<p><code>writePushPop(command, instructions)</code></p>
+<p>Our simulated computer. You have been given executables for testing called <code>test_vm_milestone1</code> and <code>test_vm_milestone2</code>. This program loads the programs in the /vm directory and checks the contents of RAM afterwards. The executable will only run on Ubuntu Linux. However, the source code has been checked into your repository, under the hack-hw, so you can also compile your own.</p>
 </li>
 </ul>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You can also run the VM examples in the VMEmulator. This is helpful for understanding the scripts before you translate them to assembly.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_bootstrap">3.1. Bootstrap</h3>
 <div class="paragraph">
-<p>To check your work, you will need to test your generated assembly code in
-either the nand2tetris CPU simulator or in your own CPU simulator from
-<a href="asst03.html">Assignment 03</a>. The following program generates tests that
-you can run. Make sure that the contents of RAM match the desired state after
-your program runs.</p>
+<p>In the file, <code>common/vmtranslator.cpp</code>, implement the following methods of VMTranslator.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>translateFile(const char* filename)</code>: This method should use FileReader to open the given filename and process each line. For each line, we determine the VM command type and then call the associated <code>writeXX</code> method to generate assembly instructions for it. The instructions should be added to the vector of strings, <code>mInstructions</code>. The algorithm should look as follows:</p>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>$ ./generate_asm_expressions</code></pre>
+<pre>setFileName // Save the current filename to use for symbol generation
+for each line
+  parse the line into a VMCommand cmd
+  call `writeX(&amp;cmd)` depending on the VM command type X</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>writeInit()</code>: This function writes bootstrap code. To start, add instructions for setting <code>SP = 256</code></p>
+</li>
+<li>
+<p><code>setFileName(const char* filename)</code>: This function saves the current file being processed in mFilename. The saved filename should not have path and extension characters (e.g. / or .)</p>
+</li>
+<li>
+<p><code>write(const char* filename)</code>: This function writes the contents of mInstructions to a file with the given filename.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make -j6</strong>
+....
+$ <strong>cat vm/Bootstrap.vm</strong>
+// Bootstrap code is added automatically....
+$ <strong>./vm_compiler vm/Bootstrap.vm</strong>
+Writing vm/Bootstrap.asm
+Writing vm/Bootstrap.hack
+$ <strong>./test_vm_milestone1</strong>
+Testing vm/Bootstrap.hack...
+Program exited
+Check: RAM[0] = 256? (Got 256): PASSED
+Check: RAM[256] = 0? (Got 0): PASSED
+....</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>make -j6</code> runs using multiple jobs (e.g processes) for a faster build speed.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_push_constant">3.2. push constant</h3>
+<div class="paragraph">
+<p>In the file, <code>common/vmtranslator.cpp</code>, implement the "push constant X" command in <code>writePushPop</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>void writePushPop(VMCommand* cmd)</code>, Converts push and pop commands to assembly. Adds the assembly instructions to the member variable <code>mInstructions</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make -j6</strong>
+....
+$ <strong>./vm_compiler vm/SimpleConstant.vm</strong>
+Writing vm/SimpleConstant.asm
+Writing vm/SimpleConstant.hack
+$ ./test_vm_milestone1
+Testing vm/SimpleConstant.hack...
+Program exited
+Check: RAM[0] = 257? (Got 257): PASSED
+Check: RAM[256] = 111? (Got 111): PASSED</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_arithmetic_and_logic">3.3. Arithmetic and logic</h3>
+<div class="paragraph">
+<p>In the file, <code>common/vmtranslator.cpp</code>, implement the arithmetic and logic commands in <code>writeArithmetic</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>void writeArithmetic(VMCommand* cmd)</code>, Converts the following commands to assembly. Adds the assembly instructions to the member variable <code>mInstructions</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>add, sub, neg</p>
+</li>
+<li>
+<p>and, or, not</p>
+</li>
+<li>
+<p>eq, lt, gt</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You are given a script, <code>compile_tests_milestone1.sh</code> to automatically compile all test scripts.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make -j6</strong>
+....
+$ ./compile_tests_milestone1.sh
+Writing vm/Bootstrap.asm
+Writing vm/Bootstrap.hack
+Writing vm/SimpleConstant.asm
+Writing vm/SimpleConstant.hack
+...etc
+$ ./test_vm_milestone1
+Testing vm/SimpleAdd.hack...
+Program exited
+Check: RAM[0] = 257? (Got 257): PASSED
+Check: RAM[256] = 15? (Got 15): PASSED
+Testing vm/SimpleSub.hack...
+Program exited
+Check: RAM[0] = 257? (Got 257): PASSED
+Check: RAM[256] = -1? (Got -1): PASSED
+Testing vm/SimpleNeg.hack...
+Program exited
+Check: RAM[0] = 258? (Got 258): PASSED
+Check: RAM[257] = -8? (Got -8): PASSED
+... etc</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+False is represented using 0 and True is represented using -1
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Auto-generated labels should be unique. A simple way to guarantee unique names is to add a numeric suffix that increments each time a new label is created.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_memory">3.4. Memory</h3>
+<div class="paragraph">
+<p>In the file, <code>common/vmtranslator.cpp</code>, implement the arithmetic and logic commands in <code>writePushPop</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>void writePushPop(VMCommand* cmd)</code>, Converts the following commands to assembly. Adds the assembly instructions to the member variable <code>mInstructions</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>local, argument, this, that</p>
+</li>
+<li>
+<p>pointer</p>
+</li>
+<li>
+<p>static</p>
+</li>
+<li>
+<p>temp</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make -j6</strong>
+....
+$ ./compile_tests_milestone1.sh
+Writing vm/Bootstrap.asm
+Writing vm/Bootstrap.hack
+Writing vm/SimpleConstant.asm
+Writing vm/SimpleConstant.hack
+...etc
+$ ./test_vm_milestone1
+...
+Testing vm/SimpleLocal.hack...
+Program exited
+Check: RAM[0] = 256? (Got 256): PASSED
+Check: RAM[1] = 300? (Got 300): PASSED
+Check: RAM[256] = 111? (Got 111): PASSED
+Check: RAM[303] = 111? (Got 111): PASSED
+Check: RAM[306] = 111? (Got 111): PASSED
+... etc</code></pre>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_vm_translation_ii">4. VM Translation II</h2>
+<h2 id="_milestone_ii">4. Milestone II</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the file, <code>common/vmtranslator.cpp</code>, implement the following methods inside VMTranslator.</p>
+<p>Now, we will implement branching and functions. We will use the same methods for testing as before.</p>
+</div>
+<div class="sect2">
+<h3 id="_branching">4.1. Branching</h3>
+<div class="paragraph">
+<p>In the file, <code>common/vmtranslator.cpp</code>, implement the goto, if-goto and label commands.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>setFileName(const char* filename);</code></p>
+<p><code>void writeLabel(VMCommand* cmd)</code>, Converts label commands to assembly. Adds the assembly instructions to the member variable <code>mInstructions</code></p>
 </li>
 <li>
-<p><code>writeInit(instructions);</code></p>
+<p><code>void writeGoto(VMCommand* cmd)</code>, Converts goto commands to assembly. Adds the assembly instructions to the member variable <code>mInstructions</code></p>
 </li>
 <li>
-<p><code>writeLabel(const char* command, instructions);</code></p>
-</li>
-<li>
-<p><code>writeGoto(const char* command, instructions);</code></p>
-</li>
-<li>
-<p><code>writeIf(const char* command, instructions);</code></p>
-</li>
-<li>
-<p><code>writeCall(const char* command, instructions);</code></p>
-</li>
-<li>
-<p><code>writeFunction(const char* functionName, int numLocals, instructions);</code></p>
-</li>
-<li>
-<p><code>writeReturn(instructions);</code></p>
+<p><code>void writeIf(VMCommand* cmd)</code>, Converts if-goto commands to assembly. Adds the assembly instructions to the member variable <code>mInstructions</code></p>
 </li>
 </ul>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>make -j6</strong>
+....
+$ ./compile_tests_milestone2.sh
+Writing vm/IfElse.asm
+Writing vm/IfElse.hack
+Writing vm/While.asm
+Writing vm/While.hack
+...etc
+$ ./test_vm_milestone2</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_functions">4.2. Functions</h3>
 <div class="paragraph">
-<p>To check your work, you will need to test your generated assembly code in
-either the nand2tetris CPU simulator or in your own CPU simulator from
-<a href="asst03.html">Assignment 03</a>. The following program generates tests that
-you can run. Make sure that the contents of RAM match the desired state after
-your program runs.</p>
+<p>In the file, <code>common/vmtranslator.cpp</code>, implement the call, function, and return methods inside VMTranslator. Additionally, extend the bootstrap code to <code>goto Sys.init</code> when the member variable <code>mSysInit</code> is true.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>writeInit();</code>: writes bootstrap code into <code>mInstructions</code></p>
+</li>
+<li>
+<p><code>writeCall(VMCommand* cmd);</code>: generates assembly code corresponding to a function call.</p>
+</li>
+<li>
+<p><code>writeFunction(VMCommand* cmd);</code>: generates assembly code corresponding to a function definition.</p>
+</li>
+<li>
+<p><code>writeReturn();</code>: generates assembly code corresponding to a function return.</p>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>$ ./generate_asm_branches
-$ ./generate_asm_functions</code></pre>
+<pre class="highlight"><code>$ <strong>make -j6</strong>
+....
+$ ./compile_tests_milestone2.sh
+...
+Writing vm/AddFn.asm
+Writing vm/AddFn.hack
+$ ./test_vm_milestone2</code></pre>
 </div>
 </div>
 <h2 id="_submit_your_work" class="discrete">Submit your Work</h2>
@@ -212,9 +507,10 @@ $ git push</code></pre>
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-11-06 08:56:06 -0500
+Last updated 2025-11-10 20:49:10 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">
