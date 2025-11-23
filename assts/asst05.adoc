@@ -79,7 +79,7 @@ $ *./test_vmparser*
 push argument 1 -> cmd: 1 arg1: argument arg2: 1
 label L2 -> cmd: 3 arg1: L2 arg2:
 sub -> cmd: 0 arg1:  arg2:
-if-goto end -> cmd: 4 arg1: end arg2:
+if-goto end -> cmd: 5 arg1: end arg2:
 function print1 3 -> cmd: 6 arg1: print1 arg2: 3
 ----
 

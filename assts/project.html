@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.18">
+<title>Final Project: Jack Compiler</title>
+<link rel="stylesheet" href="../style/cs21.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_final_project_jack_compiler">Final Project: Jack Compiler</a></li>
+<li><a href="#_jack_program">1. Jack program</a></li>
+<li><a href="#_tokenizer">2. Tokenizer</a></li>
+<li><a href="#_analyzer">3. Analyzer</a></li>
+<li><a href="#_compiler">4. Compiler</a>
+<ul class="sectlevel2">
+<li><a href="#_vm_writer">4.1. VM Writer</a></li>
+<li><a href="#_compile_engine">4.2. Compile Engine</a></li>
+<li><a href="#_putting_it_all_together">4.3. Putting it all together</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_final_project_jack_compiler">Final Project: Jack Compiler</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Due Dec 19, before midnight</strong></p>
+</div>
+<div class="paragraph">
+<p>This project has two additional milestone requirements:</p>
+</div>
+<div class="paragraph">
+<p><strong>1) Milestone 1 Due: You must demo your Jack program in class/lab Dec 11</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>2) Milestone 2 Due: Compiler. Dec 12 (Friday)</strong></p>
+</div>
+<div class="paragraph">
+<p>The APIs in this assignment follow the design in your book
+<em>The Elements of Computing Systems</em> but with some differences that will allow us to
+reuse our work more easily across assignments.</p>
+</div>
+<div class="paragraph">
+<p>On Dec 19th, your full final project is due:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Working Jack demo which minimally runs in the VMEmulator</p>
+</li>
+<li>
+<p>Implemented Jack tokenizer, analyzer, and compiler</p>
+</li>
+<li>
+<p>Resubmissions for fixed computer, assembler, and virtual machine code compilers</p>
+</li>
+<li>
+<p>One-on-one demos of your working programs with Prof. Normoyle</p>
+</li>
+<li>
+<p>(Extra credit): Your Jack demo running on your simulated computer</p>
+</li>
+</ul>
+</div>
+<h2 id="_update_your_repository" class="discrete">Update your repository</h2>
+<div class="paragraph">
+<p>We will use the same repository as <a href="asst01.html">Assignment 1</a>. The changes have already
+been merged into your repository.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ cd cs240-f25-classwork
+$ git pull</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Your repository should include new files under the folder named <code>Compiler</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_jack_program">1. Jack program</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>1) Milestone 1 Due: You must demo your Jack program in class Dec 11</strong></p>
+</div>
+<div class="paragraph">
+<p>In the folder, <code>MyDemo</code>, write a cool Jack program that will entertain and delight your friends, families, and classmates.  A cool program might be a</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Game</p>
+</li>
+<li>
+<p>Simulation</p>
+</li>
+<li>
+<p>Data visualization</p>
+</li>
+<li>
+<p>An interesting algorithm, such as one that implements encryption, optimization, or gene matching. You may use an algorithm or demo from a pervious course, such as data structures, computational biology, AI, or machine learning.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tokenizer">2. Tokenizer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the file, <code>jacktokenizer.cpp</code>, implement a tokenizer for the Jack language. To start, implement the following functions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>bool jack_check_symbol(const char* str, JackToken* token)</code>: If the given string starts with a symbol, fill the keyword, type, and value into the given token and return true. Otherwise, return false.</p>
+</li>
+<li>
+<p><code>bool jack_check_keyword(const char* str, JackToken* token)</code>: If the given string starts with a keyword, fill the keyword, type, and value into the given token and return true. Otherwise, return false.</p>
+</li>
+<li>
+<p><code>bool jack_check_int_constant(const char* str, JackToken* token)</code>: If the given string corresponds to a non-negative integer, fill the keyword, type, and value into the given token and return true. Otherwise, return false.</p>
+</li>
+<li>
+<p><code>bool jack_check_string_constant(const char* str, JackToken* token)</code>: If the given string corresponds to a quotes string, fill the keyword, type, and value into the given token and return true. Otherwise, return false.</p>
+</li>
+<li>
+<p><code>bool jack_check_identifier(const char* str, JackToken* token)</code>: If the given string corresponds to an identifier, fill the keyword, type, and value into the given token and return true. Otherwise, return false.</p>
+</li>
+<li>
+<p><code>int JackTokenizer::findNextToken(int startIndex, int endIndex)</code>: Starting at startIndex, scans forward in <code>mProgram</code> skipping block comments and whitespace to find the next token. This function should also increment mLineNumber whenever we encounter a newline.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Run <code>test_tokenizer</code> to test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./test_tokenizer</strong>
+.... snip
+Tokenize mainclass:
+  Check value = mainclass (got mainclass): PASSED
+  Check keyword = 0 (got 0): PASSED
+  Check type = 2 (got 2): PASSED
+Token: 4, var, 0, 9
+Token: 4, int, 0, 5
+Token: 4, a, 2, 0
+Token: 4, ;, 1, 0
+Token: 5, let, 0, 12
+Token: 5, a, 2, 0
+Token: 5, =, 1, 0
+Token: 5, 3, 3, 0
+Token: 5, ;, 1, 0
+Token: 5, do, 0, 13
+Token: 5, Output, 2, 0
+Token: 5, ., 1, 0
+Token: 5, printString, 2, 0
+Token: 5, (, 1, 0
+Token: 5, Hello World, 4, 0
+Token: 5, ), 1, 0
+Token: 5, ;, 1, 0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, in <code>jacktokenizer.cpp</code>, implement the following function which outputs the tokenized output to an XML file.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>bool jack_tokens_writeXML(const char* filename, const std::vector&lt;JackToken&gt;&amp; tokens)</code>: Open the given filename for writing. If successful, outputs the given list of tokens as an xml file and returns true. Otherwise, returns false.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Run <code>jack_tokenizer</code> to test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./jack_analyzer jack/Hello/Main.jack</strong>
+<tokens>
+  <keyword>class</keyword>
+  <identifier>Main</identifier>
+  <symbol>{</symbol>
+  <keyword>function</keyword>
+  <keyword>void</keyword>
+  <identifier>main</identifier>
+  <symbol>(</symbol>
+  <symbol>)</symbol>
+  <symbol>{</symbol>
+  <keyword>do</keyword>
+  <identifier>Output</identifier>
+  <symbol>.</symbol>
+  <identifier>printString</identifier>
+  <symbol>(</symbol>
+  <stringConstant>Hello World</stringConstant>
+  <symbol>)</symbol>
+  <symbol>;</symbol>
+  <keyword>do</keyword>
+  <identifier>Output</identifier>
+  <symbol>.</symbol>
+  <identifier>println</identifier>
+  <symbol>(</symbol>
+  <symbol>)</symbol>
+  <symbol>;</symbol>
+  <keyword>return</keyword>
+  <symbol>;</symbol>
+  <symbol>}</symbol>
+  <symbol>}</symbol>
+</tokens></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_analyzer">3. Analyzer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the file, <code>jackanalyzer.cpp</code>, implement a parser for the Jack language that outputs the parsed language to an XML file. You should implement the following functions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>void JackAnalyzer::process(const hack::JackToken&amp; token);</code>: Outputs the current token using the indentatistored in the member variable <code>mIndent</code> and the FILE pointer stored in <code>mOutputFile</code>. The output format should be <code>&lt;tag&gt; value &lt;/tag&gt;</code> where tag is the token type (e.g. identifier, integer/string constant, symbol, or keyword) and the value is the token string.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeClass();</code>: Recursively outputs the XML for a class.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeClassVarDec();</code>: Recursively outputs the XML for class variable declarations.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeSubroutineDec();</code>: Recursively outputs the XML for a subroutine declaration.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeSubroutineBody();</code>: Recursively outputs the XML for a subroutine body.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeParameterList();</code>: Recursively outputs the XML for a parameter list.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeVarDec();</code>: Recursively outputs the XML for a variable declaration in a function or method.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeStatements();</code>: Recursively outputs the XML for a list of statements.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeDo();</code>: Recursively outputs the XML for a do statement.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeLet();</code>: Recursively outputs the XML for a let statement.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeWhile();</code>: Recursively outputs the XML for a while statement.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeReturn();</code>: Recursively outputs the XML for a return statement.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeIf();</code>: Recursively outputs the XML for an if statement.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeExpression();</code>: Recursively outputs the XML for an expression.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeTerm();</code>: Recursively outputs the XML for a term.</p>
+</li>
+<li>
+<p><code>void JackAnalyzer::analyzeExpressionList();</code>: Recursively outputs the XML for an expression list.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./jack_analyze jack/Hello/Main.jack</strong>
+<class>
+  <keyword>class</keyword>
+  <identifier>Main</identifier>
+  <symbol>{</symbol>
+  <classVarDec>
+  </classVarDec>
+  <subroutineDec>
+    <keyword>void</keyword>
+    <identifier>main</identifier>
+    <symbol>(</symbol>
+    <parameterList>
+    </parameterList>
+    <symbol>)</symbol>
+    <symbol>{</symbol>
+    <subroutineBody>
+...</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Full sample output for the analysis of Main.jack is here (<a href="Main-analyze.xml">Main-analyze.xml</a>)
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Implementation advice:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The analyzer functions should implement the grammar described in your book, <em>The Elements of Computing Systems</em>.</p>
+</li>
+<li>
+<p>The indentation level is a member variable in <code>JackAnalyzer</code>. Increase the indent before recursively printing and then increase it again on the other side.</p>
+</li>
+<li>
+<p>The token list and current token index are member variables. Processing a token should increase the current token.</p>
+</li>
+<li>
+<p><code>printf</code> supports printing multiple spaces using the format "%*s".</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For example, the code below shows how the class can be implemented</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>void JackAnalyzer::compileClass()
+{
+  fprintf(mOutputFile, "%*s", mIndent, "&lt;class&gt;\n"); mIndent += 2;
+
+  process(mTokens[mCurrentToken++]); // class
+  process(mTokens[mCurrentToken++]); // name
+  process(mTokens[mCurrentToken++]); // {
+  analyzeClassVarDec();
+  analyzeSubroutineDec();
+  process(mTokens[mCurrentToken++]); // }
+
+  mIndent -= 2; fprintf(mOutputFile, "%*s", mIndent, "&lt;/class&gt;\n");
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_compiler">4. Compiler</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>2) Milestone 2 Due: Compiler. Dec 12 (Friday)</strong></p>
+</div>
+<div class="paragraph">
+<p>You will implement the supporting classes for the compiler first.</p>
+</div>
+<div class="sect2">
+<h3 id="_vm_writer">4.1. VM Writer</h3>
+<div class="paragraph">
+<p>In the file, <code>vmwriter.cpp</code>, implement utilities for writing VM code. You should implement the following functions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>todo
+*</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compile_engine">4.2. Compile Engine</h3>
+<div class="paragraph">
+<p>In the file, <code>jackengine.cpp</code>, implement a parser for the Jack language that outputs the parsed language to an XML file. You should implement the following functions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>todo
+*</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_putting_it_all_together">4.3. Putting it all together</h3>
+<div class="paragraph">
+<p>Run the program, ``, to test your compiler.</p>
+</div>
+<h2 id="_submit_your_work" class="discrete">Submit your Work</h2>
+<div class="paragraph">
+<p>Push you work to Github to submit your work.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ cd Compiler
+$ git add .
+$ git commit -m "Compiler complete"
+$ git push</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2025-11-23 17:43:51 -0500
+</div>
+</div>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  messageStyle: "none",
+  tex2jax: {
+    inlineMath: [["\\(", "\\)"]],
+    displayMath: [["\\[", "\\]"]],
+    ignoreClass: "nostem|nolatexmath"
+  },
+  asciimath2jax: {
+    delimiters: [["\\$", "\\$"]],
+    ignoreClass: "nostem|noasciimath"
+  },
+  TeX: { equationNumbers: { autoNumber: "none" } }
+})
+MathJax.Hub.Register.StartupHook("AsciiMath Jax Ready", function () {
+  MathJax.InputJax.AsciiMath.postfilterHooks.Add(function (data, node) {
+    if ((node = data.script.parentNode) && (node = node.parentNode) && node.classList.contains("stemblock")) {
+      data.math.root.display = "block"
+    }
+    return data
+  })
+})
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+</body>
+</html>

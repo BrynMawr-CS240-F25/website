@@ -1,0 +1,253 @@
+include::header.adoc[]
+include::../dates.adoc[]
+
+:title: Final Project: Jack Compiler
+:Author Initials: ASN
+:Date:    2021-01-29
+:Revision: 0.1
+:ASST: Compiler
+
+= {title}
+
+**Due Dec 19, before midnight**
+
+This project has two additional milestone requirements:
+
+**1) Milestone 1 Due: You must demo your Jack program in class/lab Dec 11**
+
+**2) Milestone 2 Due: Compiler. Dec 12 (Friday)**
+
+The APIs in this assignment follow the design in your book 
+_The Elements of Computing Systems_ but with some differences that will allow us to 
+reuse our work more easily across assignments. 
+
+On Dec 19th, your full final project is due:
+
+* Working Jack demo which minimally runs in the VMEmulator
+* Implemented Jack tokenizer, analyzer, and compiler
+* Resubmissions for fixed computer, assembler, and virtual machine code compilers
+* One-on-one demos of your working programs with Prof. Normoyle  
+* (Extra credit): Your Jack demo running on your simulated computer
+
+[discrete]
+= Update your repository
+
+We will use the same repository as link:asst01.html[Assignment 1]. The changes have already 
+been merged into your repository.
+                                                                              
+[source, subs="attributes,quotes"]                                              
+----                                                                            
+$ cd {repo}                                                                     
+$ git pull                                                                      
+----                                                                            
+                                                                                
+Your repository should include new files under the folder named `{ASST}`.             
+
+:sectnums:
+
+= Jack program 
+
+**1) Milestone 1 Due: You must demo your Jack program in class Dec 11**
+
+In the folder, `MyDemo`, write a cool Jack program that will entertain and delight your friends, families, and classmates.  A cool program might be a 
+
+* Game
+* Simulation
+* Data visualization
+* An interesting algorithm, such as one that implements encryption, optimization, or gene matching. You may use an algorithm or demo from a pervious course, such as data structures, computational biology, AI, or machine learning.
+
+= Tokenizer 
+
+In the file, `jacktokenizer.cpp`, implement a tokenizer for the Jack language. To start, implement the following functions.
+
+* `bool jack_check_symbol(const char* str, JackToken* token)`: If the given string starts with a symbol, fill the keyword, type, and value into the given token and return true. Otherwise, return false.  
+* `bool jack_check_keyword(const char* str, JackToken* token)`: If the given string starts with a keyword, fill the keyword, type, and value into the given token and return true. Otherwise, return false.  
+* `bool jack_check_int_constant(const char* str, JackToken* token)`: If the given string corresponds to a non-negative integer, fill the keyword, type, and value into the given token and return true. Otherwise, return false.  
+* `bool jack_check_string_constant(const char* str, JackToken* token)`: If the given string corresponds to a quotes string, fill the keyword, type, and value into the given token and return true. Otherwise, return false.  
+* `bool jack_check_identifier(const char* str, JackToken* token)`: If the given string corresponds to an identifier, fill the keyword, type, and value into the given token and return true. Otherwise, return false.  
+* `int JackTokenizer::findNextToken(int startIndex, int endIndex)`: Starting at startIndex, scans forward in `mProgram` skipping block comments and whitespace to find the next token. This function should also increment mLineNumber whenever we encounter a newline. 
+
+Run `test_tokenizer` to test.
+
+[source, subs="quotes"]
+----
+$ **./test_tokenizer**
+.... snip
+Tokenize mainclass:
+  Check value = mainclass (got mainclass): PASSED
+  Check keyword = 0 (got 0): PASSED
+  Check type = 2 (got 2): PASSED
+Token: 4, var, 0, 9
+Token: 4, int, 0, 5
+Token: 4, a, 2, 0
+Token: 4, ;, 1, 0
+Token: 5, let, 0, 12
+Token: 5, a, 2, 0
+Token: 5, =, 1, 0
+Token: 5, 3, 3, 0
+Token: 5, ;, 1, 0
+Token: 5, do, 0, 13
+Token: 5, Output, 2, 0
+Token: 5, ., 1, 0
+Token: 5, printString, 2, 0
+Token: 5, (, 1, 0
+Token: 5, Hello World, 4, 0
+Token: 5, ), 1, 0
+Token: 5, ;, 1, 0
+----
+
+Next, in `jacktokenizer.cpp`, implement the following function which outputs the tokenized output to an XML file. 
+
+* `bool jack_tokens_writeXML(const char* filename, const std::vector<JackToken>& tokens)`: Open the given filename for writing. If successful, outputs the given list of tokens as an xml file and returns true. Otherwise, returns false.
+
+Run `jack_tokenizer` to test.
+
+[source, subs="quotes"]
+----
+$ **./jack_analyzer jack/Hello/Main.jack**
+<tokens>
+  <keyword>class</keyword>
+  <identifier>Main</identifier>
+  <symbol>{</symbol>
+  <keyword>function</keyword>
+  <keyword>void</keyword>
+  <identifier>main</identifier>
+  <symbol>(</symbol>
+  <symbol>)</symbol>
+  <symbol>{</symbol>
+  <keyword>do</keyword>
+  <identifier>Output</identifier>
+  <symbol>.</symbol>
+  <identifier>printString</identifier>
+  <symbol>(</symbol>
+  <stringConstant>Hello World</stringConstant>
+  <symbol>)</symbol>
+  <symbol>;</symbol>
+  <keyword>do</keyword>
+  <identifier>Output</identifier>
+  <symbol>.</symbol>
+  <identifier>println</identifier>
+  <symbol>(</symbol>
+  <symbol>)</symbol>
+  <symbol>;</symbol>
+  <keyword>return</keyword>
+  <symbol>;</symbol>
+  <symbol>}</symbol>
+  <symbol>}</symbol>
+</tokens>
+----
+
+= Analyzer 
+
+In the file, `jackanalyzer.cpp`, implement a parser for the Jack language that outputs the parsed language to an XML file. You should implement the following functions.
+
+* `void JackAnalyzer::process(const hack::JackToken& token);`: Outputs the current token using the indentatistored in the member variable `mIndent` and the FILE pointer stored in `mOutputFile`. The output format should be `<tag> value </tag>` where tag is the token type (e.g. identifier, integer/string constant, symbol, or keyword) and the value is the token string.  
+* `void JackAnalyzer::analyzeClass();`: Recursively outputs the XML for a class. 
+* `void JackAnalyzer::analyzeClassVarDec();`: Recursively outputs the XML for class variable declarations. 
+* `void JackAnalyzer::analyzeSubroutineDec();`: Recursively outputs the XML for a subroutine declaration. 
+* `void JackAnalyzer::analyzeSubroutineBody();`: Recursively outputs the XML for a subroutine body. 
+* `void JackAnalyzer::analyzeParameterList();`: Recursively outputs the XML for a parameter list. 
+* `void JackAnalyzer::analyzeVarDec();`: Recursively outputs the XML for a variable declaration in a function or method. 
+* `void JackAnalyzer::analyzeStatements();`: Recursively outputs the XML for a list of statements. 
+* `void JackAnalyzer::analyzeDo();`: Recursively outputs the XML for a do statement. 
+* `void JackAnalyzer::analyzeLet();`: Recursively outputs the XML for a let statement. 
+* `void JackAnalyzer::analyzeWhile();`: Recursively outputs the XML for a while statement. 
+* `void JackAnalyzer::analyzeReturn();`: Recursively outputs the XML for a return statement. 
+* `void JackAnalyzer::analyzeIf();`: Recursively outputs the XML for an if statement. 
+* `void JackAnalyzer::analyzeExpression();`: Recursively outputs the XML for an expression. 
+* `void JackAnalyzer::analyzeTerm();`: Recursively outputs the XML for a term. 
+* `void JackAnalyzer::analyzeExpressionList();`: Recursively outputs the XML for an expression list. 
+
+[source,subs="quotes"]
+----
+$ **./jack_analyze jack/Hello/Main.jack**
+<class>
+  <keyword>class</keyword>
+  <identifier>Main</identifier>
+  <symbol>{</symbol>
+  <classVarDec>
+  </classVarDec>
+  <subroutineDec>
+    <keyword>void</keyword>
+    <identifier>main</identifier>
+    <symbol>(</symbol>
+    <parameterList>
+    </parameterList>
+    <symbol>)</symbol>
+    <symbol>{</symbol>
+    <subroutineBody>
+...
+----
+
+NOTE: Full sample output for the analysis of Main.jack is here (link:Main-analyze.xml[Main-analyze.xml])
+
+Implementation advice:
+
+* The analyzer functions should implement the grammar described in your book, _The Elements of Computing Systems_. 
+* The indentation level is a member variable in `JackAnalyzer`. Increase the indent before recursively printing and then increase it again on the other side.
+* The token list and current token index are member variables. Processing a token should increase the current token.
+* `printf` supports printing multiple spaces using the format "%*s".
+
+For example, the code below shows how the class can be implemented
+
+[source]
+----
+void JackAnalyzer::compileClass()
+{
+  fprintf(mOutputFile, "%*s", mIndent, "<class>\n"); mIndent += 2;
+
+  process(mTokens[mCurrentToken++]); // class
+  process(mTokens[mCurrentToken++]); // name
+  process(mTokens[mCurrentToken++]); // {
+  analyzeClassVarDec();
+  analyzeSubroutineDec();
+  process(mTokens[mCurrentToken++]); // }
+
+  mIndent -= 2; fprintf(mOutputFile, "%*s", mIndent, "</class>\n");
+}
+----
+
+= Compiler
+
+**2) Milestone 2 Due: Compiler. Dec 12 (Friday)**
+
+You will implement the supporting classes for the compiler first.
+
+== VM Writer
+
+In the file, `vmwriter.cpp`, implement utilities for writing VM code. You should implement the following functions.
+
+* todo
+* 
+
+[source]
+----
+----
+
+== Compile Engine
+
+In the file, `jackengine.cpp`, implement a parser for the Jack language that outputs the parsed language to an XML file. You should implement the following functions.
+
+* todo
+* 
+
+[source]
+----
+----
+
+== Putting it all together
+
+Run the program, ``, to test your compiler.
+
+[discrete]
+= Submit your Work
+
+Push you work to Github to submit your work.
+
+[source, subs="attributes"]
+----
+$ cd {ASST}
+$ git add .
+$ git commit -m "{ASST} complete"
+$ git push
+----
