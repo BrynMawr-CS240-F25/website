@@ -9,7 +9,7 @@ include::../dates.adoc[]
 
 = {title}
 
-**Due Dec 19, before midnight**
+**Due Dec 14 (Sunday), before midnight**
 
 This project has two additional milestone requirements:
 
@@ -45,9 +45,11 @@ Your repository should include new files under the folder named `{ASST}`.
 
 :sectnums:
 
-= Jack program 
+= Milestone 1
 
 **1) Milestone 1 Due: You must demo your Jack program in class Dec 11**
+
+== Jack program 
 
 In the folder, `MyDemo`, write a cool Jack program that will entertain and delight your friends, families, and classmates.  A cool program might be a 
 
@@ -56,9 +58,15 @@ In the folder, `MyDemo`, write a cool Jack program that will entertain and delig
 * Data visualization
 * An interesting algorithm, such as one that implements encryption, optimization, or gene matching. You may use an algorithm or demo from a pervious course, such as data structures, computational biology, AI, or machine learning.
 
-= Tokenizer 
+In the file, `MyDemo/Readme.md`, write any instructions that are needed to run your demo.
 
-In the file, `jacktokenizer.cpp`, implement a tokenizer for the Jack language. To start, implement the following functions.
+= Milestone #2
+
+**2) Milestone 2 Due DecA12 (Friday) by midnight**
+
+== Tokenizer 
+
+In the file, `common/jacktokenizer.cpp`, implement a tokenizer for the Jack language. To start, implement the following functions.
 
 * `bool jack_check_symbol(const char* str, JackToken* token)`: If the given string starts with a symbol, fill the keyword, type, and value into the given token and return true. Otherwise, return false.  
 * `bool jack_check_keyword(const char* str, JackToken* token)`: If the given string starts with a keyword, fill the keyword, type, and value into the given token and return true. Otherwise, return false.  
@@ -96,7 +104,7 @@ Token: 5, ), 1, 0
 Token: 5, ;, 1, 0
 ----
 
-Next, in `jacktokenizer.cpp`, implement the following function which outputs the tokenized output to an XML file. 
+Next, in `common/jacktokenizer.cpp`, implement the following function which outputs the tokenized output to an XML file. 
 
 * `bool jack_tokens_writeXML(const char* filename, const std::vector<JackToken>& tokens)`: Open the given filename for writing. If successful, outputs the given list of tokens as an xml file and returns true. Otherwise, returns false.
 
@@ -137,9 +145,9 @@ $ **./jack_analyzer jack/Hello/Main.jack**
 </tokens>
 ----
 
-= Analyzer 
+== Analyzer 
 
-In the file, `jackanalyzer.cpp`, implement a parser for the Jack language that outputs the parsed language to an XML file. You should implement the following functions.
+In the file, `common/jackanalyzer.cpp`, implement a parser for the Jack language that outputs the parsed language to an XML file. You should implement the following functions.
 
 * `void JackAnalyzer::process(const hack::JackToken& token);`: Outputs the current token using the indentatistored in the member variable `mIndent` and the FILE pointer stored in `mOutputFile`. The output format should be `<tag> value </tag>` where tag is the token type (e.g. identifier, integer/string constant, symbol, or keyword) and the value is the token string.  
 * `void JackAnalyzer::analyzeClass();`: Recursively outputs the XML for a class. 
@@ -194,7 +202,8 @@ For example, the code below shows how the class can be implemented
 ----
 void JackAnalyzer::compileClass()
 {
-  fprintf(mOutputFile, "%*s", mIndent, "<class>\n"); mIndent += 2;
+  fprintf(mOutputFile, "%*s", mIndent, "<class>\n"); 
+  mIndent += 2;
 
   process(mTokens[mCurrentToken++]); // class
   process(mTokens[mCurrentToken++]); // name
@@ -203,41 +212,98 @@ void JackAnalyzer::compileClass()
   analyzeSubroutineDec();
   process(mTokens[mCurrentToken++]); // }
 
-  mIndent -= 2; fprintf(mOutputFile, "%*s", mIndent, "</class>\n");
+  mIndent -= 2; 
+  fprintf(mOutputFile, "%*s", mIndent, "</class>\n");
 }
 ----
 
-= Compiler
+= Final Project
 
-**2) Milestone 2 Due: Compiler. Dec 12 (Friday)**
-
-You will implement the supporting classes for the compiler first.
+**Due December 14th (Sunday) by midnight**
 
 == VM Writer
 
-In the file, `vmwriter.cpp`, implement utilities for writing VM code. You should implement the following functions.
+In the file, `common/vmwriter.cpp`, implement utilities for writing VM code to a file. You should implement the following functions.
 
-* todo
-* 
+* `void writePush(VM_Segment segment, int num);`: Write a `push segment num` command to the file indicated by the member variable `mOutputFile`
+* `void writePop(VM_Segment segment, int num);`: Write a `pop segment num` command 
+* `void writeArithmetic(VM_Op op);`: Write an operation based on the op (e.g. VM_ADD would output add)
+* `void writeLabel(const char* label);`: Write a label command
+* `void writeGoto(const char* label);`: Write a goto command to the given label
+* `void writeIf(const char* label);`: Write and if-goto command with the given label
+* `void writeCall(const char* fnname, int nArgs);`: Write a function call
+* `void writeFunction(const char* fnname, int nLocals);`: Write a function defition
+* `void writeReturn();`: Write a return statement
+  
+Although this is a simple class, you may want to put asserts into your functions to help you track down errors.
+Use the utility `test_vmwriter` to check your writer.
 
-[source]
+[source,subs="quotes"]
 ----
+$ **./test_vmwriter**
+push that 0
+push this 1
+push static 4
+push constant 111
+pop pointer 0
+pop local 2
+pop temp 3
+pop static 4
+add
+not
+label L1
+if-goto L1
+call Exp 3
+function Exp 1
+return
 ----
 
-== Compile Engine
+== Compiler
 
-In the file, `jackengine.cpp`, implement a parser for the Jack language that outputs the parsed language to an XML file. You should implement the following functions.
+In the file, `common/jackcompiler.cpp`, implement a compiler for the Jack language that outputs VM code. The API is very similar to `common/jackanalyzer.cpp` and I recommend you use the analyzer as a starting point. The parser differs from the analyzer as following:
 
-* todo
-* 
+* The `process` function now verifies that the current token has the correct type and value.
+* The parser contains two symbol tables, one for classes and one for subroutines. These tables will be modified in `compileClassVarDec` and `compileVarDec` respectively.
+* The parser contains a `VMWriter` object for writing a VM file.
 
-[source]
+Below is the list of functions to implement.
+
+* `void JackCompiler::process(const hack::JackToken& token, TokenType expectedType, const char* expectedValue);`: Checks that the current token has the expected type and value. If not, prints the current line and an error message. 
+* `void JackCompiler::compileClass();`: Recursively compiles the VM code for a class. 
+* `void JackCompiler::compileClassVarDec();`: Recursively compiles the VM code for class variable declarations. 
+* `void JackCompiler::compileSubroutineDec();`: Recursively compiles the VM code for a subroutine declaration. 
+* `void JackCompiler::compileSubroutineBody();`: Recursively compiles the VM code for a subroutine body. 
+* `void JackCompiler::compileParameterList();`: Recursively compiles the VM code for a parameter list. 
+* `void JackCompiler::compileVarDec();`: Recursively compiles the VM code for a variable declaration in a function or method. 
+* `void JackCompiler::compileStatements();`: Recursively compiles the VM code for a list of statements. 
+* `void JackCompiler::compileDo();`: Recursively compiles the VM code for a do statement. 
+* `void JackCompiler::compileLet();`: Recursively compiles the VM code for a let statement. 
+* `void JackCompiler::compileWhile();`: Recursively compiles the VM code for a while statement. 
+* `void JackCompiler::compileReturn();`: Recursively compiles the VM code for a return statement. 
+* `void JackCompiler::compileIf();`: Recursively compiles the VM code for an if statement. 
+* `void JackCompiler::compileExpression();`: Recursively compiles the VM code for an expression. 
+* `void JackCompiler::compileTerm();`: Recursively compiles the VM code for a term. 
+* `void JackCompiler::compileExpressionList();`: Recursively compiles the VM code for an expression list. 
+
+[source,subs="quotes"]
 ----
+$ **./jack_compiler jack/Hello/Main.jack**
+Outputing file: jack/Hello/Main.vm
 ----
 
-== Putting it all together
+== Resubmissions
 
-Run the program, ``, to test your compiler.
+You may also submit bug fixes for the following assignments for partial credit:
+
+* link:asst3A.html[Simulated gates and memory]  
+* link:asst3B.html[Simulated computer]  
+* link:asst04.html[Assembler]  
+* link:asst05.html[Virtual Machine compiler]  
+
+
+== (Extra Credit) Simulated Computer
+
+Compile your demo to machine code using your implemented compiler and run it on your simulated computer from link:asst3B.html[assignment A03]. For full credit, demo
 
 [discrete]
 = Submit your Work
