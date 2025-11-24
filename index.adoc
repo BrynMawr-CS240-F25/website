@@ -17,7 +17,7 @@ Instructor: link:https://www.cs.brynmawr.edu/~alinen[Aline Normoyle]
 [.anns]
 
 * No office hours this week of Nov 24th
-* Midterm II will be during class on Dec 4th: 80 minutes. You may bring one cheat sheet
+* Midterm II will be during class on Dec 4th: 80 minutes. You may bring one cheat sheet. link:studyguide02.html[Study Guide]
 * link:assts/project.html[Final Project] is due Sunday, Dec 14th, with milestones due Dec 11th (Thursday) and Dec 12th (Friday) 
 * Welcome to computer organization! 
 

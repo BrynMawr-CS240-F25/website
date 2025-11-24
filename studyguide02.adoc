@@ -1,0 +1,24 @@
+include::header.adoc[]
+
+:title: Study Guide - Midterm 02
+:Author Initials: ASN
+:Date:    2020-08-15
+:Revision: 0.1
+
+== {title}
+
+Midterms are closed book. You can bring one written cheat sheet. 80 minutes in class.
+
+Topics:
+
+* C/C++ programming: using built-in data structures and working with strings
+* Machine code, How instruction bits link to hardware control signals
+* Hack Assembly, converting from assembly to machine code
+* Virtual machine language, virtual memory segments, stack-based program evaluation, RAM data layouts, function calling
+* Compilation: symbol tables, tokenization and grammars, generating code
+
+== C/C++ programming
+== Machine Code
+== Assembly
+== Virtual Machine
+== Compilation
