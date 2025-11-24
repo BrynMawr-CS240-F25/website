@@ -154,9 +154,11 @@
 
 * Read: _Elements of Computing Systems_, Chapter 9, 10
 * link:asst/asst05.html[Assignment 05: Virtual Machine]: Due {ASST05_DUE} (with milestone deliverable on Nov 17)
-* Lab: VM practice
+* Lab: From VM to assembly worksheet
 
-| TBD
+| 
+* link:lectures/Lecture-Week11-Nov11-HLL.pdf[Lecture - Nov 11]
+* link:lectures/Lecture-Week11-Nov13-Compilation.pdf[Lecture - Nov 13]
 
 //-----------------------------
 |12
@@ -165,9 +167,11 @@
 
 * Topics: syntax analysis, code generation
 * Read: _Elements of Computing Systems_, Chapter 10-11
-* Lab: Evaluating VM expressions
+* Lab: From VM to assembly worksheet
 
 | 
+* link:lectures/Lecture-Week12-VM_Function_Worksheet.pdf[VM Function Worksheet - Nov 18]
+* link:lectures/Lecture-Week12-Nov20-Compilation2.pdf[Lecture - Nov 20]
 
 //-----------------------------
 |13
@@ -175,8 +179,10 @@
 |*Compiler II, Thanksgiving* 
 
 * Read: _Elements of Computing Systems_, Chapter 10-11
-* link:[Final Project: Compiler and software]: Due {ASST07_DUE}
-* **Thanksgiving: No Class or lab Thursday**
+* link:assts/project.html[Final Project: Compiler and software]: Due {ASST07_DUE}
+** Milestone 1: Demo of your high level demo is due Dec 11th (Thursday) in class/lab
+** Milestone 2: Tokenizing and parsing is due Dec 12th (Friday) at midnight
+* **Thanksgiving: No Class or lab Thursday. No office hours**
 
 | 
 
@@ -194,10 +200,8 @@
 //-----------------------------
 |15
 |{WEEK15} anchor:week15[]
-|*Operating System* 
+|*Final Project* 
 
-* Read: _Elements of Computing Systems_, Chapter 12
-* Compiler worksheets
 * Final project check-ins and demos 
 
 |

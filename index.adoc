@@ -16,9 +16,9 @@ Instructor: link:https://www.cs.brynmawr.edu/~alinen[Aline Normoyle]
 
 [.anns]
 
-* Prof. Normoyle's office hours on Friday Nov 14 will be on campus. 
-* link:assts/asst05.html[Assignment 05] is due Friday, Nov 21st
-* link:assts/asst04.html[Assignment 04] is due Monday, Nov 10th, no extensions
+* No office hours this week of Nov 24th
+* Midterm II will be during class on Dec 4th: 80 minutes. You may bring one cheat sheet
+* link:assts/project.html[Final Project] is due Sunday, Dec 14th, with milestones due Dec 11th (Thursday) and Dec 12th (Friday) 
 * Welcome to computer organization! 
 
 == Course Info

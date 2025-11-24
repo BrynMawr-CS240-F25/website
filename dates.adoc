@@ -20,7 +20,7 @@
 :ASST3B_DUE: Friday, October 31st 
 :ASST04_DUE: Friday, November 7th 
 :ASST05_DUE: Friday, November 21st
-:ASST06_DUE: Friday, December 12th
+:ASST06_DUE: Sunday, December 14th
 :MIDTERM01_WK8: Tuesday, October 21st
 :MIDTERM02: Thursday, December 4th
 
