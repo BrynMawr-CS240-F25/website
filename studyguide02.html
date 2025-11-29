@@ -15,6 +15,7 @@
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel2">
 <li><a href="#_study_guide_midterm_02">Study Guide - Midterm 02</a></li>
+<li><a href="#_short_answer">Short answer</a></li>
 <li><a href="#_cc_programming">C/C++ programming</a></li>
 <li><a href="#_machine_code">Machine Code</a></li>
 <li><a href="#_assembly">Assembly</a></li>
@@ -53,29 +54,453 @@
 </div>
 </div>
 <div class="sect2">
+<h3 id="_short_answer">Short answer</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>What is the largest constant that the Hack hardware supports? Why?</p>
+</li>
+<li>
+<p>How are abstractions important for building computing systems? Give an example.</p>
+</li>
+<li>
+<p>How does Hack machine code map to the hardware architecture?</p>
+</li>
+<li>
+<p>The instruction <code>@D</code> does not work in Hack assembly. How would the architecture need to change to support this instruction?</p>
+</li>
+<li>
+<p>What are the steps that compile Jack programs into machine code?</p>
+</li>
+<li>
+<p>Give examples of program syntax that exists in Jack but not typically in other languages. Why are these features in Jack?</p>
+</li>
+<li>
+<p>Why must we prepend the filename to global variables when we convert from VM code to assembly?</p>
+</li>
+<li>
+<p>Assembly languages do not have data types. How are different data types (int, boolean, char) handled in the Hack architecture? How are classes and arrays handled in the Hack architecture.</p>
+</li>
+<li>
+<p>Describe the steps necessary for calling and returning from a function. How is calling a method on a class object different from calling a function?</p>
+</li>
+<li>
+<p>What is the scope of local variables? Of field variables? Of global variables?</p>
+</li>
+<li>
+<p>How are memory layouts handled for objects an arrays in the Hack virtual machine? How does this design simplify the implementation of the compiler?</p>
+</li>
+<li>
+<p>How are variable names resolved when compiling statements?</p>
+</li>
+<li>
+<p>What is nested scoping?</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_cc_programming">C/C++ programming</h3>
+<div class="paragraph">
+<p>Extend the following program to load a file containing Hack machine code instructions, one per line, into a vector.
+Then write code that prints the contents of the vector.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>struct Instruction
+{
+  unsigned char[16] bits;
+};
 
+int main()
+{
+  char buff[1024];
+  std::vector&lt;Instruction&gt; instructions;
+
+  FILE* fp = open("test.hack", "r");
+  while (fgets(buff, 1024, fp))
+  {
+    // buff contains the current line, e.g. 00111111010101100
+    // assume there are no spaces or comments
+    // assume that the line only contains 0's or 1's
+    // 1. parse the contents of each line into an Instruction and add them to instructions
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+  fclose(fp);
+
+  // 2. print out the contents of instructions
+
+
+
+
+
+
+  return 0;
+}</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_machine_code">Machine Code</h3>
-
+<div class="ulist">
+<ul>
+<li>
+<p>Convert the following instructions to machine instructions</p>
+<div class="ulist">
+<ul>
+<li>
+<p>@9</p>
+</li>
+<li>
+<p>D; JLT</p>
+</li>
+<li>
+<p>M=D+1</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/Hack_MachineCode.png" alt="Hack MachineCode" width="400px">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Below is a diagram of the Hack architecture with control signals represented by the character c. Show how the bits of the A-instruction, such as @9, correspond to control bits for the Hack architecture.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/HackCPUArchitecture.png" alt="HackCPUArchitecture" width="400px">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Below is a diagram of the Hack architecture with control signals represented by the character c. Show how the bits of the C-instruction, M=D+1, correspond to control bits for the Hack architecture.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/HackCPUArchitecture.png" alt="HackCPUArchitecture" width="400px">
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_assembly">Assembly</h3>
-
+<div class="paragraph">
+<p>Convert the following VM code to assembly.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>push constant 1
+push local 0
+add
+pop local 0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Consider the following assembly program. Show how the symbols and labels would be mapped to values by the assembler.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>@mystery
+A=M
+D=M
+@IF_TRUE1
+D;JNE
+@IF_FALSE1
+0;JMP
+(IF_TRUE1)
+@i
+D=A
+@SP
+A=M
+M=D
+(IF_FALSE1)
+@SP
+M=M+1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Below, construct the symbol table for the previous assembly program.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SP</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LCL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ARGS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">THIS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">THAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect2">
 <h3 id="_virtual_machine">Virtual Machine</h3>
+<div class="paragraph">
+<p>Convert the following expression to VM Code: <code>d = (2-x) + (y + 9)</code>. Then show how this code would execute on the Hack virtual machine.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/VMStackExecutionTemplate.png" alt="VMStackExecutionTemplate" width="600px">
+</div>
+</div>
+<div class="paragraph">
+<p>Convert the following expression to VM Code: <code>(2-x) &lt; (y + 9)</code>. Then show how this code would execute on the Hack virtual machine.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/VMStackExecutionTemplate.png" alt="VMStackExecutionTemplate" width="600px">
+</div>
+</div>
+<div class="paragraph">
+<p>Convert the following code segment to Hack VM code. Then show how the values would be mapped to RAM.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>static int global = 0;
 
+function void foo(int a)
+{
+  var int b;
+  let b = 5;
+  global = a + 5;
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/HackRAM.png" alt="HackRAM" width="100px">
+</div>
+</div>
+<div class="paragraph">
+<p>Convert the following function to Hack VM Code.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>function int mult(int x, int y) {
+   var int sum;
+   let sum = 0;
+   let j = y;
+
+   while (j != 0) {
+      let sum += x;
+      let j = j - 1;
+   }
+   return sum;
+}</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_compilation">Compilation</h3>
-
+<div class="paragraph">
+<p>For the following code segment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Give the list of tokens and token types for the implementation of foo(). You do not need to include the class and function declaration.</p>
+</li>
+<li>
+<p>Generate the parse tree based on the Jack Grammar.</p>
+</li>
+<li>
+<p>Write pseudocode that compiles <code>Let</code> statements using a recursive descent parsing algorithm.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>class Test
+{
+  function void foo() {
+    let a = Keyboard.readInt();
+    if (a &lt; 10)
+    {
+      do Output.printString("Too small!");
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You will be given the grammar for any parse tree you are asked to write on an exam. For practice, please use the chart in your book.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Which of the following strings are valid for the following grammar?</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>root: x | a
+x : (ab)*</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>a</code></p>
+</li>
+<li>
+<p>`` (empty string)</p>
+</li>
+<li>
+<p><code>abababa</code></p>
+</li>
+<li>
+<p><code>ababab</code></p>
+</li>
+<li>
+<p><code>baa</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Convert the following expression to a parse tree and give its postfix notation: <code>3 + 7 / 2</code>.</p>
+</div>
+<div class="paragraph">
+<p>&#160;<br></p>
+</div>
+<div class="paragraph">
+<p>Give the class-level and subroutine-level symbol tables for the following method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>class Point {
+   field int x, y;
+   static int pointCount;
+   ...
+   method int distance(Point other) {
+       var int dx, dy;
+       let dx = x - other.getx();
+       let dy = y - other.gety();
+       return Math.sqrt((dx*dx) + (dy*dy));
+   }
+   ...
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-11-24 10:01:18 -0500
+Last updated 2025-11-29 16:55:41 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">
