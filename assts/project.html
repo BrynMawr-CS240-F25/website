@@ -240,6 +240,17 @@ Token: 5, ;, 1, 0</code></pre>
 </tokens></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>You are given a script to help you test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./test_jack_tokenizer.sh</strong>
+==== Tokenize TestAdd.jack ====
+Files jack/Tests/TestAdd-tokens.xml and jack/Tests/Answers/TestAdd-tokens.xml are identical
+... etc</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_analyzer">2.2. Analyzer</h3>
@@ -370,6 +381,17 @@ Full sample output for the analysis of Main.jack is here (<a href="Main-analyze.
   mIndent -= 2;
   fprintf(mOutputFile, "%*s", mIndent, "&lt;/class&gt;\n");
 }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You are given a script to help you test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./test_jack_analyzer.sh</strong>
+==== Analyze TestAdd.jack ====
+Files jack/Tests/TestAdd-analyze.xml and jack/Tests/Answers/TestAdd-analyze.xml are identical
+... etc</code></pre>
 </div>
 </div>
 </div>
@@ -518,7 +540,101 @@ return</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>$ <strong>./jack_compiler jack/Hello/Main.jack</strong>
-Outputing file: jack/Hello/Main.vm</code></pre>
+Outputting file: jack/Hello/Main.vm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You are given a script to help you test.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./test_jack_compiler.sh</strong>
+==== Compile TestAdd.jack ====
+Files jack/Tests/TestAdd.vm and jack/Tests/Answers/TestAdd.vm are identical
+... etc</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You may have a slightly different output that still produces correct behavior. However, for this assignment, match the generated output to make testing easier.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_test">3.2.1. Test</h4>
+<div class="paragraph">
+<p>Develop your compiler in steps. Below is a recommended order.</p>
+</div>
+<div class="paragraph">
+<p>1) Add code to fill the class and subroutine symbol tables in compilerClassVarDec and compileVarDec respectively. You can use <code>test_symtable</code> to test your work.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./test_symtable</strong>
+Writing file jack/Tests/TestSymTable.vm
+Symbol global0
+  Expected int (Got int): PASSED
+  Expected kind 4 (Got 4): PASSED
+  Expected number 0 (Got 0): PASSED
+Symbol global1
+  Expected boolean (Got boolean): PASSED
+  Expected kind 4 (Got 4): PASSED
+  Expected number 1 (Got 1): PASSED
+... etc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>2) Extend <code>compileReturn</code>, <code>compileSubroutineDec</code>, and <code>compileVarDec</code> to support function definitions. Check your work with <code>jack/Tests/TestLet.vm</code>. You should have something like the following.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./jack_compiler jack/Tests/TestLet.jack</strong>
+$ <strong>cat jack/Tests/TestLet.vm</strong>
+function TestLet.main 1
+push constant 0
+return</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>3) Extend <code>compileLet</code> and <code>compileTerm</code> to support assignments for non-array types. Test again with <code>TestLet.jack</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ <strong>./jack_compiler jack/Tests/TestLet.jack</strong>
+$ <strong>cat jack/Tests/TestLet.vm</strong>
+function TestLet.main 1
+push constant 3
+pop local 0
+push constant 0
+return</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>4) Implement the remaining terms in <code>compileTerm</code> with the exception of function calls and array types. You should now be able to compile <code>TestBool.jack</code>, <code>TestNull.jack</code>, <code>TestString.jack</code></p>
+</div>
+<div class="paragraph">
+<p>5) Implement <code>compileExpressions</code>. You should not be able to compile <code>TestAdd.jack</code>, <code>TestSub.jack</code>, and <code>TestMultiply.jack</code>.</p>
+</div>
+<div class="paragraph">
+<p>6) Implement <code>compileIf</code>. You should be able to compile <code>TestIf.jack</code></p>
+</div>
+<div class="paragraph">
+<p>7) Implement <code>compileWhile</code>. You should be able to compile <code>TestWhile.jack</code></p>
+</div>
+<div class="paragraph">
+<p>8) Implement function calls. You should be able to compile <code>TestFunction.jack</code></p>
+</div>
+<div class="paragraph">
+<p>9) Implement constructor and method calls. You should be able to compile <code>TestClass.jack</code></p>
+</div>
+<div class="paragraph">
+<p>10) Complete <code>compileTerm</code> and <code>compileLet</code> to support arrays. You should be able to compile <code>TestArray.jack</code></p>
 </div>
 </div>
 </div>
@@ -567,7 +683,7 @@ $ git push</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-11-23 21:19:34 -0500
+Last updated 2025-11-30 17:48:22 -0500
 </div>
 </div>
 <script type="text/x-mathjax-config">

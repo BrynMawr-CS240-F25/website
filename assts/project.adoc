@@ -145,6 +145,16 @@ $ **./jack_analyzer jack/Hello/Main.jack**
 </tokens>
 ----
 
+You are given a script to help you test.
+
+[source, subs="quotes"]
+----
+$ **./test_jack_tokenizer.sh**
+==== Tokenize TestAdd.jack ====
+Files jack/Tests/TestAdd-tokens.xml and jack/Tests/Answers/TestAdd-tokens.xml are identical
+... etc
+----
+
 == Analyzer 
 
 In the file, `common/jackanalyzer.cpp`, implement a parser for the Jack language that outputs the parsed language to an XML file. You should implement the following functions.
@@ -215,6 +225,16 @@ void JackAnalyzer::compileClass()
   mIndent -= 2; 
   fprintf(mOutputFile, "%*s", mIndent, "</class>\n");
 }
+----
+
+You are given a script to help you test.
+
+[source, subs="quotes"]
+----
+$ **./test_jack_analyzer.sh**
+==== Analyze TestAdd.jack ====
+Files jack/Tests/TestAdd-analyze.xml and jack/Tests/Answers/TestAdd-analyze.xml are identical
+... etc
 ----
 
 = Final Project
@@ -288,8 +308,79 @@ Below is the list of functions to implement.
 [source,subs="quotes"]
 ----
 $ **./jack_compiler jack/Hello/Main.jack**
-Outputing file: jack/Hello/Main.vm
+Outputting file: jack/Hello/Main.vm
 ----
+
+You are given a script to help you test.
+
+[source, subs="quotes"]
+----
+$ **./test_jack_compiler.sh**
+==== Compile TestAdd.jack ====
+Files jack/Tests/TestAdd.vm and jack/Tests/Answers/TestAdd.vm are identical
+... etc
+----
+
+NOTE: You may have a slightly different output that still produces correct behavior. However, for this assignment, match the generated output to make testing easier.
+
+=== Test
+
+Develop your compiler in steps. Below is a recommended order.
+
+1) Add code to fill the class and subroutine symbol tables in compilerClassVarDec and compileVarDec respectively. You can use `test_symtable` to test your work.
+
+[source, subs="quotes"]
+----
+$ **./test_symtable**
+Writing file jack/Tests/TestSymTable.vm
+Symbol global0
+  Expected int (Got int): PASSED
+  Expected kind 4 (Got 4): PASSED
+  Expected number 0 (Got 0): PASSED
+Symbol global1
+  Expected boolean (Got boolean): PASSED
+  Expected kind 4 (Got 4): PASSED
+  Expected number 1 (Got 1): PASSED
+... etc
+----
+
+2) Extend `compileReturn`, `compileSubroutineDec`, and `compileVarDec` to support function definitions. Check your work with `jack/Tests/TestLet.vm`. You should have something like the following.
+
+[source,subs="quotes"]
+----
+$ **./jack_compiler jack/Tests/TestLet.jack**
+$ **cat jack/Tests/TestLet.vm**
+function TestLet.main 1
+push constant 0
+return
+----
+
+3) Extend `compileLet` and `compileTerm` to support assignments for non-array types. Test again with `TestLet.jack`.
+
+[source,subs="quotes"]
+----
+$ **./jack_compiler jack/Tests/TestLet.jack**
+$ **cat jack/Tests/TestLet.vm**
+function TestLet.main 1
+push constant 3
+pop local 0
+push constant 0
+return
+----
+
+4) Implement the remaining terms in `compileTerm` with the exception of function calls and array types. You should now be able to compile `TestBool.jack`, `TestNull.jack`, `TestString.jack` 
+
+5) Implement `compileExpressions`. You should not be able to compile `TestAdd.jack`, `TestSub.jack`, and `TestMultiply.jack`.
+
+6) Implement `compileIf`. You should be able to compile `TestIf.jack`
+
+7) Implement `compileWhile`. You should be able to compile `TestWhile.jack`
+
+8) Implement function calls. You should be able to compile `TestFunction.jack`
+
+9) Implement constructor and method calls. You should be able to compile `TestClass.jack`
+
+10) Complete `compileTerm` and `compileLet` to support arrays. You should be able to compile `TestArray.jack`
 
 == Resubmissions
 
